@@ -3,9 +3,20 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  helper_method :user_signed_in?
+  helper_method :current_user
+
   inertia_share auth: -> {
                   {
-                    user: Current.user&.as_json(only: [:email]),
+                    user: current_user&.as_json(only: [:email, :username, :full_name])&.merge({ id: current_user&.hashid }),
                   }
                 }
+
+  def current_user
+    @current_user ||= Current.user
+  end
+
+  def user_signed_in?
+    current_user.present?
+  end
 end

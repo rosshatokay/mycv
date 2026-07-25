@@ -16,5 +16,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './app/frontend'),
     },
+  },
+	server: {
+    // Ensures file system changes are watched properly in all environments
+    watch: {
+      usePolling: true, 
+    }
   }
 })

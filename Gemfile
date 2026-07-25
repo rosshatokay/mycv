@@ -6,6 +6,7 @@ gem "puma", ">= 5.0"
 gem "jbuilder"
 gem "haml"
 gem "bcrypt", "~> 3.1.7"
+gem "hashid-rails"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -33,6 +34,7 @@ end
 
 group :development do
   gem "web-console"
+  gem "rails-erd"
 end
 
 group :test do

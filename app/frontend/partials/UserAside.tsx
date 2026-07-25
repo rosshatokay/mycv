@@ -1,0 +1,39 @@
+import { LogoIcon } from "@/assets/logo"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { AuthUser } from "@/interfaces/user"
+import { cn } from "@/lib/utils"
+import { Link, usePage } from "@inertiajs/react"
+import { CornerDownRight } from "lucide-react"
+
+export default function UserAside({ auth }: AuthUser) {
+	const { url } = usePage()
+	const user = auth.user
+	
+	const links = [
+		{ label: "Profile", path: `/@${user.username}` },
+		{ label: "Analytics", path: '/analytics' },
+		{ label: "Settings", path: '/settings' },
+	]
+	
+	return (
+		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 justify-between flex flex-col">
+			<div className="flex flex-col gap-12">
+				<LogoIcon />
+				<div className="flex flex-col gap-1">
+					{links.map(item => {
+						const isActive = url === item.path
+
+						return (
+							<Link href={item.path} key={item.path} className={cn("flex items-center gap-2 transition", isActive ? 'text-foreground' : 'text-subtle opacity-70 hover:opacity-100 hover:text-foreground')}>
+								<span>{item.label}</span>
+							</Link>
+						)
+					})}
+				</div>
+			</div>
+			<Avatar>
+				<AvatarFallback>{user.email[0].toUpperCase()}</AvatarFallback>
+			</Avatar>
+		</aside>
+	)
+}

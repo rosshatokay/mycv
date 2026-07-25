@@ -1,0 +1,30 @@
+erDiagram
+	direction TB
+	Project {
+		string description
+		date end_date
+		json highlights
+		date start_date
+		string title
+		string url
+	}
+	Resume {
+		string bio
+		json highlights
+		string location
+		string phone_number
+		string role
+		string website_url
+	}
+	Session {
+		string ip_address
+		string user_agent
+	}
+	User {
+		string email
+		string password_digest
+		string username
+	}
+	User ||--}o Project : ""
+	User ||--|o Resume : ""
+	User ||--}o Session : ""

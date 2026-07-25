@@ -129,11 +129,39 @@
 		@apply border-border outline-ring/50;
 	}
 
+	button {
+		@apply cursor-pointer
+	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
 
 	html {
 		@apply font-sans;
+	}
+
+	.headline {
+		font-family: 'Crimson Pro'
+	}
+
+	.large-container {
+		@apply max-w-7xl mx-auto w-full px-5
+	}
+	
+	.main-container {
+		@apply max-w-2xl mx-auto w-full px-5
+	}
+
+	.flex-center {
+		@apply flex items-center justify-center
+	}
+}
+
+.logo {
+	width: 100%;
+	svg {
+		width: 100%;
+		height: auto;
 	}
 }

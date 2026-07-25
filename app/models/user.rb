@@ -1,6 +1,10 @@
 class User < ApplicationRecord
+  include Hashid::Rails
+
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :projects, dependent: :destroy
+  has_one :resume, dependent: :destroy
 
   BLACKLISTED_USERNAMES = File.readlines(Rails.root.join("config", "blacklist.txt")).map do |line|
     line.strip.downcase
@@ -23,4 +27,17 @@ class User < ApplicationRecord
               message: "not allowed",
             }
   validates :password, presence: true, length: { minimum: 8, message: "has to be at least 8 characters long" }, if: -> { password.present? }, allow_blank: true
+
+  def to_profile
+    {
+      id: hashid,
+      username: username,
+      email: email,
+      bio: [
+        "Currently, software design & engineering at Bureau.",
+        "Previously, I led product design for various infrastructures and enterprise teams at meta.",
+        "Available for full time / contract roles.",
+      ],
+    }
+  end
 end

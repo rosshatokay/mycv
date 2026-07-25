@@ -1,3 +1,4 @@
+import { LogoIcon } from "@/assets/logo";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -26,10 +27,10 @@ export default function SignupPage() {
 					<div className="relative h-full">
 						<div className="relative z-10 mx-auto py-8 sm:w-max sm:py-16">
 							<div className="flex flex-col px-4">
-								<svg width="118" height="118" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block h-[38px] w-[38px]"><path d="M31.4286 0H12.5714C5.62842 0 0 5.62842 0 12.5714V31.4286C0 38.3716 5.62842 44 12.5714 44H31.4286C38.3716 44 44 38.3716 44 31.4286V12.5714C44 5.62842 38.3716 0 31.4286 0Z" fill="#00BAF4"></path><path d="M34.4303 22.3929C33.9432 20.0514 32.4345 18.0871 30.3603 16.9714C28.8045 16.1386 27.0445 15.84 25.3317 16.1072C24.8288 14.85 23.9488 13.8286 22.6759 13.0429C21.0259 12.0214 18.9989 11.7386 17.2389 12.2886C14.8346 13.0429 13.0903 15.0542 12.6817 17.5214C12.556 18.3385 11.7075 19.0615 10.8746 19.0615H9.41309V22.2043H10.8746C13.2475 22.2043 15.4002 20.3657 15.7931 18.0243C16.0739 16.3595 17.5647 15.0861 19.2502 15.1485C19.1874 15.1485 19.3131 15.1642 19.2502 15.1485C21.4502 15.2742 22.9745 17.27 23.4617 19.2657C25.2097 18.9762 27.2805 18.8697 28.8988 19.7214C30.1717 20.4129 31.0517 21.5914 31.3503 23.0528C31.6803 24.64 31.1146 26.4 29.9046 27.5157C28.9303 28.4115 27.7988 28.8357 26.4002 28.8042H15.0703C13.7031 28.8042 12.5874 27.6886 12.5874 26.3214H9.44455C9.44455 29.4172 11.9746 31.9471 15.0703 31.9471C18.9203 31.9471 22.7703 31.9471 26.6202 31.9471C28.6631 31.9471 30.5331 31.2085 32.0417 29.81C34.0846 27.9243 34.996 25.08 34.4303 22.3929Z" fill="white"></path></svg>
+								<LogoIcon size={36} />
 							</div>
 							<div className="mx-auto w-full bg-surface-white px-4 py-6 sm:w-96 sm:rounded-lg">
-								<h1 className="text-xl font-medium leading-5 tracking-tight text-ink-gray-9 mb-2">Create your free Myc account</h1>
+								<h1 className="text-xl leading-none tracking-tight text-ink-gray-9 mb-2">Create your free Myc account</h1>
 								<p className="text-subtle text-sm">Your clean and professional resume page</p>
 								<div className="mt-6">
 									<form onSubmit={handleSubmit}>
@@ -93,7 +94,7 @@ export default function SignupPage() {
 										</FieldSet>
 									</form>
 									<div className="mt-6 text-subtle">
-										<div className="text-sm mb-2">Don't have an account? <Link className="underline text-foreground">Sign up for free</Link>.</div>
+										<div className="text-sm mb-2">Already have an account? <Link href={"/login"} className="underline text-foreground">Sign in</Link>.</div>
 										<div className="text-sm">By creating an account, you agree to Mycv's <a className="underline text-foreground">Terms of use</a> and <a className="underline text-foreground">Privacy policy</a>.</div>
 									</div>
 								</div>
