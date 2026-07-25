@@ -1,20 +1,33 @@
 import { LogoIcon } from "@/assets/logo"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { AuthUser } from "@/interfaces/user"
 import { cn } from "@/lib/utils"
 import { Link, usePage } from "@inertiajs/react"
-import { CornerDownRight } from "lucide-react"
+import { SunMoonIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function UserAside({ auth }: AuthUser) {
 	const { url } = usePage()
 	const user = auth.user
+	const [currentTheme, setCurrentTheme] = useState<string | null>(null)
+
+	const nextTheme = () => {
+		window.Theme.setTheme(currentTheme === "light" ? "dark" : "light")
+		setCurrentTheme(window.Theme.getTheme())
+	}
 	
+	useEffect(() => {
+		setCurrentTheme(window.Theme.getTheme())
+	})
+
 	const links = [
 		{ label: "Profile", path: `/@${user.username}` },
 		{ label: "Analytics", path: '/analytics' },
 		{ label: "Settings", path: '/settings' },
 	]
-	
+
 	return (
 		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 justify-between flex flex-col">
 			<div className="flex flex-col gap-12">
@@ -31,9 +44,25 @@ export default function UserAside({ auth }: AuthUser) {
 					})}
 				</div>
 			</div>
-			<Avatar>
-				<AvatarFallback>{user.email[0].toUpperCase()}</AvatarFallback>
-			</Avatar>
+			<div className="flex items-center gap-2">
+				<Avatar>
+					<AvatarFallback>{user.full_name[0].toUpperCase()}</AvatarFallback>
+				</Avatar>
+				<Tooltip>
+					<TooltipTrigger
+						delay={0}
+						render={
+							<Button
+								variant={"ghost"}
+								size={"icon-lg"}
+								onClick={nextTheme}
+							>
+								<SunMoonIcon />
+							</Button>}>
+					</TooltipTrigger>
+					<TooltipContent>{currentTheme === "light" ? "Dark mode" : "Light mode"}</TooltipContent>
+				</Tooltip>
+			</div>
 		</aside>
 	)
 }

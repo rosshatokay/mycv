@@ -1,8 +1,10 @@
 import { toast, Toaster } from "@/components/ui/toast";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthUser } from "@/interfaces/user";
+import { Theme } from "@/lib/theme";
 import UserAside from "@/partials/UserAside";
 import { usePage } from "@inertiajs/react";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 interface FlashProps {
 	toast?: {
@@ -16,6 +18,9 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 	const { auth }: AuthUser = usePage().props as any
 	const flash = usePage().flash as FlashProps
 
+	Theme.initialize()
+	window.Theme = Theme
+	
 	useEffect(() => {
 		if (flash?.toast) {
 			toast.add({
@@ -24,7 +29,7 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 			})
 		}
 	})
-	
+
 	return (
 		<div>
 			{auth?.user != null && <UserAside auth={auth} />}
@@ -32,6 +37,7 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 				{children}
 			</main>
 			<Toaster></Toaster>
+			<TooltipProvider delay={0}></TooltipProvider>
 		</div>
 	)
 }

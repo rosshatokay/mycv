@@ -5,6 +5,7 @@ import { AuthUser } from "@/interfaces/user"
 import BaseLayout from "@/layouts/BaseLayout"
 import { Head, Link } from "@inertiajs/react"
 import { ArrowUpRight } from "lucide-react"
+import { ResumeAttributes } from "./Edit"
 
 interface ProfilePageProps {
 	auth: AuthUser['auth'],
@@ -16,10 +17,12 @@ interface ProfilePageProps {
 		full_name: string
 	},
 	projects: Project[]
+	resume: string
 }
 
 export default function ProfilePage(props: ProfilePageProps) {
-	const isOwner = props.auth.user.id === props.user.id
+	const isOwner = props.auth?.user?.id === props.user.id
+	const resume = JSON.parse(props.resume as string) as ResumeAttributes
 
 	return (
 		<>
@@ -34,9 +37,9 @@ export default function ProfilePage(props: ProfilePageProps) {
 							<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col">
-							<div className="font-medium text-base">{props.user.username}</div>
-							<div className="text-subtle">Software design & engineering</div>
-							<div className="text-subtle">London, UK</div>
+							<div className="font-medium text-[17px]">{props.user.full_name}</div>
+							<div className="text-subtle">{resume.role}</div>
+							<div className="text-subtle">{resume.location}</div>
 						</div>
 					</div>
 					<ul className="flex flex-col gap-2 list-[lower-roman] px-4 marker:text-subtle/70 max-w-3/4">
@@ -95,7 +98,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 						</div>
 					</div>
 				</section>
-				{!props.auth && <div className="fixed bottom-8 left-8 max-w-[200px]">
+				{!props.auth.user && <div className="fixed bottom-8 left-8 max-w-[200px]">
 					<div className="text-subtle text-sm">
 						Powered by MyCV. Create your own work profile for free.
 					</div>

@@ -6,6 +6,10 @@ class User < ApplicationRecord
   has_many :projects, dependent: :destroy
   has_one :resume, dependent: :destroy
 
+  after_create :build_default_resume
+
+  accepts_nested_attributes_for :resume, update_only: true
+
   BLACKLISTED_USERNAMES = File.readlines(Rails.root.join("config", "blacklist.txt")).map do |line|
     line.strip.downcase
   end.reject { |line| line.empty? || line.start_with?("#") }.freeze
@@ -31,6 +35,7 @@ class User < ApplicationRecord
   def to_profile
     {
       id: hashid,
+      full_name: full_name,
       username: username,
       email: email,
       bio: [
@@ -39,5 +44,11 @@ class User < ApplicationRecord
         "Available for full time / contract roles.",
       ],
     }
+  end
+
+  private
+
+  def build_default_theme
+    create_resume!
   end
 end

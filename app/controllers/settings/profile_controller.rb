@@ -1,6 +1,8 @@
 class Settings::ProfileController < ApplicationController
   def index
-    render inertia: "Profiles/Edit"
+    render inertia: "Profiles/Edit", props: {
+      resume: current_user.resume.to_json(only: [:bio, :location, :role]),
+    }
   end
 
   def update
@@ -17,6 +19,13 @@ class Settings::ProfileController < ApplicationController
   private
 
   def user_params
-    params.permit(:full_name)
+    params.require(:user).permit(
+      :full_name,
+      resume_attributes: [
+        :bio,
+        :role,
+        :location,
+      ],
+    )
   end
 end

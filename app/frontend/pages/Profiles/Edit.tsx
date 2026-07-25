@@ -8,19 +8,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { AuthUser } from "@/interfaces/user";
 import BaseLayout from "@/layouts/BaseLayout";
 import { createBreadcrumbs } from "@/lib/utils";
-import { useForm } from "@inertiajs/react";
-import { GlobeIcon, MapPinIcon } from "lucide-react";
+import { useForm, usePage } from "@inertiajs/react";
+import { MapPinIcon } from "lucide-react";
 import { useRef, useState } from "react";
+
+export interface ResumeAttributes {
+	role: string
+	bio: string
+	location: string
+}
 
 export default function EditProfilePage({ auth }: AuthUser) {
 	const imageFileInputRef = useRef<HTMLInputElement>(null)
+	const resumeData = usePage().props.resume as any
 	const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
 	const { data, processing, setData, patch } = useForm({
-		full_name: auth.user.full_name || "",
-		location: "",
-		role: ""
+		user: {
+			full_name: auth.user.full_name || "",
+			resume_attributes: JSON.parse(resumeData) as ResumeAttributes
+		},
 	})
 
+	console.log(data)
+	
 	const handleUploadImageBtnClick = () => {
 		imageFileInputRef.current?.click()
 	}
@@ -50,7 +60,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 			preserveScroll: true
 		})
 	}
-	
+
 	return (
 		<div className="main-container py-16 flex flex-col text-[15px]">
 			{createBreadcrumbs([{ label: "Settings", path: "/settings" }, { label: "Edit profile", path: "/settings/profile" }])}
@@ -63,7 +73,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 							<Field orientation={"horizontal"}>
 								<Avatar className={"w-16 h-16 aspect-square mr-2"}>
 									<AvatarImage src={previewImageUrl || ""}></AvatarImage>
-									<AvatarFallback>{auth.user.username[0].toUpperCase()}</AvatarFallback>
+									<AvatarFallback>{auth.user.full_name[0]?.toUpperCase() || auth.user.username[0].toUpperCase()}</AvatarFallback>
 								</Avatar>
 								<Input ref={imageFileInputRef} onChange={handleImageFileChange} type="file" accept="image/jpeg,image/png" className="hidden"></Input>
 								<Button onClick={handleUploadImageBtnClick} variant={"secondary"}>Upload image</Button>
@@ -71,17 +81,17 @@ export default function EditProfilePage({ auth }: AuthUser) {
 							</Field>
 							<Field>
 								<FieldLabel htmlFor="">Full name</FieldLabel>
-								<Input type="text" value={data.full_name} onChange={(e) => setData('full_name', e.target.value)} className="h-9 px-3" placeholder="Enter your full name"></Input>
+								<Input type="text" value={data.user.full_name} onChange={(e) => setData('user.full_name', e.target.value)} className="h-9 px-3" placeholder="Enter your full name"></Input>
 							</Field>
 							<FieldGroup className="grid grid-cols-2">
 								<Field>
 									<FieldLabel htmlFor="">Role</FieldLabel>
-									<Input type="text" className="h-9 px-3" placeholder="Enter your role (e.g Software Engineer)"></Input>
+									<Input type="text" value={data.user.resume_attributes.role} onChange={(e) => setData('user.resume_attributes.role', e.target.value)} className="h-9 px-3" placeholder="Enter your role (e.g Software Engineer)"></Input>
 								</Field>
 								<Field>
 									<FieldLabel htmlFor="">Location</FieldLabel>
 									<InputGroup className="h-9">
-										<InputGroupInput type="text" className="h-9 px-3" placeholder="Enter your location" />
+										<InputGroupInput type="text" value={data.user.resume_attributes.location} className="h-9 px-3" onChange={(e) => setData('user.resume_attributes.location', e.target.value)} placeholder="Enter your location" />
 										<InputGroupAddon>
 											<MapPinIcon></MapPinIcon>
 										</InputGroupAddon>
@@ -90,7 +100,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 							</FieldGroup>
 							<Field>
 								<FieldLabel htmlFor="">About</FieldLabel>
-								<Textarea placeholder="Describe yourself briefly"></Textarea>
+								<Textarea value={data.user.resume_attributes.bio} placeholder="Describe yourself briefly" onChange={(e) => setData('user.resume_attributes.bio', e.target.value)}></Textarea>
 							</Field>
 						</FieldGroup>
 					</FieldSet>
@@ -111,10 +121,12 @@ export default function EditProfilePage({ auth }: AuthUser) {
 						</FieldGroup>
 					</FieldSet>
 					<div className="mt-8 flex justify-end">
-						<Button disabled={processing} type="submit" size={"lg"} variant={processing ? "secondary" : "default"} className={"w-full"}>
-							{processing ? <Spinner></Spinner> : null}
-							Save profile
-						</Button>
+						<div className="w-fit">
+							<Button disabled={processing} type="submit" size={"lg"} variant={processing ? "secondary" : "default"} className={"w-full"}>
+								{processing ? <Spinner></Spinner> : null}
+								Save profile
+							</Button>
+						</div>
 						{/* <Spinner></Spinner> */}
 					</div>
 				</FieldGroup>

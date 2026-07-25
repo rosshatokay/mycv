@@ -91,8 +91,9 @@
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
+	--background: oklch(15.434% 0.00002 271.152);
 	--foreground: oklch(0.985 0 0);
+	--subtle:  oklch(100% 0.00011 271.152 / 0.591);
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
@@ -163,5 +164,8 @@
 	svg {
 		width: 100%;
 		height: auto;
+		path {
+			fill: inherit
+		}
 	}
 }
