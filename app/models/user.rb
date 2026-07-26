@@ -38,11 +38,6 @@ class User < ApplicationRecord
       full_name: full_name,
       username: username,
       email: email,
-      highlights: [
-        "Currently, software design & engineering at Bureau.",
-        "Previously, I led product design for various infrastructures and enterprise teams at meta.",
-        "Available for full time / contract roles.",
-      ],
     }
   end
 

@@ -1,7 +1,10 @@
 class Settings::ProfileController < ApplicationController
   def index
+    resume_data = current_user.resume || {}
+    resume_data["highlights"] = Array(resume_data["highlights"]).presence || [""]
+
     render inertia: "Profiles/Edit", props: {
-      resume: current_user.resume.to_json(only: [:bio, :location, :role, :website_url, :linkedin_url]),
+      resume: resume_data.to_json,
     }
   end
 
@@ -30,6 +33,7 @@ class Settings::ProfileController < ApplicationController
         :location,
         :website_url,
         :linkedin_url,
+        highlights: [],
       ],
     )
   end

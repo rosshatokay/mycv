@@ -38,13 +38,15 @@ export default function ProfilePage(props: ProfilePageProps) {
 		}
 	}, [isViewingAsGuest])
 
+	console.log(props.projects[0])
+	
 	return (
 		<>
 			<Head>
 				<title>{props.user.full_name}</title>
 			</Head>
 			<div className="main-container py-20 flex flex-col gap-16 text-[15px]">
-				<section className="flex flex-col gap-8">
+				<section className="flex flex-col gap-4">
 					<div>
 						<div className="flex justify-between">
 							<Avatar size="lg" className={"mb-4"}>
@@ -65,12 +67,14 @@ export default function ProfilePage(props: ProfilePageProps) {
 							<div className="text-subtle">{resume.location}</div>
 						</div>
 					</div>
-					{/* <ul className="flex flex-col gap-2 list-[lower-roman] px-4 marker:text-subtle/70 max-w-3/4">
-						{props.user.highlights.map(item => (
-							<li key={item} className="pl-2">{item}</li>
-						))}
-					</ul> */}
-					<div className="flex justify-between -mt-4">
+					{!!resume.highlights.length && (
+						<ul className="flex flex-col gap-2 my-4 list-[lower-roman] px-4 marker:text-subtle/70 max-w-3/4">
+							{resume.highlights?.map(item => (
+								<li key={item} className="pl-2">{item}</li>
+							))}
+						</ul>
+					)}
+					<div className="flex justify-between">
 						<div className="w-fit flex gap-1">
 							{/* <Tooltip>
 								<TooltipContent>Website</TooltipContent>
@@ -110,16 +114,21 @@ export default function ProfilePage(props: ProfilePageProps) {
 										{project.points.map(item => (<li key={item}>{item}</li>))}
 									</ul>
 									<div className="mt-4 flex gap-2">
-										<div className="bg-card rounded-md min-w-40 aspect-video"></div>
-										<div className="bg-card rounded-md min-w-40 aspect-video"></div>
-										<div className="bg-card rounded-md min-w-40 aspect-video"></div>
-										<div className="bg-card rounded-md min-w-40 aspect-video"></div>
+										{project.images.map(image => (
+											<img src={image} className="bg-card rounded-md min-w-40 aspect-video object-cover" />
+										))}
 									</div>
 								</div>
 							</div>
 						))}
 					</div>
 				</section>
+				{resume.bio && (
+					<section>
+						<div className="text-subtle mb-4">About</div>
+						<p>{resume.bio}</p>
+					</section>
+				)}
 				<section>
 					<div className="text-subtle mb-4">Education</div>
 					<div className="grid grid-cols-[148px_1fr] overflow-hidden">
