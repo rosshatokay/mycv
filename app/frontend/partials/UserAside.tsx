@@ -11,15 +11,24 @@ import { useEffect, useState } from "react"
 export default function UserAside({ auth }: AuthUser) {
 	const { url } = usePage()
 	const user = auth.user
-	const [currentTheme, setCurrentTheme] = useState<string | null>(null)
+	const getNormalizedTheme = () => {
+		if (window.Theme.getTheme() === "system") {
+			const isSysDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+			
+			return isSysDarkMode ? "dark" : "light"
+		}
+
+		return window.Theme.getTheme()
+	}
+	const [currentTheme, setCurrentTheme] = useState<string | null>(getNormalizedTheme())
 
 	const nextTheme = () => {
-		window.Theme.setTheme(currentTheme === "light" ? "dark" : "light")
+		window.Theme.setTheme(getNormalizedTheme() === "light" ? "dark" : "light")
 		setCurrentTheme(window.Theme.getTheme())
 	}
-	
+
 	useEffect(() => {
-		setCurrentTheme(window.Theme.getTheme())
+		setCurrentTheme(getNormalizedTheme())
 	})
 
 	const links = [
@@ -29,7 +38,7 @@ export default function UserAside({ auth }: AuthUser) {
 	]
 
 	return (
-		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 justify-between flex flex-col">
+		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 justify-between flex flex-col transition" id="main-aside">
 			<div className="flex flex-col gap-12">
 				<LogoIcon />
 				<div className="flex flex-col gap-1">

@@ -19,4 +19,14 @@ class ApplicationController < ActionController::Base
   def user_signed_in?
     current_user.present?
   end
+
+  private
+
+  def inertia_errors_for(record, object_name = nil)
+    prefix = object_name || record.model_name.param_key
+
+    record.errors.to_hash.transform_keys do |key|
+      "#{prefix}.#{key}"
+    end.transform_values(&:first)
+  end
 end

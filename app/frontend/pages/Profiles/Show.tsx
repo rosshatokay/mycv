@@ -4,8 +4,12 @@ import { Project } from "@/interfaces/project"
 import { AuthUser } from "@/interfaces/user"
 import BaseLayout from "@/layouts/BaseLayout"
 import { Head, Link } from "@inertiajs/react"
-import { ArrowUpRight } from "lucide-react"
-import { ResumeAttributes } from "./Edit"
+import { ArrowUpRight, GlobeIcon, MailIcon } from "lucide-react"
+import { ResumeProps } from "./Edit"
+import { LinkedInIcon } from "@/assets/linkedin"
+import { useEffect, useState } from "react"
+import { LogoIcon } from "@/assets/logo"
+
 
 interface ProfilePageProps {
 	auth: AuthUser['auth'],
@@ -13,7 +17,7 @@ interface ProfilePageProps {
 		id: string
 		email: string
 		username: string,
-		bio: string[]
+		highlights: string[]
 		full_name: string
 	},
 	projects: Project[]
@@ -22,7 +26,17 @@ interface ProfilePageProps {
 
 export default function ProfilePage(props: ProfilePageProps) {
 	const isOwner = props.auth?.user?.id === props.user.id
-	const resume = JSON.parse(props.resume as string) as ResumeAttributes
+	const resume = JSON.parse(props.resume as string) as ResumeProps
+	const [isViewingAsGuest, setIsViewingAsGuest] = useState<boolean>(false)
+
+	useEffect(() => {
+		const userAside = document.getElementById('main-aside')
+		if (isViewingAsGuest) {
+			userAside?.classList.add('opacity-0', 'pointer-events-none')
+		} else {
+			userAside?.classList.remove('opacity-0', 'pointer-events-none')
+		}
+	}, [isViewingAsGuest])
 
 	return (
 		<>
@@ -32,28 +46,49 @@ export default function ProfilePage(props: ProfilePageProps) {
 			<div className="main-container py-20 flex flex-col gap-16 text-[15px]">
 				<section className="flex flex-col gap-8">
 					<div>
-						<Avatar size="lg" className={"mb-4"}>
-							<AvatarImage src="https://github.com/shadcn.png" alt={`@${props.user.username}'s picture`}></AvatarImage>
-							<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
-						</Avatar>
+						<div className="flex justify-between">
+							<Avatar size="lg" className={"mb-4"}>
+								<AvatarImage src="https://github.com/shadcn.png" alt={`@${props.user.username}'s picture`}></AvatarImage>
+								<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
+							</Avatar>
+							<div className="flex gap-1">
+								{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"secondary"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit profile</Button>}
+								{isOwner &&
+									<Button variant={"secondary"} size={"sm"} onClick={() => setIsViewingAsGuest(!isViewingAsGuest)}>
+										{isViewingAsGuest ? "Stop viewing as guest" : "View as guest"}
+									</Button>}
+							</div>
+						</div>
 						<div className="flex flex-col">
 							<div className="font-medium text-[17px]">{props.user.full_name}</div>
 							<div className="text-subtle">{resume.role}</div>
 							<div className="text-subtle">{resume.location}</div>
 						</div>
 					</div>
-					<ul className="flex flex-col gap-2 list-[lower-roman] px-4 marker:text-subtle/70 max-w-3/4">
-						{props.user.bio.map(item => (
+					{/* <ul className="flex flex-col gap-2 list-[lower-roman] px-4 marker:text-subtle/70 max-w-3/4">
+						{props.user.highlights.map(item => (
 							<li key={item} className="pl-2">{item}</li>
 						))}
-					</ul>
-					<div className="flex justify-between">
+					</ul> */}
+					<div className="flex justify-between -mt-4">
 						<div className="w-fit flex gap-1">
-							<Button variant={"secondary"} size={"lg"} nativeButton={false} className={"px-3"} render={<a href="https://google.com" target="_blank">Website</a>}></Button>
-							<Button variant={"outline"} size={"lg"} className={"px-3"}>Copy email</Button>
-							<Button variant={"outline"} size={"lg"} className={"px-3"}>Copy phone</Button>
+							{/* <Tooltip>
+								<TooltipContent>Website</TooltipContent>
+								<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><GlobeIcon /></Button>}></TooltipTrigger>
+							</Tooltip>
+							<Tooltip>
+								<TooltipContent>LinkedIn</TooltipContent>
+								<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><LinkedInIcon /></Button>}></TooltipTrigger>
+							</Tooltip>
+							<Tooltip>
+								<TooltipContent>Copy email</TooltipContent>
+								<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><MailIcon /></Button>}></TooltipTrigger>
+							</Tooltip> */}
+
+							{resume.website_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://${resume.website_url}`} target="_blank"><GlobeIcon /> Website</a>}></Button>}
+							{resume.linkedin_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://linkedin.com${resume.linkedin_url}`} target="_blank"><LinkedInIcon /> LinkedIn</a>} className={""}>LinkedIn</Button>}
+							<Button variant={"secondary"} size={"sm"} className={""}><MailIcon /> Copy email</Button>
 						</div>
-						{isOwner && <Button nativeButton={false} variant={"ghost"} size={"lg"} className={"px-3 rounded-full"} render={<Link href={"/settings/profile"}></Link>}>Edit profile</Button>}
 					</div>
 				</section>
 				<section>
@@ -98,9 +133,15 @@ export default function ProfilePage(props: ProfilePageProps) {
 						</div>
 					</div>
 				</section>
-				{!props.auth.user && <div className="fixed bottom-8 left-8 max-w-[200px]">
-					<div className="text-subtle text-sm">
-						Powered by MyCV. Create your own work profile for free.
+				{(!props.auth.user || isViewingAsGuest) && <div className="xl:fixed bottom-8 left-8 xl:max-w-[200px]">
+					<div>
+						<hr className="mb-6 xl:hidden" />
+						<a href="/" className="inline-block mb-2 opacity-50 hover:opacity-100 transition">
+							<LogoIcon size={28}></LogoIcon>
+						</a>
+						<div className="text-subtle text-xs">
+							Powered by <a href="/" className="underline">highlight</a>. Create your own work profile for free.
+						</div>
 					</div>
 				</div>}
 

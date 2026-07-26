@@ -11,7 +11,7 @@ class ProfilesController < ApplicationController
       render inertia: "Profiles/Show", props: {
         user: user.to_profile,
         projects: example_projects,
-        resume: user.resume.to_json(only: [:role, :location, :bio]),
+        resume: user.resume.to_json(only: [:role, :location, :bio, :website_url, :linkedin_url]),
       }
     end
   end

@@ -13,11 +13,7 @@ class RegistrationsController < ApplicationController
       start_new_session_for user
       redirect_to root_path, notice: "Account created successfully!"
     else
-      formatted_errors = user.errors.to_hash.transform_keys do |key|
-        "user.#{key}"
-      end.transform_values(&:first)
-
-      redirect_to register_path, inertia: { errors: formatted_errors }
+      redirect_to register_path, inertia: { errors: inertia_errors_for(user) }
     end
   end
 
