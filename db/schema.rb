@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_26_155457) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_27_193643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,12 +19,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_155457) do
     t.string "description"
     t.date "end_date"
     t.json "highlights"
+    t.bigint "resume_id", null: false
     t.date "start_date", null: false
     t.string "title"
     t.datetime "updated_at", null: false
     t.string "url"
-    t.bigint "user_id", null: false
-    t.index ["user_id"], name: "index_projects_on_user_id"
+    t.index ["resume_id"], name: "index_projects_on_resume_id"
   end
 
   create_table "resumes", force: :cascade do |t|
@@ -61,7 +61,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_155457) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  add_foreign_key "projects", "users"
+  add_foreign_key "projects", "resumes"
   add_foreign_key "resumes", "users"
   add_foreign_key "sessions", "users"
 end

@@ -2,13 +2,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Project } from "@/interfaces/project"
 import { AuthUser } from "@/interfaces/user"
-import BaseLayout from "@/layouts/BaseLayout"
 import { Head, Link } from "@inertiajs/react"
-import { ArrowUpRight, GlobeIcon, MailIcon } from "lucide-react"
-import { ResumeProps } from "./Edit"
+import { ArrowUpRight, EyeIcon, EyeOffIcon, GlobeIcon, MailIcon } from "lucide-react"
+import { ResumeProps } from "../Settings/EditProfile"
 import { LinkedInIcon } from "@/assets/linkedin"
 import { useEffect, useState } from "react"
 import { LogoIcon } from "@/assets/logo"
+import ProfileMoreMenu from "./components/MoreMenu"
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 
 
 interface ProfilePageProps {
@@ -38,14 +39,12 @@ export default function ProfilePage(props: ProfilePageProps) {
 		}
 	}, [isViewingAsGuest])
 
-	console.log(props.projects[0])
-	
 	return (
 		<>
 			<Head>
 				<title>{props.user.full_name}</title>
 			</Head>
-			<div className="main-container py-20 flex flex-col gap-16 text-[15px]">
+			<div className="main-container py-16 flex flex-col gap-16 text-[15px]">
 				<section className="flex flex-col gap-4">
 					<div>
 						<div className="flex justify-between">
@@ -54,11 +53,12 @@ export default function ProfilePage(props: ProfilePageProps) {
 								<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
 							</Avatar>
 							<div className="flex gap-1">
-								{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"secondary"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit profile</Button>}
-								{isOwner &&
-									<Button variant={"secondary"} size={"sm"} onClick={() => setIsViewingAsGuest(!isViewingAsGuest)}>
-										{isViewingAsGuest ? "Stop viewing as guest" : "View as guest"}
-									</Button>}
+								{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"secondary"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit</Button>}
+								{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest</DropdownMenuItem>} />}
+								{isViewingAsGuest && <Button variant={"secondary"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
+									<EyeOffIcon></EyeOffIcon>
+									Stop viewing as guest
+								</Button>}
 							</div>
 						</div>
 						<div className="flex flex-col">
@@ -86,7 +86,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 							</Tooltip>
 							<Tooltip>
 								<TooltipContent>Copy email</TooltipContent>
-								<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><MailIcon /></Button>}></TooltipTrigger>
+							<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><MailIcon /></Button>}></TooltipTrigger>
 							</Tooltip> */}
 
 							{resume.website_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://${resume.website_url}`} target="_blank"><GlobeIcon /> Website</a>}></Button>}
@@ -114,8 +114,8 @@ export default function ProfilePage(props: ProfilePageProps) {
 										{project.points.map(item => (<li key={item}>{item}</li>))}
 									</ul>
 									<div className="mt-4 flex gap-2">
-										{project.images.map(image => (
-											<img src={image} className="bg-card rounded-md min-w-40 aspect-video object-cover" />
+										{project.images.map((image, index) => (
+											<img src={image} key={index} className="bg-card rounded-md min-w-40 aspect-video object-cover" />
 										))}
 									</div>
 								</div>
@@ -158,5 +158,3 @@ export default function ProfilePage(props: ProfilePageProps) {
 		</>
 	)
 }
-
-ProfilePage.layout = (page: React.ReactNode) => <BaseLayout>{page}</BaseLayout>

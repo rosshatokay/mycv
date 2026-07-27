@@ -31,5 +31,3 @@ export default function DashIndexPage() {
 		</div>
 	)
 }
-
-DashIndexPage.layout = (page: React.ReactNode) => <BaseLayout>{page}</BaseLayout>

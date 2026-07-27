@@ -3,7 +3,7 @@ class Settings::ProfileController < ApplicationController
     resume_data = current_user.resume || {}
     resume_data["highlights"] = Array(resume_data["highlights"]).presence || [""]
 
-    render inertia: "Profiles/Edit", props: {
+    render inertia: "Settings/EditProfile", props: {
       resume: resume_data.to_json,
     }
   end

@@ -211,5 +211,3 @@ export default function EditProfilePage({ auth }: AuthUser) {
 		</>
 	)
 }
-
-EditProfilePage.layout = (page: React.ReactNode) => <BaseLayout>{page}</BaseLayout>

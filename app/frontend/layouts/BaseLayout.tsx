@@ -4,7 +4,7 @@ import { AuthUser } from "@/interfaces/user";
 import { Theme } from "@/lib/theme";
 import UserAside from "@/partials/UserAside";
 import { usePage } from "@inertiajs/react";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect } from "react";
 
 interface FlashProps {
 	toast?: {

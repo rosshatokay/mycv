@@ -21,7 +21,7 @@ export default function LandingPage() {
 						</h1>
 						<p className="max-w-md">Create a clean, privacy-friendly digital resume with built-in analytics in minutes — for free.</p>
 						<div className="w-fit flex gap-2">
-							<Button className={"px-4 h-9 text-base"} size={"lg"} render={<Link href={"/register"}>Create your profile</Link>}></Button>
+							<Button className={"px-4 h-9 text-base"} size={"lg"} render={<Link href={"/signup"}>Create your profile</Link>}></Button>
 							<Button className={"px-4 h-9 text-base"} size={"lg"} variant={"secondary"}>Sign in</Button>
 						</div>
 					</div>

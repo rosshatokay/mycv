@@ -8,12 +8,15 @@ class RegistrationsController < ApplicationController
 
   def create
     user = User.new(user_params)
+    accepted_tos = params[:accept_tos] === true
 
-    if user.save
+    user.errors.add(:accept_tos, "Terms of service and privacy policy must be accepted") unless accepted_tos
+
+    if accepted_tos && user.save
       start_new_session_for user
       redirect_to root_path, notice: "Account created successfully!"
     else
-      redirect_to register_path, inertia: { errors: inertia_errors_for(user) }
+      redirect_to new_user_registration_path, inertia: { errors: inertia_errors_for(user) }
     end
   end
 

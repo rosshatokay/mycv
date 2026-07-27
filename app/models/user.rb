@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   has_secure_password
   has_many :sessions, dependent: :destroy
-  has_many :projects, dependent: :destroy
+  # has_many :projects, through: :resume, dependent: :destroy
   has_one :resume, dependent: :destroy
 
   after_create :build_default_resume
@@ -43,7 +43,7 @@ class User < ApplicationRecord
 
   private
 
-  def build_default_theme
+  def build_default_resume
     create_resume!
   end
 end

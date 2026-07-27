@@ -9,13 +9,22 @@ class AuthenticatedConstraint
 end
 
 Rails.application.routes.draw do
-  get "login", to: "sessions#new", as: :login
-  get "register", to: "registrations#new", as: :register
+  get "login", to: "sessions#new", as: :new_session
+  get "signup", to: "registrations#new", as: :new_user_registration
   get "/@:username", to: "profiles#show", as: :profile
 
   resource :registration, only: [:create]
   resource :session, only: [:create, :destroy]
+  resources :projects
   resources :passwords, param: :token
+
+  resources :analytics, only: [] do
+    collection do
+      get :index
+    end
+  end
+
+  get "/settings", to: "settings#index"
 
   namespace :settings do
     resources :profile, only: [:index] do

@@ -1,8 +1,10 @@
+import BaseLayout from '@/layouts/BaseLayout'
 import { createInertiaApp } from '@inertiajs/react'
 
 createInertiaApp({
   pages: "../pages",
   strictMode: true,
+	layout: () => BaseLayout,
   defaults: {
     form: {
       forceIndicesArrayFormatInFormData: false,
