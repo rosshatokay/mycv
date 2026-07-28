@@ -15,8 +15,14 @@ Rails.application.routes.draw do
 
   resource :registration, only: [:create]
   resource :session, only: [:create, :destroy]
-  resources :projects
   resources :passwords, param: :token
+
+  scope "/projects" do
+    get "/", to: "projects#index", as: :projects
+    get "/new", to: "projects#new", as: :new_project
+    get "/:project_id", to: "projects#edit", as: :edit_project
+    patch "/:project_id", to: "projects#update"
+  end
 
   resources :analytics, only: [] do
     collection do

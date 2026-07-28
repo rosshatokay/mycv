@@ -3,10 +3,16 @@ class RegistrationsController < ApplicationController
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_path, alert: "Try again later." }
 
   def new
+    if user_signed_in?
+      flash.inertia[:toast] = { description: "You are already signed in" }
+      redirect_to root_path and return
+    end
+
     render inertia: "Auth/Signup"
   end
 
   def create
+    return if user_signed_in?
     user = User.new(user_params)
     accepted_tos = params[:accept_tos] === true
 

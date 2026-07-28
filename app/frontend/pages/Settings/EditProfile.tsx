@@ -63,7 +63,6 @@ export default function EditProfilePage({ auth }: AuthUser) {
 		patch("/settings/profile", {
 			preserveScroll: true
 		})
-		console.log(errors['user.resume.website_url'])
 	}
 
 	const handleAddHighlight = () => {
@@ -102,7 +101,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 			<div className="main-container py-16 flex flex-col text-[15px]">
 				{createBreadcrumbs([{ label: "Settings", path: "/settings" }, { label: "Edit profile", path: "/settings/profile" }])}
 				<div className="font-medium text-xl mt-4">Edit profile</div>
-				<div className="text-subtle">Customize your work profile details</div>
+				<div className="text-subtle">Customize your work profile details.</div>
 				<form onSubmit={handleSubmit}>
 					<FieldGroup>
 						<FieldSet className="mt-6">
@@ -144,7 +143,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 						<FieldSeparator className="my-2"></FieldSeparator>
 						<FieldSet>
 							<FieldLegend>Highlights</FieldLegend>
-							<FieldDescription>Add concise highlights about yourself</FieldDescription>
+							<FieldDescription>Add concise highlights about yourself.</FieldDescription>
 							<FieldGroup>
 								{data.user.resume.highlights.map((item, index) => (
 									<Field orientation={"horizontal"} key={index}>
@@ -166,7 +165,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 						<FieldSeparator className="my-2"></FieldSeparator>
 						<FieldSet>
 							<FieldLegend>Contact information</FieldLegend>
-							<FieldDescription>Add your social links and contact information</FieldDescription>
+							<FieldDescription>Add your social links and contact information.</FieldDescription>
 							<FieldGroup>
 								<Field>
 									<FieldLabel>Website</FieldLabel>

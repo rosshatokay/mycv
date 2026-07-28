@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/react"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-interface Breadcrumb {
+export interface Breadcrumb {
 	label: string
 	path: string
 }

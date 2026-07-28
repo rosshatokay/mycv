@@ -5,6 +5,7 @@ createInertiaApp({
   pages: "../pages",
   strictMode: true,
 	layout: () => BaseLayout,
+	title: (title) => title ? `${title} | highlight.cv` : 'highlight.cv',
   defaults: {
     form: {
       forceIndicesArrayFormatInFormData: false,

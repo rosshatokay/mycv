@@ -1,24 +1,18 @@
 class Resume < ApplicationRecord
   belongs_to :user
+  has_many :projects, dependent: :destroy
 
-  validate :valid_website_url
+  validates_with PostfixUrlValidator, attributes: [:website_url]
   validates :linkedin_url, format: {
                              with: /\A\/in\/([a-zA-Z0-9_-]{3,100})\/?\z/,
                              message: "must be a valid LinkedIn profile path",
                            }, allow_blank: true
 
+  after_validation :format_custom_url, if: -> { website_url.present? && errors.empty? }
+
   private
 
-  def valid_website_url
-    return if website_url.blank?
-
-    normalized_url = website_url.gsub("https://", "")
-    uri = URI.parse("https://#{normalized_url}")
-
-    unless uri.is_a?(URI::HTTP) && uri.host.present?
-      errors.add(:website_url, "is not a valid URL")
-    end
-  rescue URI::InvalidURIError
-    errors.add(:website_url, "is not a valid URL")
+  def format_custom_url
+    self.website_url = "https://#{website_url.strip.downcase}"
   end
 end

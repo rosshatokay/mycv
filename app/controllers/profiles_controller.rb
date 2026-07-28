@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
 
       render inertia: "Profiles/Show", props: {
         user: user.to_profile,
-        projects: example_projects,
+        projects: user.resume.projects || [],
         resume: resume_data.to_json,
       }
     end

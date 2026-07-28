@@ -10,6 +10,7 @@ import { useEffect, useState } from "react"
 import { LogoIcon } from "@/assets/logo"
 import ProfileMoreMenu from "./components/MoreMenu"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import ProjectItem from "@/partials/ProjectItem"
 
 
 interface ProfilePageProps {
@@ -98,29 +99,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 				<section>
 					<div className="text-subtle mb-4">Projects</div>
 					<div className="flex flex-col gap-10">
-
-						{props.projects.map(project => (
-							<div key={project.id} className="grid grid-cols-[148px_1fr] overflow-hidden">
-								<div>
-									<div className="text-subtle">{project.year}</div>
-								</div>
-								<div className="min-w-0">
-									<a href="" target="_blank" className="w-fit flex items-center group">
-										<span className="group-hover:underline font-medium">{project.title}</span>
-										<ArrowUpRight size={15} className="opacity-50 group-hover:opacity-100 transition" />
-									</a>
-									<div className="text-subtle">Social e-reading website platform</div>
-									<ul className="my-3 pl-5 flex flex-col gap-2 list-disc marker:text-subtle">
-										{project.points.map(item => (<li key={item}>{item}</li>))}
-									</ul>
-									<div className="mt-4 flex gap-2">
-										{project.images.map((image, index) => (
-											<img src={image} key={index} className="bg-card rounded-md min-w-40 aspect-video object-cover" />
-										))}
-									</div>
-								</div>
-							</div>
-						))}
+						{props.projects.map(project => <ProjectItem key={project.id} project={project}/>)}
 					</div>
 				</section>
 				{resume.bio && (

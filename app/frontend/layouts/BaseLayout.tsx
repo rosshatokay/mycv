@@ -17,6 +17,8 @@ interface FlashProps {
 export default function BaseLayout({ children }: PropsWithChildren) {
 	const { auth }: AuthUser = usePage().props as any
 	const flash = usePage().flash as FlashProps
+	const currComponent = usePage().component
+	const shouldHideAside = currComponent.startsWith("Static/") || currComponent.startsWith("Auth/")
 
 	Theme.initialize()
 	window.Theme = Theme
@@ -32,7 +34,7 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 
 	return (
 		<div>
-			{auth?.user != null && <UserAside auth={auth} />}
+			{auth?.user != null && !shouldHideAside && <UserAside auth={auth} />}
 			<main>
 				{children}
 			</main>

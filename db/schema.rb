@@ -10,20 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_27_193643) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_28_134804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "projects", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "description"
-    t.date "end_date"
     t.json "highlights"
     t.bigint "resume_id", null: false
-    t.date "start_date", null: false
     t.string "title"
     t.datetime "updated_at", null: false
     t.string "url"
+    t.integer "year", null: false
     t.index ["resume_id"], name: "index_projects_on_resume_id"
   end
 

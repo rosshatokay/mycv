@@ -2,7 +2,8 @@ export interface Project {
 	id: string
 	year: number
 	title: string
+	url?: string
 	description: string
-	points: string[]
+	highlights: string[]
 	images: string[]
 }

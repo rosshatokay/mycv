@@ -3,8 +3,8 @@ class User < ApplicationRecord
 
   has_secure_password
   has_many :sessions, dependent: :destroy
-  # has_many :projects, through: :resume, dependent: :destroy
   has_one :resume, dependent: :destroy
+  has_many :projects, through: :resume, dependent: :destroy
 
   after_create :build_default_resume
 
