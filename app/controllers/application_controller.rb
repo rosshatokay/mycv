@@ -8,7 +8,14 @@ class ApplicationController < ActionController::Base
 
   inertia_share auth: -> {
                   {
-                    user: current_user&.as_json(only: [:email, :username, :full_name])&.merge({ id: current_user&.hashid }),
+                    user: current_user&.as_json(
+                      only: [
+                        :email, :username, :full_name,
+                      ],
+                    )&.merge({
+                      id: current_user&.hashid,
+                      avatar_url: current_user&.avatar_url,
+                    }),
                   }
                 }
 

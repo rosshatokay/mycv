@@ -16,10 +16,10 @@ export default function ProjectsPage(props: PageProps) {
 				<title>Projects | highlight.cv</title>
 			</Head>
 			<div className="main-container py-16">
-				<div className="text-2xl font-medium">Projects</div>
+				<div className="text-xl font-medium">Projects</div>
 				<div className="text-subtle">Showcase your projects on your profile.</div>
 				{props.projects && (
-					<div className="mt-8">{props.projects?.map(project => <ProjectItem key={project.id} project={project} />)}</div>
+					<div className="mt-6">{props.projects?.map(project => <ProjectItem key={project.id} project={project} />)}</div>
 				)}
 				{!props.projects?.length && <Empty className="border mt-8">
 					<EmptyHeader>

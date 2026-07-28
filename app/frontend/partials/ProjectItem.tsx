@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Project } from "@/interfaces/project";
 import { Link } from "@inertiajs/react";
-import { ArrowUpRight, MoreVerticalIcon } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface ProjectItem {
 	project: Project

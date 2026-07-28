@@ -50,7 +50,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 					<div>
 						<div className="flex justify-between">
 							<Avatar size="lg" className={"mb-4"}>
-								<AvatarImage src="https://github.com/shadcn.png" alt={`@${props.user.username}'s picture`}></AvatarImage>
+								<AvatarImage src={props.auth.user.avatar_url} alt={`@${props.user.username}'s picture`}></AvatarImage>
 								<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
 							</Avatar>
 							<div className="flex gap-1">

@@ -33,7 +33,7 @@ export default function AnalyticsPage() {
 					<ItemDescription>This feature is not yet available. Check back again soon.</ItemDescription>
 				</Item>
 				<div>
-					<div className="text-2xl font-medium">Analytics</div>
+					<div className="text-xl font-medium">Analytics</div>
 					<div className="text-subtle">Key metrics about your profile page.</div>
 				</div>
 				<div className="flex gap-2">

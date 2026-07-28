@@ -1,8 +1,8 @@
 import { LogoIcon } from "@/assets/logo"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
+import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { AuthUser } from "@/interfaces/user"
 import { cn } from "@/lib/utils"
@@ -13,6 +13,7 @@ import { useEffect, useState } from "react"
 export default function UserAside({ auth }: AuthUser) {
 	const { url } = usePage()
 	const user = auth.user
+
 	const getNormalizedTheme = () => {
 		if (window.Theme.getTheme() === "system") {
 			const isSysDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -60,14 +61,14 @@ export default function UserAside({ auth }: AuthUser) {
 			</div>
 			<div className="flex items-center gap-2">
 				<DropdownMenu>
-					<DropdownMenuTrigger className={"cursor-pointer"} nativeButton={false} render={<Avatar><AvatarFallback>{user.full_name[0].toUpperCase()}</AvatarFallback></Avatar>}></DropdownMenuTrigger>
-					<DropdownMenuContent className={"w-60"}>
+					<DropdownMenuTrigger className={"cursor-pointer"} nativeButton={false} render={<Avatar>
+						<AvatarImage src={user.avatar_url}></AvatarImage>
+						<AvatarFallback>{user.full_name[0].toUpperCase()}</AvatarFallback>
+					</Avatar>}></DropdownMenuTrigger>
+					<DropdownMenuContent className={"w-48"}>
 						<DropdownMenuGroup>
 							<DropdownMenuItem>
 								<Item size={"xs"} className="p-2" render={<Link href={"/"}></Link>}>
-									<ItemMedia>
-										<Avatar><AvatarFallback>{user.full_name[0].toUpperCase()}</AvatarFallback></Avatar>
-									</ItemMedia>
 									<ItemContent className="gap-0">
 										<ItemTitle>{auth.user.full_name}</ItemTitle>
 										<ItemDescription>{auth.user.email}</ItemDescription>
@@ -76,8 +77,8 @@ export default function UserAside({ auth }: AuthUser) {
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator></DropdownMenuSeparator>
-						<DropdownMenuItem><SettingsIcon /> Settings</DropdownMenuItem>
-						<DropdownMenuItem><LogOutIcon /> Sign out</DropdownMenuItem>
+						<DropdownMenuItem render={<Link href={"/settings"} className="w-full" />}><SettingsIcon /> Settings</DropdownMenuItem>
+						<DropdownMenuItem render={<Link href={"/logout"} method="delete" as={"button"} className="w-full" />}><LogOutIcon /> Sign out</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 				<Tooltip>

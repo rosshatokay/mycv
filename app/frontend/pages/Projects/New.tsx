@@ -28,7 +28,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 			title: project.title || "",
 			url: project.url || "",
 			description: project.description || "",
-			year: NaN,
+			year: project.year || NaN,
 			highlights: project.highlights || ['']
 		}
 	})
@@ -78,8 +78,8 @@ export default function NewProject({ project, is_edit }: PageProps) {
 			</Head>
 			<div className="main-container py-16">
 				{createBreadcrumbs(breadcrumbs)}
-				<div className="text-2xl font-medium mt-2">{is_edit ? "Edit" : "New"} project</div>
-				<div className="text-subtle">
+				<div className="text-xl font-medium mt-2">{is_edit ? "Edit" : "New"} project</div>
+				<div className="text-subtle text-sm">
 					{
 						is_edit
 							? "Add a new project to showcase on your resume profile."
