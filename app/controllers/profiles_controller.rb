@@ -7,7 +7,8 @@ class ProfilesController < ApplicationController
       redirect_to root_path if !user_signed_in?
     else
       user = User.includes(resume: :projects).find_by(username: params[:username])
-      resume_data = resume_data(user)
+      resume = user.resume
+      resume_data = resume_data(resume)
       resume_data["highlights"] = Array(resume_data["highlights"]).presence || []
       resume_data["highlights"].reject!(&:empty?)
 
@@ -15,14 +16,15 @@ class ProfilesController < ApplicationController
         user: user.to_profile,
         projects: user.resume.formatted_projects || [],
         resume: resume_data.to_json,
+        education: resume.education,
       }
     end
   end
 
   private
 
-  def resume_data(user)
-    user.resume&.slice(
+  def resume_data(resume)
+    resume&.slice(
       :location,
       :role,
       :phone_number,

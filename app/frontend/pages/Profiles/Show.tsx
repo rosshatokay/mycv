@@ -4,7 +4,7 @@ import { Project } from "@/interfaces/project"
 import { AuthUser } from "@/interfaces/user"
 import { Head, Link } from "@inertiajs/react"
 import { ArrowUpRight, EyeIcon, EyeOffIcon, GlobeIcon, MailIcon } from "lucide-react"
-import { ResumeProps } from "../Settings/EditProfile"
+import { EducationProps, ResumeProps } from "../Settings/EditProfile"
 import { LinkedInIcon } from "@/assets/linkedin"
 import { useEffect, useState } from "react"
 import { LogoIcon } from "@/assets/logo"
@@ -24,6 +24,7 @@ interface ProfilePageProps {
 	},
 	projects: Project[]
 	resume: string
+	education: EducationProps
 }
 
 export default function ProfilePage(props: ProfilePageProps) {
@@ -99,7 +100,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 				<section>
 					<div className="text-subtle mb-4">Projects</div>
 					<div className="flex flex-col gap-10">
-						{props.projects.map(project => <ProjectItem key={project.id} project={project}/>)}
+						{props.projects.map(project => <ProjectItem key={project.id} project={project} />)}
 					</div>
 				</section>
 				{resume.bio && (
@@ -108,19 +109,21 @@ export default function ProfilePage(props: ProfilePageProps) {
 						<p>{resume.bio}</p>
 					</section>
 				)}
-				<section>
-					<div className="text-subtle mb-4">Education</div>
-					<div className="grid grid-cols-[148px_1fr] overflow-hidden">
-						<div>
-							<div className="text-subtle">2022 — 2026</div>
+				{props.education && (
+					<section>
+						<div className="text-subtle mb-4">Education</div>
+						<div className="grid grid-cols-[148px_1fr] overflow-hidden">
+							<div>
+								<div className="text-subtle">{props.education.start_year}{props.education.end_year && ` — ${props.education.end_year}`}</div>
+							</div>
+							<div>
+								<div className="font-medium">{props.education.degree}</div>
+								<div className="text-subtle">{props.education.school}</div>
+								<div className="text-subtle">{props.education.major}</div>
+							</div>
 						</div>
-						<div>
-							<div className="font-medium">B.Sc Software Engineering</div>
-							<div className="text-subtle">Harvard University, USA</div>
-							<div className="text-subtle">Specialization in Data Science and Machine Learning</div>
-						</div>
-					</div>
-				</section>
+					</section>
+				)}
 				{(!props.auth.user || isViewingAsGuest) && <div className="xl:fixed bottom-8 left-8 xl:max-w-[200px]">
 					<div>
 						<hr className="mb-6 xl:hidden" />

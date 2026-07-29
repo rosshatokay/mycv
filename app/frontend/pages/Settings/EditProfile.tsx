@@ -8,12 +8,20 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { AuthUser } from "@/interfaces/user";
-import BaseLayout from "@/layouts/BaseLayout";
 import { createBreadcrumbs } from "@/lib/utils";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { MapPinIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { YearSelect } from "../Projects/SelectYear";
+
+export interface EducationProps {
+	school: string
+	gpa: string
+	major: string
+	degree: string
+	start_year: number
+	end_year: number
+}
 
 export interface ResumeProps {
 	role: string
@@ -22,13 +30,13 @@ export interface ResumeProps {
 	website_url: string
 	location: string
 	highlights: string[]
+	education: EducationProps
 }
 
 export default function EditProfilePage({ auth }: AuthUser) {
 	const imageFileInputRef = useRef<HTMLInputElement>(null)
 	const resumeData = usePage().props.resume as any
 	const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
-	const [highlights, setHighlights] = useState([''])
 	const { data, processing, setData, patch, errors } = useForm({
 		user: {
 			full_name: auth.user.full_name || "",
@@ -170,21 +178,31 @@ export default function EditProfilePage({ auth }: AuthUser) {
 							<FieldGroup className="grid grid-cols-2">
 								<Field>
 									<FieldLabel>School</FieldLabel>
-									<Input type="text" placeholder="e.g California College of the Arts"></Input>
+									<Input type="text" value={data.user.resume.education.school || ""} placeholder="e.g California College of the Arts" onChange={(e) => setData('user.resume.education.school', e.target.value)}></Input>
 								</Field>
 								<Field>
 									<FieldLabel>Degree</FieldLabel>
-									<Input type="text" placeholder="e.g Bachelor of Fine Arts"></Input>
+									<Input type="text" value={data.user.resume.education.degree || ""} placeholder="e.g Bachelor of Fine Arts" onChange={(e) => setData('user.resume.education.degree', e.target.value)} />
 								</Field>
 							</FieldGroup>
 							<FieldGroup className="grid grid-cols-2">
 								<Field>
 									<FieldLabel>Start year</FieldLabel>
-									<YearSelect onChange={() => {}}/>
+									<YearSelect onChange={(e) => setData("user.resume.education.start_year", e)}/>
 								</Field>
 								<Field>
 									<FieldLabel>End year</FieldLabel>
-									<YearSelect onChange={() => {}}/>
+									<YearSelect onChange={(e) => setData("user.resume.education.end_year", e)}/>
+								</Field>
+							</FieldGroup>
+							<FieldGroup className="grid grid-cols-2">
+								<Field>
+									<FieldLabel>Major</FieldLabel>
+									<Input type="text" value={data.user.resume.education.major || ""} onChange={(e) => setData('user.resume.education.major', e.target.value)} placeholder="e.g Bachelor of Fine Arts" />
+								</Field>
+								<Field>
+									<FieldLabel>GPA</FieldLabel>
+									<Input type="decimal" value={data.user.resume.education.gpa || ""} placeholder="e.g 90" onChange={(e) => setData('user.resume.education.gpa', e.target.value)} />
 								</Field>
 							</FieldGroup>
 						</FieldSet>

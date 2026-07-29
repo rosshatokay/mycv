@@ -1,6 +1,8 @@
 class Resume < ApplicationRecord
   belongs_to :user
+
   has_many :projects, dependent: :destroy
+  has_one :education
 
   validates_with PostfixUrlValidator, attributes: [:website_url]
   validates :linkedin_url, format: {
@@ -9,6 +11,8 @@ class Resume < ApplicationRecord
                            }, allow_blank: true
 
   after_validation :format_custom_url, if: -> { website_url.present? && errors.empty? }
+
+  accepts_nested_attributes_for :education, update_only: true
 
   def formatted_projects(curr_user = nil)
     projects.map { |p|

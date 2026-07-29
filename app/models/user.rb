@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_one :resume, dependent: :destroy
   has_many :projects, through: :resume, dependent: :destroy
+  has_one :education, through: :resume
 
   after_create :build_default_resume
 
