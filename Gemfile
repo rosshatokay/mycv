@@ -7,7 +7,8 @@ gem "jbuilder"
 gem "haml"
 gem "bcrypt", "~> 3.1.7"
 gem "hashid-rails"
-
+gem "prosopite"
+gem "pg_query"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 gem "solid_cache"

@@ -2,6 +2,7 @@ class Settings::ProfileController < ApplicationController
   def index
     resume_data = current_user.resume || {}
     resume_data["highlights"] = Array(resume_data["highlights"]).presence || [""]
+    resume_data["website_url"] = resume_data.website_url.gsub("https://", "").gsub("http://", "")
 
     render inertia: "Settings/EditProfile", props: {
       resume: resume_data.to_json,

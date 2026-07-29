@@ -43,7 +43,7 @@ export default function UserAside({ auth }: AuthUser) {
 	]
 
 	return (
-		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 justify-between flex flex-col transition" id="main-aside">
+		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 z-2 justify-between flex flex-col transition" id="main-aside">
 			<div className="flex flex-col gap-12">
 				<LogoIcon />
 				<div className="flex flex-col gap-2">

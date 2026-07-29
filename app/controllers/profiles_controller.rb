@@ -6,14 +6,14 @@ class ProfilesController < ApplicationController
       redirect_to profile_path(current_user&.username) if user_signed_in?
       redirect_to root_path if !user_signed_in?
     else
-      user = User.find_by(username: params[:username])
+      user = User.includes(resume: :projects).find_by(username: params[:username])
       resume_data = resume_data(user)
       resume_data["highlights"] = Array(resume_data["highlights"]).presence || []
       resume_data["highlights"].reject!(&:empty?)
 
       render inertia: "Profiles/Show", props: {
         user: user.to_profile,
-        projects: user.resume.projects || [],
+        projects: user.resume.formatted_projects || [],
         resume: resume_data.to_json,
       }
     end

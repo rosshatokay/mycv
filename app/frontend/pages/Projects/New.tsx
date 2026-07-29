@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Breadcrumb, createBreadcrumbs } from "@/lib/utils";
 import { Head, useForm } from "@inertiajs/react";
 import { PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
-import { ProjectYearSelect } from "./SelectYear";
+import { YearSelect } from "./SelectYear";
 import { Project } from "@/interfaces/project";
 
 const breadcrumbs = [
@@ -122,7 +122,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 									</Field>
 									<Field>
 										<FieldLabel>Year</FieldLabel>
-										<ProjectYearSelect value={data.project.year} onChange={(selectedYear) => setData('project.year', selectedYear)} />
+										<YearSelect value={data.project.year} onChange={(selectedYear) => setData('project.year', selectedYear)} />
 									</Field>
 								</div>
 							</FieldGroup>
@@ -163,24 +163,26 @@ export default function NewProject({ project, is_edit }: PageProps) {
 									<EmptyMedia variant={"icon"}>
 										<UploadIcon></UploadIcon>
 									</EmptyMedia>
-									<EmptyTitle>Upload files</EmptyTitle>
-									<EmptyDescription>Drop an image, video, or even an audio file here.</EmptyDescription>
+									<EmptyTitle className="text-sm">Drag and drop or browse files</EmptyTitle>
+									<EmptyDescription className="text-xs">Allowed file types: PNG, JPG, GIF.</EmptyDescription>
 								</EmptyHeader>
-								<EmptyContent>
-									<Button variant={"outline"} size={"sm"}>Browse files</Button>
-								</EmptyContent>
 							</Empty>
 						</FieldSet>
-						<div className="mt-8 flex justify-between">
-							<span className="text-sm">
-								<span className="text-[var(--destructive)]">*</span>
-								<span> required</span>
-							</span>
-							<div className="w-fit">
-								<Button disabled={processing} type="submit" size={"lg"} variant={processing ? "secondary" : "default"} className={"w-full"}>
-									{processing ? <Spinner></Spinner> : null}
-									Save project
-								</Button>
+						<div className="h-16"></div>
+						<div className="fixed w-full bottom-0 left-0 bg-background/50 backdrop-blur-sm h-16 flex items-center">
+							<div className="main-container px-5">
+								<div className="flex justify-between py-4">
+									<span className="text-sm">
+										<span className="text-[var(--destructive)]">*</span>
+										<span> required</span>
+									</span>
+									<div className="w-fit">
+										<Button disabled={processing} type="submit" size={"lg"} variant={processing ? "secondary" : "default"} className={"w-full"}>
+											{processing ? <Spinner></Spinner> : null}
+											Save project
+										</Button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</FieldGroup>

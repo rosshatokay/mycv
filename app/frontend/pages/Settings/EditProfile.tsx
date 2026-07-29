@@ -13,6 +13,7 @@ import { createBreadcrumbs } from "@/lib/utils";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { MapPinIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { useRef, useState } from "react";
+import { YearSelect } from "../Projects/SelectYear";
 
 export interface ResumeProps {
 	role: string
@@ -88,7 +89,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 			const updated = [...data.user.resume.highlights.filter((_, i) => i !== index)]
 			setData('user', {
 				...data.user,
-				resume: {...data.user.resume, highlights: updated}
+				resume: { ...data.user.resume, highlights: updated }
 			})
 		}
 	}
@@ -160,6 +161,31 @@ export default function EditProfilePage({ auth }: AuthUser) {
 									<PlusIcon></PlusIcon>
 									Add highlight
 								</Button>
+							</FieldGroup>
+						</FieldSet>
+						<FieldSeparator className="my-2"></FieldSeparator>
+						<FieldSet>
+							<FieldLegend>Education</FieldLegend>
+							<FieldDescription>Show your formal academic degree.</FieldDescription>
+							<FieldGroup className="grid grid-cols-2">
+								<Field>
+									<FieldLabel>School</FieldLabel>
+									<Input type="text" placeholder="e.g California College of the Arts"></Input>
+								</Field>
+								<Field>
+									<FieldLabel>Degree</FieldLabel>
+									<Input type="text" placeholder="e.g Bachelor of Fine Arts"></Input>
+								</Field>
+							</FieldGroup>
+							<FieldGroup className="grid grid-cols-2">
+								<Field>
+									<FieldLabel>Start year</FieldLabel>
+									<YearSelect onChange={() => {}}/>
+								</Field>
+								<Field>
+									<FieldLabel>End year</FieldLabel>
+									<YearSelect onChange={() => {}}/>
+								</Field>
 							</FieldGroup>
 						</FieldSet>
 						<FieldSeparator className="my-2"></FieldSeparator>

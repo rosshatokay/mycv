@@ -6,4 +6,5 @@ export interface Project {
 	description: string
 	highlights: string[]
 	images: string[]
+	is_owner: boolean
 }

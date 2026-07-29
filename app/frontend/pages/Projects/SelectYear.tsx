@@ -6,7 +6,7 @@ interface YearSelectProps {
 	startYear?: number
 }
 
-export function ProjectYearSelect({
+export function YearSelect({
 	value,
 	onChange,
 	startYear = 1980

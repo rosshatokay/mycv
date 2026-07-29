@@ -25,7 +25,7 @@ export default function SignupPage() {
 	return (
 		<>
 			<Head>
-				<title>Sign up | highlight.cv</title>
+				<title>Sign up</title>
 			</Head>
 			<div className="w-full overflow-auto z-0">
 				<div className="flex h-screen overflow-hidden">

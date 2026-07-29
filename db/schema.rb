@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_28_134804) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_29_130558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "educations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "degree"
+    t.integer "end_year"
+    t.decimal "gpa", precision: 3, scale: 2
+    t.string "major"
+    t.bigint "resume_id", null: false
+    t.string "school"
+    t.integer "start_year"
+    t.datetime "updated_at", null: false
+    t.index ["resume_id"], name: "index_educations_on_resume_id"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -60,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_28_134804) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "educations", "resumes"
   add_foreign_key "projects", "resumes"
   add_foreign_key "resumes", "users"
   add_foreign_key "sessions", "users"

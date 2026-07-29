@@ -1,16 +1,7 @@
 class ProjectsController < ApplicationController
   def index
     render inertia: "Projects/Index", props: {
-      projects: current_user.resume.projects.map { |p|
-        {
-          title: p.title,
-          url: p.url,
-          description: p.description,
-          year: p.year,
-          id: p.hashid,
-          highlights: p.highlights || [],
-        }
-      },
+      projects: current_user.resume.formatted_projects(current_user),
     }
   end
 

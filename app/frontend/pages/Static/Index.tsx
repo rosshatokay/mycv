@@ -11,13 +11,13 @@ export default function LandingPage() {
 			</Head>
 			<div className="pt-20">
 
-				<div className="large-container">
+				<div className="main-container">
 					<div className="flex flex-col gap-8">
 						<LogoIcon size={36} />
-						<h1 className="text-5xl tracking-tight leading-none">
+						<h1 className="text-4xl tracking-tight leading-none">
 							<span>A new way to showcase</span><br />
 							<span>your professional work profile with</span><br />
-							<span>a <i className="headline text-[54px] leading-[-1em]">clean</i> and <i className="headline text-[54px] leading-[-1em]">minimalistic</i> resume</span>
+							<span>a <i className="headline text-[39px] leading-[-1em]">clean</i> and <i className="headline text-[39px] leading-[-1em]">minimalistic</i> resume</span>
 						</h1>
 						<p className="max-w-md">Create a clean, privacy-friendly digital resume with built-in analytics in minutes — for free.</p>
 						<div className="w-fit flex gap-2">

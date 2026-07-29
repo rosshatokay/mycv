@@ -27,6 +27,17 @@ class ApplicationController < ActionController::Base
     current_user.present?
   end
 
+  unless Rails.env.production?
+    around_action :n_plus_one_detect
+
+    def n_plus_one_detect
+      Prosopite.scan
+      yield
+    ensure
+      Prosopite.finish
+    end
+  end
+
   private
 
   def inertia_errors_for(record, object_name = nil)
