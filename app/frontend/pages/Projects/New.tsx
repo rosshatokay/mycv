@@ -11,6 +11,7 @@ import { Head, useForm } from "@inertiajs/react";
 import { PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { YearSelect } from "./SelectYear";
 import { Project } from "@/interfaces/project";
+import { useRef, useState } from "react";
 
 const breadcrumbs = [
 	{ label: "Projects", path: "/projects" },
@@ -23,13 +24,16 @@ interface PageProps {
 }
 
 export default function NewProject({ project, is_edit }: PageProps) {
-	const { data, setData, processing, errors, post, patch } = useForm({
+	const fileInputRef = useRef<HTMLInputElement>(null)
+	const [previewUrls, setPreviewUrls] = useState<string[]>(project.images)
+	const { data, setData, processing, errors, post, patch, transform } = useForm({
 		project: {
 			title: project.title || "",
 			url: project.url || "",
 			description: project.description || "",
 			year: project.year || NaN,
-			highlights: project.highlights || ['']
+			highlights: project.highlights || [''],
+			images: [] as (File | string)[]
 		}
 	})
 
@@ -63,6 +67,15 @@ export default function NewProject({ project, is_edit }: PageProps) {
 
 	const handleSubmit = (e: React.ChangeEvent) => {
 		e.preventDefault()
+
+		transform((latestData) => ({
+			project: {
+				...latestData.project,
+				// Extract only the items that are actual File instances
+				images: latestData.project.images.filter((img): img is File => img instanceof File)
+			}
+		}))
+
 		if (is_edit) {
 			patch(`/projects/${project.id}`)
 			return
@@ -70,6 +83,27 @@ export default function NewProject({ project, is_edit }: PageProps) {
 		post("/projects", {
 			preserveScroll: true
 		})
+	}
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const files = Array.from(e.target.files || [])
+		const currImages = data.project.images || []
+
+		// limit to 5
+		const remainingSlots = 5 - currImages.length
+		const selectedFiles = files.slice(0, remainingSlots)
+
+		if (selectedFiles.length > 0) {
+			const newFiles = [...currImages, ...selectedFiles]
+			const newPreviewUrls = selectedFiles.map(file => URL.createObjectURL(file))
+
+			setData('project', {
+				...data.project,
+				images: newFiles
+			})
+
+			setPreviewUrls(prev => [...prev, ...newPreviewUrls])
+		}
 	}
 
 	return (
@@ -131,7 +165,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 						<FieldSet>
 							<FieldLegend>
 								<div className="flex gap-0.5">
-									<span>Attachments</span>
+									<span>Achievements</span>
 									<span className="text-[var(--destructive)]"> *</span>
 								</div>
 							</FieldLegend>
@@ -157,8 +191,16 @@ export default function NewProject({ project, is_edit }: PageProps) {
 						<FieldSeparator className="my-2"></FieldSeparator>
 						<FieldSet>
 							<FieldLegend>Media</FieldLegend>
-							<FieldDescription>Add images, video & audio to enrich your profile.</FieldDescription>
-							<Empty className="border">
+							<FieldDescription>Add up to 5 images to enrich your profile.</FieldDescription>
+							<input
+								ref={fileInputRef}
+								type="file"
+								multiple
+								accept="image/png,image/jpeg,image/gif"
+								className="hidden"
+								onChange={handleFileChange}
+							/>
+							<Empty className="border" onClick={() => fileInputRef.current?.click()}>
 								<EmptyHeader>
 									<EmptyMedia variant={"icon"}>
 										<UploadIcon></UploadIcon>
@@ -168,6 +210,13 @@ export default function NewProject({ project, is_edit }: PageProps) {
 								</EmptyHeader>
 							</Empty>
 						</FieldSet>
+						{previewUrls.length > 0 &&
+							<div className="grid grid-cols-5 gap-2">
+								{previewUrls.map((url, index) => (
+									<div key={index} className="bg-card aspect-square rounded-md" style={{ background: `url(${url}) center / cover` }}></div>
+								))}
+							</div>
+						}
 						<div className="h-16"></div>
 						<div className="fixed w-full bottom-0 left-0 bg-background/50 backdrop-blur-sm h-16 flex items-center">
 							<div className="main-container px-5">

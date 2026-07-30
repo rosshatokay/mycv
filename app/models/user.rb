@@ -4,10 +4,15 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_one :resume, dependent: :destroy
+
   has_many :projects, through: :resume, dependent: :destroy
   has_one :education, through: :resume
 
+  has_one_attached :avatar, service: :imagekit
+
   after_create :build_default_resume
+
+  before_save :set_avatar_path, if: -> { avatar.attached? && avatar.attachment.blob.key.exclude?("/") }
 
   accepts_nested_attributes_for :resume, update_only: true
 
@@ -39,16 +44,23 @@ class User < ApplicationRecord
       full_name: full_name,
       username: username,
       email: email,
+      avatar_url: avatar_url,
     }
   end
 
-  def avatar_url
-    "https://images.unsplash.com/photo-1785064038262-8f469a571616?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D"
+  def avatar_url(size = 100)
+    avatar.attached? ? avatar.service.url(avatar.blob.key, transformation: [{ width: size, height: size }]) : nil
   end
 
   private
 
   def build_default_resume
     create_resume!
+  end
+
+  def set_avatar_path
+    # We prepend the folder structure to the existing random key
+    blob = avatar.blob
+    blob.key = "#{Rails.env}/users/avatars/#{blob.key}"
   end
 end

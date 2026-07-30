@@ -36,13 +36,14 @@ export interface ResumeProps {
 export default function EditProfilePage({ auth }: AuthUser) {
 	const imageFileInputRef = useRef<HTMLInputElement>(null)
 	const resumeData = usePage().props.resume as any
-	const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
-	const { data, processing, setData, patch, errors } = useForm({
+	const { data, processing, setData, patch, errors, transform } = useForm({
 		user: {
 			full_name: auth.user.full_name || "",
-			resume: JSON.parse(resumeData) as ResumeProps
+			resume: JSON.parse(resumeData) as ResumeProps,
+			avatar: null as File | string | null
 		},
 	})
+	const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(auth.user.avatar_url as string)
 
 	const handleUploadImageBtnClick = () => {
 		imageFileInputRef.current?.click()
@@ -54,6 +55,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 		if (file && file.type.startsWith("image/")) {
 			const url = URL.createObjectURL(file)
 			setPreviewImageUrl(url)
+			setData("user.avatar", file)
 		}
 	}
 
@@ -61,6 +63,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 		if (previewImageUrl) { URL.revokeObjectURL(previewImageUrl) }
 
 		setPreviewImageUrl(null)
+		setData("user.avatar", null)
 
 		if (imageFileInputRef.current) {
 			imageFileInputRef.current.value = ""
@@ -69,6 +72,17 @@ export default function EditProfilePage({ auth }: AuthUser) {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
+		e.preventDefault()
+
+		transform((latestData) => ({
+			user: {
+				full_name: latestData.user.full_name,
+				resume: latestData.user.resume,
+				// Only include avatar if a new File was picked
+				...(latestData.user.avatar instanceof File && { avatar: latestData.user.avatar }),
+			}
+		}))
+
 		patch("/settings/profile", {
 			preserveScroll: true
 		})
@@ -120,9 +134,9 @@ export default function EditProfilePage({ auth }: AuthUser) {
 										<AvatarImage src={previewImageUrl || ""}></AvatarImage>
 										<AvatarFallback>{auth.user.full_name[0]?.toUpperCase() || auth.user.username[0].toUpperCase()}</AvatarFallback>
 									</Avatar>
-									<Input ref={imageFileInputRef} onChange={handleImageFileChange} type="file" accept="image/jpeg,image/png" className="hidden"></Input>
+									<Input ref={imageFileInputRef} onChange={handleImageFileChange} type="file" accept="image/*" className="hidden"></Input>
 									<Button onClick={handleUploadImageBtnClick} variant={"secondary"}>Upload image</Button>
-									{previewImageUrl && <Button variant={"outline"} onClick={handleRemoveImage}>Delete image</Button>}
+									{/* {previewImageUrl && <Button variant={"outline"} onClick={handleRemoveImage}>Delete image</Button>} */}
 								</Field>
 								<Field>
 									<FieldLabel htmlFor="full_name">Full name</FieldLabel>
@@ -188,11 +202,11 @@ export default function EditProfilePage({ auth }: AuthUser) {
 							<FieldGroup className="grid grid-cols-2">
 								<Field>
 									<FieldLabel>Start year</FieldLabel>
-									<YearSelect onChange={(e) => setData("user.resume.education.start_year", e)}/>
+									<YearSelect value={data.user.resume.education.start_year} onChange={(e) => setData("user.resume.education.start_year", e)} />
 								</Field>
 								<Field>
 									<FieldLabel>End year</FieldLabel>
-									<YearSelect onChange={(e) => setData("user.resume.education.end_year", e)}/>
+									<YearSelect value={data.user.resume.education.end_year} onChange={(e) => setData("user.resume.education.end_year", e)} endYear={2040} />
 								</Field>
 							</FieldGroup>
 							<FieldGroup className="grid grid-cols-2">

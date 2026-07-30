@@ -10,6 +10,7 @@ gem "hashid-rails"
 gem "prosopite"
 gem "pg_query"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "imagekitio-rails"
 
 gem "solid_cache"
 gem "solid_queue"
@@ -29,7 +30,7 @@ group :development, :test do
   gem "bundler-audit", require: false
 
   gem "brakeman", require: false
-
+  gem "dotenv-rails"
   gem "rubocop-rails-omakase", require: false
 end
 

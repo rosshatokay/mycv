@@ -3,21 +3,23 @@ import { Button } from "@/components/ui/button"
 import { Project } from "@/interfaces/project"
 import { AuthUser } from "@/interfaces/user"
 import { Head, Link } from "@inertiajs/react"
-import { ArrowUpRight, EyeIcon, EyeOffIcon, GlobeIcon, MailIcon } from "lucide-react"
+import { EyeIcon, EyeOffIcon, GlobeIcon, MailIcon } from "lucide-react"
 import { EducationProps, ResumeProps } from "../Settings/EditProfile"
 import { LinkedInIcon } from "@/assets/linkedin"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { LogoIcon } from "@/assets/logo"
 import ProfileMoreMenu from "./components/MoreMenu"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import ProjectItem from "@/partials/ProjectItem"
+import ProjectItem, { ProjectItemProps } from "@/partials/ProjectItem"
+import FloatingProfileTopBar from "./components/FloatingProfileTopBar"
+import ProjectSheet from "@/partials/ProjectSheet"
 
-
-interface ProfilePageProps {
+export interface ProfilePageProps {
 	auth: AuthUser['auth'],
 	user: {
 		id: string
 		email: string
+		avatar_url?: string
 		username: string,
 		highlights: string[]
 		full_name: string
@@ -31,6 +33,39 @@ export default function ProfilePage(props: ProfilePageProps) {
 	const isOwner = props.auth?.user?.id === props.user.id
 	const resume = JSON.parse(props.resume as string) as ResumeProps
 	const [isViewingAsGuest, setIsViewingAsGuest] = useState<boolean>(false)
+	const [activeProject, setActiveProject] = useState<ProjectItemProps['project'] | null>(null)
+	const targetRef = useRef(null);
+	const [isPast, setIsPast] = useState(false);
+
+	useEffect(() => {
+		const target = targetRef.current;
+		if (!target) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				console.log(entry.boundingClientRect)
+				// boundingClientRect.top < 0 means the element's top has moved above the viewport view
+				// !entry.isIntersecting means the element is no longer visible in the view
+				if (entry.boundingClientRect.top < 0 && !entry.isIntersecting) {
+					setIsPast(true);
+				} else {
+					setIsPast(false);
+				}
+			},
+			{
+				threshold: 0, // Triggers as soon as even 1 pixel changes visibility
+			}
+		);
+
+		observer.observe(target);
+
+		// Clean up observer on component unmount
+		return () => observer.disconnect();
+	}, []);
+
+	useEffect(() => {
+		console.log(activeProject)
+	}, [activeProject])
 
 	useEffect(() => {
 		const userAside = document.getElementById('main-aside')
@@ -46,22 +81,28 @@ export default function ProfilePage(props: ProfilePageProps) {
 			<Head>
 				<title>{props.user.full_name}</title>
 			</Head>
+			<div className="fixed top-0 left-0 w-full p-4 flex justify-end">
+				<div className="flex gap-1">
+					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit</Button>}
+					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Change template</Button>}
+					{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest</DropdownMenuItem>} />}
+					{isViewingAsGuest && <Button variant={"outline"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
+						<EyeOffIcon></EyeOffIcon>
+						Stop viewing as guest
+					</Button>}
+				</div>
+			</div>
+			{isViewingAsGuest &&
+				<FloatingProfileTopBar user={props.user} resume={resume} isShown={isPast} />
+			}
 			<div className="main-container py-16 flex flex-col gap-16 text-[15px]">
 				<section className="flex flex-col gap-4">
 					<div>
 						<div className="flex justify-between">
 							<Avatar size="lg" className={"mb-4"}>
-								<AvatarImage src={props.auth.user.avatar_url} alt={`@${props.user.username}'s picture`}></AvatarImage>
+								<AvatarImage src={props.user.avatar_url} alt={`@${props.user.username}'s picture`}></AvatarImage>
 								<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
 							</Avatar>
-							<div className="flex gap-1">
-								{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"secondary"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit</Button>}
-								{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest</DropdownMenuItem>} />}
-								{isViewingAsGuest && <Button variant={"secondary"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
-									<EyeOffIcon></EyeOffIcon>
-									Stop viewing as guest
-								</Button>}
-							</div>
 						</div>
 						<div className="flex flex-col">
 							<div className="font-medium text-[17px]">{props.user.full_name}</div>
@@ -76,33 +117,22 @@ export default function ProfilePage(props: ProfilePageProps) {
 							))}
 						</ul>
 					)}
-					<div className="flex justify-between">
+					<div className="flex justify-between" ref={targetRef}>
 						<div className="w-fit flex gap-1">
-							{/* <Tooltip>
-								<TooltipContent>Website</TooltipContent>
-								<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><GlobeIcon /></Button>}></TooltipTrigger>
-							</Tooltip>
-							<Tooltip>
-								<TooltipContent>LinkedIn</TooltipContent>
-								<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><LinkedInIcon /></Button>}></TooltipTrigger>
-							</Tooltip>
-							<Tooltip>
-								<TooltipContent>Copy email</TooltipContent>
-							<TooltipTrigger delay={0} render={<Button variant={"secondary"} size={"icon-lg"}><MailIcon /></Button>}></TooltipTrigger>
-							</Tooltip> */}
-
 							{resume.website_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://${resume.website_url}`} target="_blank"><GlobeIcon /> Website</a>}></Button>}
 							{resume.linkedin_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://linkedin.com${resume.linkedin_url}`} target="_blank"><LinkedInIcon /> LinkedIn</a>} className={""}>LinkedIn</Button>}
 							<Button variant={"secondary"} size={"sm"} className={""}><MailIcon /> Copy email</Button>
 						</div>
 					</div>
 				</section>
-				<section>
-					<div className="text-subtle mb-4">Projects</div>
-					<div className="flex flex-col gap-10">
-						{props.projects.map(project => <ProjectItem key={project.id} project={project} />)}
-					</div>
-				</section>
+				{props.projects?.length > 0 && (
+					<section>
+						<div className="text-subtle mb-4">Projects</div>
+						<div className="flex flex-col gap-10">
+							{props.projects.map(project => <ProjectItem key={project.id} project={project} onSelect={setActiveProject} />)}
+						</div>
+					</section>
+				)}
 				{resume.bio && (
 					<section>
 						<div className="text-subtle mb-4">About</div>
@@ -131,12 +161,14 @@ export default function ProfilePage(props: ProfilePageProps) {
 							<LogoIcon size={28}></LogoIcon>
 						</a>
 						<div className="text-subtle text-xs">
-							Powered by <a href="/" className="underline">highlight</a>. Create your own work profile for free.
+							Powered by <Link href="/" className="underline">highlight.cv</Link>. Create your own work profile for free.
 						</div>
 					</div>
 				</div>}
-
 			</div>
+			{props.projects?.length > 0 && (
+				<ProjectSheet project={activeProject} setActiveProject={setActiveProject}></ProjectSheet>
+			)}
 		</>
 	)
 }

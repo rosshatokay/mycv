@@ -34,37 +34,4 @@ class ProfilesController < ApplicationController
       :linkedin_url
     )
   end
-
-  def example_projects
-    [
-      {
-        id: SecureRandom.base36,
-        year: 2026,
-        title: "Tomes Club",
-        description: "Social e-reading website platform",
-        points: [
-          "Built a social e reading website with Ruby on Rails and Supabase (with PostgreSQL).",
-          "Created dozens of UI components with Javascript, Rails Turbo and Stimulus.",
-        ],
-        images: [
-          "https://cdn.dribbble.com/userupload/48504652/file/de81920d8b9e265eca5545ecec0850d5.jpg?resize=367x275&vertical=center",
-          "https://cdn.dribbble.com/userupload/48508162/file/5bd1d3a6d0801163e02895cc7f99d99f.png?resize=367x275&vertical=center",
-        ],
-      },
-      {
-        id: SecureRandom.base36,
-        year: 2025,
-        title: "Gleam News",
-        description: "Social e-reading website platform",
-        points: [
-          "Built a social e reading website with Ruby on Rails and Supabase (with PostgreSQL).",
-          "Created dozens of UI components with Javascript, Rails Turbo and Stimulus.",
-        ],
-        images: [
-          "https://cdn.dribbble.com/userupload/48503142/file/5ba48afe027cea3d194acbaef27dfa49.jpg?resize=367x275&vertical=center",
-          "https://cdn.dribbble.com/userupload/48505787/file/ab05a28f14cd257e40f50ad72e5450d9.jpg?resize=367x275&vertical=center",
-        ],
-      },
-    ]
-  end
 end

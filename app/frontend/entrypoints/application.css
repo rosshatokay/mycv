@@ -56,7 +56,7 @@
 :root {
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
-	--subtle:  oklch(14.479% 0.00002 271.152 / 0.591);
+	--subtle: oklch(14.479% 0.00002 271.152 / 0.591);
 	--card: oklch(25.197% 0.00003 271.152 / 0.03);
 	--card-foreground: oklch(0.145 0 0);
 	--popover: oklch(1 0 0);
@@ -93,7 +93,7 @@
 .dark {
 	--background: oklch(15.434% 0.00002 271.152);
 	--foreground: oklch(0.985 0 0);
-	--subtle:  oklch(100% 0.00011 271.152 / 0.591);
+	--subtle: oklch(100% 0.00011 271.152 / 0.591);
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
@@ -130,14 +130,14 @@
 		@apply border-border outline-ring/50;
 	}
 
-  [role="menuitem"]:not(:disabled) {
-    cursor: pointer !important;
-  }
+	[role="menuitem"]:not(:disabled) {
+		cursor: pointer !important;
+	}
 
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
 
 	body {
 		@apply bg-background text-foreground;
@@ -154,7 +154,7 @@
 	.large-container {
 		@apply max-w-7xl mx-auto w-full px-5
 	}
-	
+
 	.main-container {
 		@apply max-w-2xl mx-auto w-full px-5
 	}
@@ -166,9 +166,11 @@
 
 .logo {
 	width: 100%;
+
 	svg {
 		width: 100%;
 		height: auto;
+
 		path {
 			fill: inherit
 		}
@@ -180,4 +182,55 @@
 		width: 100%;
 		height: auto;
 	}
+}
+
+article {
+	h1 {
+		font-size: 2rem;
+		font-weight: 500;
+	}
+
+	h3 {
+		font-size: 1rem;
+		margin-top: 2rem;
+		margin-bottom: .25rem;
+		font-weight: 500;
+	}
+
+	p,
+	li {
+		color: var(--foreground);
+		opacity: .8;
+	}
+
+	p {
+		margin-bottom: 1.5rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	li {
+		margin-bottom: .5rem;
+	}
+
+	strong,
+	b {
+		font-weight: 500;
+	}
+
+	ul {
+		list-style-type: disc;
+		padding: .5rem 1rem;
+	}
+
+	p:has(+ ol),
+	p:has(+ ul) {
+		margin-bottom: 0;
+	}
+}
+
+[data-slot="carousel-content"] {
+	overflow: initial !important
 }

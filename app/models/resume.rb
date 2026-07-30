@@ -24,6 +24,12 @@ class Resume < ApplicationRecord
         description: p.description,
         year: p.year,
         is_owner: p.resume.user.id === curr_user&.id,
+        # images: p.get_images_urls,
+        images: [
+          "https://ik.imagekit.io/highlightcv/development/projects/images/s9fztwdxvpdsraiggxlmoxd2rz7p?tr=c-fill,h-400,w-600",
+          "https://i.pinimg.com/1200x/73/a5/7c/73a57c4f3a3ed5c396aba3226ea99294.jpg",
+          "https://minimal.gallery/wp-content/uploads/2022/02/rafa-cobiella-2-1440x800.jpg",
+        ],
       }
     }
   end

@@ -24,6 +24,7 @@ class ProjectsController < ApplicationController
         url: project.stripped_url,
         year: project.year,
         highlights: project.highlights || [],
+        images: project.get_images_urls,
       },
     }
   end
@@ -31,12 +32,18 @@ class ProjectsController < ApplicationController
   def update
     project = current_user.projects.find(params[:project_id])
 
-    if project.update(project_params)
+    # Only attach new files if any were provided in the request
+    if project_params[:images].present?
+      project.images.attach(project_params[:images])
+    end
+
+    # Update other project attributes, excluding images from mass assignment
+    if project.update(project_params.except(:images))
       flash.inertia[:toast] = { description: "Project details updated successfully" }
       redirect_to edit_project_path(project.hashid)
     else
       flash.inertia[:toast] = { description: "Something went wrong" }
-      redirect_to new_project_path, inertia: { errors: inertia_errors_for(project) }
+      redirect_to edit_project_path(project.hashid), inertia: { errors: inertia_errors_for(project) }
     end
   end
 
@@ -61,6 +68,7 @@ class ProjectsController < ApplicationController
       :url,
       :year,
       highlights: [],
+      images: [],
     )
   end
 end

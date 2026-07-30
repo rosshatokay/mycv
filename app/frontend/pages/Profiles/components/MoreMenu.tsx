@@ -10,7 +10,7 @@ interface ViewAsGuestButton {
 export default function ProfileMoreMenu({ viewAsGuestButton }: ViewAsGuestButton) {
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger render={<Button variant={"secondary"} size={"sm"}>More <ChevronDownIcon /></Button>}></DropdownMenuTrigger>
+			<DropdownMenuTrigger render={<Button variant={"outline"} size={"sm"}>More <ChevronDownIcon /></Button>}></DropdownMenuTrigger>
 			<DropdownMenuContent className={"w-[180px]"} align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuItem><ShareIcon /> Share</DropdownMenuItem>

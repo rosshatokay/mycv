@@ -3,16 +3,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface YearSelectProps {
 	value?: number | string
 	onChange: (year: number) => void
-	startYear?: number
+	startYear?: number,
+	endYear?: number
 }
 
 export function YearSelect({
 	value,
 	onChange,
-	startYear = 1980
+	startYear = 1980,
+	endYear = new Date().getFullYear()
 }: YearSelectProps) {
-	const currYear = new Date().getFullYear()
-	const years = Array.from({ length: currYear - startYear + 1 }, (_, i) => currYear - i)
+	const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => endYear - i)
 
 	return (
 		<Select value={value ? String(value) : undefined} onValueChange={(val) => onChange(Number(val))}>

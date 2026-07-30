@@ -6,7 +6,7 @@ class Settings::ProfileController < ApplicationController
       role: resume.role,
       location: resume.location,
       bio: resume.bio,
-      website_url: resume.website_url,
+      website_url: resume.website_url.gsub("https://", "").gsub("http://", ""),
       linkedin_url: resume.linkedin_url,
       education: resume.education,
     }
@@ -45,6 +45,7 @@ class Settings::ProfileController < ApplicationController
   def user_params
     params.require(:user).permit(
       :full_name,
+      :avatar,
       resume_attributes: [
         :id,
         :bio,

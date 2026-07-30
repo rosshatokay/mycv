@@ -19,7 +19,7 @@ export default function LoginPage() {
 	return (
 		<>
 			<Head>
-				<title>Log in | highlight.cv</title>
+				<title>Log in</title>
 				<meta name="description" content="Log in to your highlight.cv account."></meta>
 			</Head>
 			<div className="w-full overflow-auto z-0">
@@ -59,7 +59,7 @@ export default function LoginPage() {
 													<Field>
 														<div className="flex justify-between">
 															<FieldLabel htmlFor="password">Password</FieldLabel>
-															<Link className="underline text-sm">Forgot password</Link>
+															{/* <Link className="underline text-sm">Forgot password</Link> */}
 														</div>
 														<Input
 															id="password"
