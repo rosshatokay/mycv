@@ -26,7 +26,7 @@ export default function FloatingProfileTopBar({ user, isShown, resume }: Floatin
 						</Avatar>
 					</ItemMedia>
 					<ItemContent className="gap-0">
-						<ItemTitle className="leading-[1.2]">{user.username}</ItemTitle>
+						<ItemTitle className="leading-[1.2]">{user.full_name}</ItemTitle>
 						{resume.role && (
 							<ItemDescription className="leading-[1.2]">{resume.role}</ItemDescription>
 						)}
@@ -35,7 +35,7 @@ export default function FloatingProfileTopBar({ user, isShown, resume }: Floatin
 				{resume.website_url &&
 					<Tooltip>
 						<TooltipContent>Website</TooltipContent>
-						<TooltipTrigger delay={0} render={<Button variant={"ghost"} size={"icon"} nativeButton={false} render={<a href={`https://${resume.website_url}`} target="_blank"><GlobeIcon /></a>}></Button>}></TooltipTrigger>
+						<TooltipTrigger delay={0} render={<Button variant={"ghost"} size={"icon"} nativeButton={false} render={<a href={resume.website_url} target="_blank"><GlobeIcon /></a>}></Button>}></TooltipTrigger>
 					</Tooltip>
 				}
 				{resume.linkedin_url &&

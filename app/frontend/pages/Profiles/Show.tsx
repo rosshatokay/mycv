@@ -111,7 +111,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 						</div>
 					</div>
 					{!!resume.highlights.length && (
-						<ul className="flex flex-col gap-2 my-4 list-[lower-roman] px-4 marker:text-subtle/70 max-w-3/4">
+						<ul className="flex flex-col gap-2 my-4 list-[numeral] px-4 marker:text-subtle/70 max-w-3/4">
 							{resume.highlights?.map(item => (
 								<li key={item} className="pl-2">{item}</li>
 							))}
@@ -119,7 +119,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 					)}
 					<div className="flex justify-between" ref={targetRef}>
 						<div className="w-fit flex gap-1">
-							{resume.website_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://${resume.website_url}`} target="_blank"><GlobeIcon /> Website</a>}></Button>}
+							{resume.website_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={resume.website_url} target="_blank"><GlobeIcon /> Website</a>}></Button>}
 							{resume.linkedin_url && <Button variant={"secondary"} size={"sm"} nativeButton={false} render={<a href={`https://linkedin.com${resume.linkedin_url}`} target="_blank"><LinkedInIcon /> LinkedIn</a>} className={""}>LinkedIn</Button>}
 							<Button variant={"secondary"} size={"sm"} className={""}><MailIcon /> Copy email</Button>
 						</div>
