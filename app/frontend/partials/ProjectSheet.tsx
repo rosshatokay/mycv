@@ -1,6 +1,6 @@
 import { Sheet, SheetClose, SheetContent } from "@/components/ui/sheet";
 import { ProjectItemProps } from "./ProjectItem";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -37,7 +37,7 @@ export default function ProjectSheet({ project, setActiveProject }: ProjectSheet
 	}, [api])
 
 	return (
-		<Sheet open={project !== null} onOpenChange={(e) => setActiveProject(null)}>
+		<Sheet open={project !== null} onOpenChange={() => setActiveProject(null)}>
 			<SheetClose onClick={() => alert("clicked")}></SheetClose>
 			<SheetContent side="bottom" className={"rounded-t-2xl"}>
 				<div className="h-[92vh] overflow-y-auto overflow-x-hidden">
