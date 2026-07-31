@@ -1,3 +1,4 @@
+import { useHotkeys } from "react-hotkeys-hook"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Project } from "@/interfaces/project"
@@ -13,6 +14,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import ProjectItem, { ProjectItemProps } from "@/partials/ProjectItem"
 import FloatingProfileTopBar from "./components/FloatingProfileTopBar"
 import ProjectSheet from "@/partials/ProjectSheet"
+import ShareDialog from "@/partials/ShareDialog"
 
 export interface ProfilePageProps {
 	auth: AuthUser['auth'],
@@ -32,10 +34,14 @@ export interface ProfilePageProps {
 export default function ProfilePage(props: ProfilePageProps) {
 	const isOwner = props.auth?.user?.id === props.user.id
 	const resume = JSON.parse(props.resume as string) as ResumeProps
+	const targetRef = useRef(null);
+
 	const [isViewingAsGuest, setIsViewingAsGuest] = useState<boolean>(false)
 	const [activeProject, setActiveProject] = useState<ProjectItemProps['project'] | null>(null)
-	const targetRef = useRef(null);
 	const [isPast, setIsPast] = useState(false);
+	const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false)
+
+	useHotkeys('mod+shift+s', () => setIsShareDialogOpen(true))
 
 	useEffect(() => {
 		const target = targetRef.current;
@@ -173,6 +179,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 			{props.projects?.length > 0 && (
 				<ProjectSheet project={activeProject} setActiveProject={setActiveProject}></ProjectSheet>
 			)}
+			<ShareDialog url={`https://highlight.cv/@${props.user.username}`} isOpen={isShareDialogOpen} />
 		</>
 	)
 }

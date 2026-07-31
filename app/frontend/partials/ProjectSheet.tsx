@@ -12,10 +12,6 @@ interface ProjectSheetProps {
 }
 
 export default function ProjectSheet({ project, setActiveProject }: ProjectSheetProps) {
-
-
-
-
 	return (
 		<Sheet open={project !== null} onOpenChange={() => setActiveProject(null)}>
 			<SheetClose onClick={() => alert("clicked")}></SheetClose>

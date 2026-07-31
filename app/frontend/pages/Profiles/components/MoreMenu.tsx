@@ -15,7 +15,7 @@ export default function ProfileMoreMenu({ viewAsGuestButton }: ViewAsGuestButton
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
 						<ShareIcon /> Share
-						<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+						<DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
 					</DropdownMenuItem>
 					<DropdownMenuItem render={<Link href={"/settings/profile"}><EditIcon /> Edit</Link>}></DropdownMenuItem>
 					<DropdownMenuItem render={viewAsGuestButton}></DropdownMenuItem>
