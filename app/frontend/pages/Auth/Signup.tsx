@@ -7,6 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function SignupPage() {
+	const queryParams = new URLSearchParams(window.location.search)
 	const { data, setData, processing, post, errors, clearErrors } = useForm({
 		user: {
 			email: "",
@@ -53,7 +54,7 @@ export default function SignupPage() {
 																setData('user.email', e.target.value)
 																clearErrors('user.email')
 															}}
-															value={data.user.email}
+															value={data.user.email || queryParams.get("email") || ""}
 															autoComplete="off"
 															className="h-10 px-3"
 															placeholder="Enter your email address"
@@ -88,7 +89,10 @@ export default function SignupPage() {
 															autoComplete="off"
 															required
 															type="text"
-															onChange={(e) => setData('user.username', e.target.value)}
+															onChange={(e) => {
+																setData('user.username', e.target.value)
+																clearErrors("user.username")
+															}}
 															placeholder="Enter a username"
 															aria-invalid={!!errors["user.username"]}
 														/>

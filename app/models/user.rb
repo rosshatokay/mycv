@@ -37,6 +37,7 @@ class User < ApplicationRecord
               message: "not allowed",
             }
   validates :password, presence: true, length: { minimum: 8, message: "has to be at least 8 characters long" }, if: -> { password.present? }, allow_blank: true
+  validates :avatar, content_type: ["image/png", "image/jpeg", "image/webp"], size: { less_than: 5.megabytes }
 
   def to_profile
     {

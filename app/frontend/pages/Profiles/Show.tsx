@@ -86,7 +86,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit</Button>}
 					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Change template</Button>}
 					{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest</DropdownMenuItem>} />}
-					{isViewingAsGuest && <Button variant={"outline"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
+					{isViewingAsGuest && <Button variant={"ghost"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
 						<EyeOffIcon></EyeOffIcon>
 						Stop viewing as guest
 					</Button>}
@@ -124,6 +124,10 @@ export default function ProfilePage(props: ProfilePageProps) {
 							<Button variant={"secondary"} size={"sm"} className={""}><MailIcon /> Copy email</Button>
 						</div>
 					</div>
+				</section>
+				<section>
+					<div className="text-subtle mb-4">Work experience</div>
+					as
 				</section>
 				{props.projects?.length > 0 && (
 					<section>

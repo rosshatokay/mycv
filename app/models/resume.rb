@@ -10,7 +10,12 @@ class Resume < ApplicationRecord
                              message: "must be a valid LinkedIn profile path",
                            }, allow_blank: true
 
+  validates :role, length: { maximum: 100 }
+  validates :location, length: { maximum: 100 }
+  validates :bio, length: { maximum: 1000 }
+
   after_validation :format_custom_url, if: -> { website_url.present? && errors.empty? }
+  validate :validate_highlights_format
 
   accepts_nested_attributes_for :education, update_only: true
 
@@ -35,6 +40,23 @@ class Resume < ApplicationRecord
   end
 
   private
+
+  def validate_highlights_format
+    return if highlights.nil?
+
+    unless highlights.is_a?(Array)
+      errors.add(:highlights, "must be an array")
+      return
+    end
+
+    if highlights.size > 4
+      errors.add(:highlights, "cannot exceed 4 items")
+    end
+
+    if highlights.any? { |h| h.to_s.length > 150 }
+      errors.add(:highlights, "each highlight must be under 150 characters")
+    end
+  end
 
   def format_custom_url
     self.website_url = "https://#{website_url.strip.downcase.gsub("https://", "").gsub("http://", "")}"

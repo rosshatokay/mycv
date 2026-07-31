@@ -21,12 +21,12 @@ export default function StaticHeader() {
 
 	return (
 		<>
-			<header className={cn(`fixed top-0 left-0 w-full h-16 bg-background z-2 transition border-b`, isScrolled ? "border-b" : "border-transparent")}>
+			<header className={cn(`fixed top-0 left-0 w-full bg-background z-2 transition-all border-b`, isScrolled ? "border-b h-14" : "border-transparent h-16")}>
 				<div className="large-container flex items-center justify-between h-full relative z-2">
 					<Link href={"/"} className="font-medium">highlight.cv</Link>
 					<div className="flex gap-2">
-						<Button nativeButton={false} variant={"ghost"} render={<Link href={"/login"} className="text-[15px]" />}>Log in</Button>
-						<Button nativeButton={false} render={<Link href={"/register"} className="text-[15px]" />}>Create your profile</Button>
+						<Button nativeButton={false} size={"default"} variant={"ghost"} render={<Link href={"/login"} />}>Log in</Button>
+						<Button nativeButton={false} size={"default"} render={<Link href={"/signup"} />}>Create your profile</Button>
 					</div>
 				</div>
 			</header>

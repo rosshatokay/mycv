@@ -19,20 +19,8 @@ class Settings::ProfileController < ApplicationController
   end
 
   def update
-    if params[:user][:resume].present?
-      params[:user][:resume_attributes] = params[:user].delete(:resume)
-
-      if current_user.resume.present?
-        params[:user][:resume_attributes][:id] = current_user.resume.id
-      end
-
-      if params[:user][:resume_attributes][:education].present?
-        params[:user][:resume_attributes][:education_attributes] = params[:user][:resume_attributes].delete(:education)
-      end
-    end
-
     if current_user.update(user_params)
-      flash.inertia[:toast] = { description: "Profile updated successfuly!" }
+      flash.inertia[:toast] = { description: "Profile updated successfully!" }
       redirect_to settings_profile_index_path
     else
       flash.inertia[:toast] = { description: "Could not save profile!" }
@@ -43,18 +31,17 @@ class Settings::ProfileController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(
+    permitted = params.require(:user).permit(
       :full_name,
       :avatar,
-      resume_attributes: [
-        :id,
+      resume: [
         :bio,
         :role,
         :location,
         :website_url,
         :linkedin_url,
         highlights: [],
-        education_attributes: [
+        education: [
           :start_year,
           :end_year,
           :major,
@@ -64,5 +51,33 @@ class Settings::ProfileController < ApplicationController
         ],
       ],
     )
+
+    # Convert frontend 'resume' and 'education' structures into Active Record nested attributes
+    return permitted unless permitted[:resume].present?
+
+    resume_params = permitted.delete(:resume)
+
+    # Ensure current_user's existing resume ID is bound
+    resume_params[:id] = current_user.resume&.id
+
+    if resume_params[:education].present?
+      education_params = resume_params.delete(:education)
+      # Ensure existing education ID is bound to prevent duplicate creation
+      education_params[:id] = current_user.resume&.education&.id
+      resume_params[:education_attributes] = education_params
+    end
+
+    # Sanitize and format URL schemes strictly
+    if resume_params[:website_url].present?
+      resume_params[:website_url] = sanitize_url(resume_params[:website_url])
+    end
+
+    permitted[:resume_attributes] = resume_params
+    permitted
+  end
+
+  def sanitize_url(url)
+    cleaned = url.strip.sub(%r{\Ahttps?://}, "")
+    "https://#{cleaned}"
   end
 end

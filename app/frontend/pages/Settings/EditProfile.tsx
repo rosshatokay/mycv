@@ -124,7 +124,7 @@ export default function EditProfilePage({ auth }: AuthUser) {
 			<div className="main-container py-16 flex flex-col text-[15px]">
 				{createBreadcrumbs([{ label: "Settings", path: "/settings" }, { label: "Edit profile", path: "/settings/profile" }])}
 				<div className="font-medium text-xl mt-4">Edit profile</div>
-				<div className="text-subtle">Customize your work profile details.</div>
+				<div className="text-subtle">Customize your public work profile details.</div>
 				<form onSubmit={handleSubmit}>
 					<FieldGroup>
 						<FieldSet className="mt-6">

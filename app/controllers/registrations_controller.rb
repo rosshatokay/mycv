@@ -14,7 +14,7 @@ class RegistrationsController < ApplicationController
   def create
     return if user_signed_in?
     user = User.new(user_params)
-    accepted_tos = params[:accept_tos] === true
+    accepted_tos = params[:user][:accept_tos] === true
 
     user.errors.add(:accept_tos, "Terms of service and privacy policy must be accepted") unless accepted_tos
 
