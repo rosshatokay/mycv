@@ -22,6 +22,7 @@ class RegistrationsController < ApplicationController
       start_new_session_for user
       redirect_to root_path, notice: "Account created successfully!"
     else
+      flash.inertia[:toast] = { description: "Something went wrong" }
       redirect_to new_user_registration_path, inertia: { errors: inertia_errors_for(user) }
     end
   end

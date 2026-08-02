@@ -3,6 +3,7 @@ class OnboardingController < ApplicationController
 
   def index
     if current_user.onboarded?
+      flash.inertia[:toast] = { description: "All set!" }
       redirect_to root_path and return
     end
 

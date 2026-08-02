@@ -45,7 +45,7 @@ class User < ApplicationRecord
                           minimum: 2,
                           maximum: 20,
                           message: "must be between 2 and 70 characters",
-                        # allow_blank: true,
+                          allow_blank: true,
                         }
 
   def onboarded?
@@ -61,7 +61,7 @@ class User < ApplicationRecord
   end
 
   def highlights_completed?
-    resume.highlights.present?
+    resume.highlights.present? && !resume.highlights.all?(&:empty?)
   end
 
   def to_profile

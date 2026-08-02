@@ -14,9 +14,9 @@ class Resume < ApplicationRecord
                              message: "must be a valid LinkedIn profile path",
                            }, allow_blank: true
 
-  validates :role, length: { maximum: 100 }
-  validates :location, length: { maximum: 100 }
-  validates :bio, length: { maximum: 1000 }, presence: { on: ONBOARDING_STEP }
+  validates :role, length: { maximum: 100 }, presence: { on: ONBOARDING_STEP }, allow_blank: true
+  validates :location, length: { maximum: 100 }, presence: { on: ONBOARDING_STEP }, allow_blank: true
+  validates :bio, length: { maximum: 1000 }, presence: { on: ONBOARDING_STEP }, allow_blank: true
 
   after_validation :format_custom_url, if: -> { website_url.present? && errors.empty? }
   validate :validate_highlights_format
