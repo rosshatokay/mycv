@@ -1,7 +1,11 @@
 class Resume < ApplicationRecord
+  ONBOARDING_STEP = :onboarding
+
   belongs_to :user
 
   has_many :projects, dependent: :destroy
+  has_many :work_experiences, dependent: :destroy
+
   has_one :education
 
   validates_with PostfixUrlValidator, attributes: [:website_url]
@@ -12,7 +16,7 @@ class Resume < ApplicationRecord
 
   validates :role, length: { maximum: 100 }
   validates :location, length: { maximum: 100 }
-  validates :bio, length: { maximum: 1000 }
+  validates :bio, length: { maximum: 1000 }, presence: { on: ONBOARDING_STEP }
 
   after_validation :format_custom_url, if: -> { website_url.present? && errors.empty? }
   validate :validate_highlights_format
@@ -20,21 +24,27 @@ class Resume < ApplicationRecord
   accepts_nested_attributes_for :education, update_only: true
 
   def formatted_projects(curr_user = nil)
-    projects.map { |p|
+    projects&.map { |p|
+      raw_url = p.url.gsub("http://", "").gsub("https://", "")
       {
         title: p.title,
         id: p.hashid,
         highlights: p.highlights || [],
-        url: p.url,
+        url: "https://#{raw_url}",
         description: p.description,
         year: p.year,
         is_owner: p.resume.user.id === curr_user&.id,
-        # images: p.get_images_urls,
-        images: [
-          "https://ik.imagekit.io/highlightcv/development/projects/images/s9fztwdxvpdsraiggxlmoxd2rz7p?tr=c-fill,h-400,w-600",
-          "https://i.pinimg.com/1200x/73/a5/7c/73a57c4f3a3ed5c396aba3226ea99294.jpg",
-          "https://minimal.gallery/wp-content/uploads/2022/02/rafa-cobiella-2-1440x800.jpg",
-        ],
+        images: p.get_images_urls,
+      }
+    } || []
+  end
+
+  def formatted_work_experiences
+    work_experiences&.map { |w|
+      {
+        **w.slice(:company, :role, :start_year, :end_year),
+        location: w.location,
+        id: w.hashid,
       }
     }
   end

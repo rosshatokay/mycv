@@ -16,7 +16,7 @@ class Project < ApplicationRecord
 
   def get_images_urls
     images.attached? ? images.map { |img|
-      img.service.url(img.blob.key, transformation: [{ width: 600, height: 400, crop: "fill" }])
+      img.service.url(img.blob.key, transformation: [{ width: 1200, height: 800, crop: "fill" }])
     } : []
   end
 

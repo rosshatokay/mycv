@@ -1,13 +1,15 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface YearSelectProps {
-	value?: number | string
+	value?: number | string | null
 	onChange: (year: number) => void
 	startYear?: number,
 	endYear?: number
+	id: string
 }
 
 export function YearSelect({
+	id,
 	value,
 	onChange,
 	startYear = 1980,
@@ -16,7 +18,7 @@ export function YearSelect({
 	const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => endYear - i)
 
 	return (
-		<Select value={value ? String(value) : undefined} onValueChange={(val) => onChange(Number(val))}>
+		<Select id={id} value={value ? String(value) : undefined} onValueChange={(val) => onChange(Number(val))}>
 			<SelectTrigger>
 				<SelectValue placeholder="Select year"></SelectValue>
 			</SelectTrigger>

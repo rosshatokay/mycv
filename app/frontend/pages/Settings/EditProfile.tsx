@@ -201,12 +201,12 @@ export default function EditProfilePage({ auth }: AuthUser) {
 							</FieldGroup>
 							<FieldGroup className="grid grid-cols-2">
 								<Field>
-									<FieldLabel>Start year</FieldLabel>
-									<YearSelect value={data.user.resume.education.start_year} onChange={(e) => setData("user.resume.education.start_year", e)} />
+									<FieldLabel htmlFor="start_year">Start year</FieldLabel>
+									<YearSelect id="start_year" value={data.user.resume.education.start_year} onChange={(e) => setData("user.resume.education.start_year", e)} />
 								</Field>
 								<Field>
-									<FieldLabel>End year</FieldLabel>
-									<YearSelect value={data.user.resume.education.end_year} onChange={(e) => setData("user.resume.education.end_year", e)} endYear={2040} />
+									<FieldLabel htmlFor="end_year">End year</FieldLabel>
+									<YearSelect id="end_year" value={data.user.resume.education.end_year} onChange={(e) => setData("user.resume.education.end_year", e)} endYear={2040} />
 								</Field>
 							</FieldGroup>
 							<FieldGroup className="grid grid-cols-2">

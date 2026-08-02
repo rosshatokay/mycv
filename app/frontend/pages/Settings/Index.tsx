@@ -1,20 +1,19 @@
-import BaseLayout from "@/layouts/BaseLayout";
 import { Head, Link } from "@inertiajs/react";
-import { BellIcon, LockIcon, PaletteIcon, UserIcon } from "lucide-react";
+import { LockIcon, PaletteIcon, UserIcon } from "lucide-react";
 
 const linkGroups = [
 	{
 		label: "Account",
 		links: [
 			{ label: "Profile", icon: (<UserIcon />), path: "/settings/profile", desc: "Edit your public profile page." },
-			{ label: "Login & Security", icon: (<LockIcon />), path: "/settings/profile", desc: "Change your login credentials." }
+			{ label: "Login & Security", icon: (<LockIcon />), path: "/settings/security", desc: "Change your login credentials." }
 		]
 	},
 	{
 		label: "Preferences",
 		links: [
-			{ label: "Notifications ", icon: (<BellIcon />), path: "/settings/notifications", desc: "Change your notification settings." },
-			{ label: "Appearance ", icon: (<PaletteIcon />), path: "/settings/display", desc: "Customize the app's display theme." },
+			// { label: "Notifications ", icon: (<BellIcon />), path: "/settings/notifications", desc: "Change your notification settings." },
+			{ label: "Appearance ", icon: (<PaletteIcon />), path: "/settings/appearance", desc: "Customize the app's display theme." },
 		]
 	}
 ]

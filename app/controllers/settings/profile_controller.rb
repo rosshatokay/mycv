@@ -2,13 +2,13 @@ class Settings::ProfileController < ApplicationController
   def index
     resume = current_user.resume || {}
     resume_data = {
-      highlights: resume.highlights,
+      highlights: resume.highlights || [],
       role: resume.role,
       location: resume.location,
       bio: resume.bio,
-      website_url: resume.website_url.gsub("https://", "").gsub("http://", ""),
+      website_url: resume.website_url&.gsub("https://", "")&.gsub("http://", ""),
       linkedin_url: resume.linkedin_url,
-      education: resume.education,
+      education: resume.education || {},
     }
     # resume_data["highlights"] = Array(resume_data["highlights"]).presence || [""]
     # resume_data["website_url"] = resume_data.website_url.gsub("https://", "").gsub("http://", "")

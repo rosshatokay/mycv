@@ -1,10 +1,7 @@
 import { Sheet, SheetClose, SheetContent } from "@/components/ui/sheet";
-import { ProjectItemProps } from "./ProjectItem";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CarouselItem } from "@/components/ui/carousel";
 import SimpleCarousel from "./SimpleCarousel";
+import { ProjectItemProps } from "@/interfaces/projectItemProps";
 
 interface ProjectSheetProps {
 	project: ProjectItemProps['project'] | null,
@@ -28,7 +25,7 @@ export default function ProjectSheet({ project, setActiveProject }: ProjectSheet
 						</SimpleCarousel>
 						<div className="mt-8">
 							<div className="text-subtle text-sm">{project?.year}</div>
-							<div className="text-lg font-medium">{project?.title}</div>
+							<div className="text-lg">{project?.title}</div>
 							<div className="text-subtle text-base">{project?.description}</div>
 							<ul className="list-disc px-[1rem] mt-4 text-base">
 								{project?.highlights.map((item, index) => (

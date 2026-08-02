@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_30_141840) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_02_145231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -94,11 +94,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_30_141840) do
     t.datetime "created_at", null: false
     t.string "email", null: false
     t.string "full_name"
+    t.date "onboarded_at"
     t.string "password_digest", null: false
     t.datetime "updated_at", null: false
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "work_experiences", force: :cascade do |t|
+    t.string "city"
+    t.string "company"
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.integer "end_year"
+    t.bigint "resume_id", null: false
+    t.string "role"
+    t.integer "start_year", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resume_id"], name: "index_work_experiences_on_resume_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -107,4 +121,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_30_141840) do
   add_foreign_key "projects", "resumes"
   add_foreign_key "resumes", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "work_experiences", "resumes"
 end

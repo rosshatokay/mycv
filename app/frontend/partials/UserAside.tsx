@@ -1,42 +1,19 @@
 import { LogoIcon } from "@/assets/logo"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { AuthUser } from "@/interfaces/user"
 import { cn } from "@/lib/utils"
 import { Link, usePage } from "@inertiajs/react"
-import { ChartNoAxesColumn, SettingsIcon, Rows3, SunMoonIcon, UserCircle, LogOutIcon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { ChartNoAxesColumn, SettingsIcon, Rows3, UserCircle, LogOutIcon, BriefcaseBusinessIcon } from "lucide-react"
 
 export default function UserAside({ auth }: AuthUser) {
 	const { url } = usePage()
 	const user = auth.user
 
-	const getNormalizedTheme = () => {
-		if (window.Theme.getTheme() === "system") {
-			const isSysDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-
-			return isSysDarkMode ? "dark" : "light"
-		}
-
-		return window.Theme.getTheme()
-	}
-
-	const [currentTheme, setCurrentTheme] = useState<string | null>(getNormalizedTheme())
-
-	const nextTheme = () => {
-		window.Theme.setTheme(getNormalizedTheme() === "light" ? "dark" : "light")
-		setCurrentTheme(window.Theme.getTheme())
-	}
-
-	useEffect(() => {
-		setCurrentTheme(getNormalizedTheme())
-	})
-
 	const links = [
 		{ label: "Profile", icon: (<UserCircle size={16} />), path: `/@${user.username}` },
+		{ label: "Work", icon: (<BriefcaseBusinessIcon size={16} />), path: `/work-experience` },
 		{ label: "Projects", icon: (<Rows3 size={16} />), path: `/projects` },
 		{ label: "Analytics", icon: (<ChartNoAxesColumn size={16} />), path: '/analytics' },
 		{ label: "Settings", icon: (<SettingsIcon size={16} />), path: '/settings' },
@@ -45,7 +22,7 @@ export default function UserAside({ auth }: AuthUser) {
 	return (
 		<aside className="fixed h-16 top-0 left-0 py-6 h-screen px-6 z-2 justify-between flex flex-col transition" id="main-aside">
 			<div className="flex flex-col gap-12">
-				<LogoIcon />
+				<LogoIcon fill="var(--primary)" />
 				<div className="flex flex-col gap-2">
 					{links.map(item => {
 						const isActive = url === item.path
@@ -81,20 +58,6 @@ export default function UserAside({ auth }: AuthUser) {
 						<DropdownMenuItem render={<Link href={"/logout"} method="delete" as={"button"} className="w-full" />}><LogOutIcon /> Sign out</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
-				<Tooltip>
-					<TooltipTrigger
-						delay={0}
-						render={
-							<Button
-								variant={"ghost"}
-								size={"icon-lg"}
-								onClick={nextTheme}
-							>
-								<SunMoonIcon />
-							</Button>}>
-					</TooltipTrigger>
-					<TooltipContent>{currentTheme === "light" ? "Dark mode" : "Light mode"}</TooltipContent>
-				</Tooltip>
 			</div>
 		</aside>
 	)

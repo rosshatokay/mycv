@@ -17,6 +17,7 @@ class ProfilesController < ApplicationController
         projects: user.resume.formatted_projects || [],
         resume: resume_data.to_json,
         education: resume.education,
+        work_experiences: resume.formatted_work_experiences,
       }
     end
   end

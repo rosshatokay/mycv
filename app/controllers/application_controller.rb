@@ -19,6 +19,15 @@ class ApplicationController < ActionController::Base
                   }
                 }
 
+  before_action :check_onboarding
+
+  def check_onboarding
+    # Only redirect if they are logged in and haven't finished onboarding
+    if authenticated? && !current_user.onboarded?
+      redirect_to onboarding_index_path
+    end
+  end
+
   def current_user
     @current_user ||= Current.user
   end

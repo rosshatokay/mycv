@@ -13,11 +13,6 @@ import { YearSelect } from "./SelectYear";
 import { Project } from "@/interfaces/project";
 import { useRef, useState } from "react";
 
-const breadcrumbs = [
-	{ label: "Projects", path: "/projects" },
-	{ label: "New project", path: "/projects/new" },
-] satisfies Breadcrumb[]
-
 interface PageProps {
 	project: Project
 	is_edit: boolean
@@ -33,9 +28,15 @@ export default function NewProject({ project, is_edit }: PageProps) {
 			description: project.description || "",
 			year: project.year || NaN,
 			highlights: project.highlights || [''],
-			images: [] as (File | string)[]
+			images: [] as (File | string)[],
+			remove_image_ids: [] as string[]
 		}
 	})
+
+	const breadcrumbs = [
+		{ label: "Projects", path: "/projects" },
+		{ label: `${is_edit ? 'Edit' : 'New'} project`, path: "/projects/new" },
+	] satisfies Breadcrumb[]
 
 	const handleAddHighlight = () => {
 		if (data.project.highlights.length < 6) {
@@ -90,7 +91,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 		const currImages = data.project.images || []
 
 		// limit to 5
-		const remainingSlots = 5 - currImages.length
+		const remainingSlots = 5 - (currImages.length + previewUrls.length)
 		const selectedFiles = files.slice(0, remainingSlots)
 
 		if (selectedFiles.length > 0) {
@@ -104,6 +105,22 @@ export default function NewProject({ project, is_edit }: PageProps) {
 
 			setPreviewUrls(prev => [...prev, ...newPreviewUrls])
 		}
+
+		if (e.target) {
+			e.target.value = ''
+		}
+	}
+
+	const handleRemoveImage = (index: number) => {
+		const existingCount = project.images.length // how many initial ones remain
+		const updatedPreviews = previewUrls.filter((_, i) => i !== index)
+
+		setPreviewUrls(updatedPreviews)
+
+		// if index falls into newly added files
+		const updatedImage = data.project.images.filter((_, i) => {
+			return true
+		})
 	}
 
 	return (
@@ -127,14 +144,14 @@ export default function NewProject({ project, is_edit }: PageProps) {
 								<Field>
 									<div className="flex gap-0.5">
 										<FieldLabel htmlFor="title">Title</FieldLabel>
-										<span className="text-red-500">*</span>
+										<span className="text-destructive">*</span>
 									</div>
 									<Input type="text" id="title" required value={data.project.title} onChange={(e) => setData('project.title', e.target.value)} placeholder="Enter your project's title"></Input>
 								</Field>
 								<Field>
 									<div className="flex gap-0.5">
 										<FieldLabel htmlFor="description">Description</FieldLabel>
-										<span className="text-red-500">*</span>
+										<span className="text-destructive">*</span>
 									</div>
 									<Input type="text" id="description" value={data.project.description} onChange={(e) => setData('project.description', e.target.value)} required placeholder="Describe your project briefly"></Input>
 								</Field>
@@ -155,8 +172,8 @@ export default function NewProject({ project, is_edit }: PageProps) {
 										{errors["project.url"] && <FieldError>{errors["project.url"]}</FieldError>}
 									</Field>
 									<Field>
-										<FieldLabel>Year</FieldLabel>
-										<YearSelect value={data.project.year} onChange={(selectedYear) => setData('project.year', selectedYear)} />
+										<FieldLabel htmlFor="year">Year</FieldLabel>
+										<YearSelect id="year" value={data.project.year} onChange={(selectedYear) => setData('project.year', selectedYear)} />
 									</Field>
 								</div>
 							</FieldGroup>
@@ -213,7 +230,44 @@ export default function NewProject({ project, is_edit }: PageProps) {
 						{previewUrls.length > 0 &&
 							<div className="grid grid-cols-5 gap-2">
 								{previewUrls.map((url, index) => (
-									<div key={index} className="bg-card aspect-square rounded-md" style={{ background: `url(${url}) center / cover` }}></div>
+									<div
+										key={index}
+										className="bg-card aspect-square rounded-md relative"
+										style={{ background: `url(${url}) center / cover` }}>
+										<Button
+											type="button"
+											onClick={(e) => {
+												e.stopPropagation()
+
+												const targetUrl = previewUrls[index]
+
+												// Remove from preview UI
+												setPreviewUrls(prev => prev.filter((_, i) => i !== index))
+
+												// Check if this was an existing server image or a new file
+												if (index < project.images.length) {
+													// It's an existing image. We need its attachment/blob ID. 
+													// (Note: Ensure your backend passes the image id along with the url, e.g., { id: 1, url: '...' })
+													const imageId = project.image_ids[index]
+													setData('project', {
+														...data.project,
+														remove_image_ids: [...data.project.remove_image_ids, imageId]
+													})
+												} else {
+													// It's a newly added local File
+													const fileIndex = index - project.images.length
+													setData('project', {
+														...data.project,
+														images: data.project.images.filter((_, i) => i !== fileIndex)
+													})
+												}
+											}}
+											size={"icon-sm"}
+											variant={"secondary"}
+											className={"absolute top-1 right-1 hover:bg-destructive hover:text-white"}>
+											<TrashIcon />
+										</Button>
+									</div>
 								))}
 							</div>
 						}

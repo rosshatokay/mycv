@@ -11,9 +11,7 @@ export const Theme = (() => {
   const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)')
   let storedTheme = localStorage.getItem("theme")
 	const isInLibrary = document.querySelector('html')?.classList.contains('library')
-	/**
-	 * @type {HTMLInputElement}
-	 */
+	
   let themeSelector
 
   function triggerThemeLoaded(theme?: string)

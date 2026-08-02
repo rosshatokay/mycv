@@ -25,6 +25,7 @@ class ProjectsController < ApplicationController
         year: project.year,
         highlights: project.highlights || [],
         images: project.get_images_urls,
+        image_ids: project.images.map(&:id),
       },
     }
   end
@@ -32,13 +33,18 @@ class ProjectsController < ApplicationController
   def update
     project = current_user.projects.find(params[:project_id])
 
-    # Only attach new files if any were provided in the request
+    # purge selected existing images if ids present
+    if project_params[:remove_image_ids].present?
+      project.images.where(id: project_params[:remove_image_ids]).each(&:purge)
+    end
+
+    # attach new files if present
     if project_params[:images].present?
       project.images.attach(project_params[:images])
     end
 
-    # Update other project attributes, excluding images from mass assignment
-    if project.update(project_params.except(:images))
+    # update remaining attributes (excluding images and removal ids from mass assignment)
+    if project.update(project_params.except(:images, :remove_image_ids))
       flash.inertia[:toast] = { description: "Project details updated successfully" }
       redirect_to edit_project_path(project.hashid)
     else
@@ -69,6 +75,7 @@ class ProjectsController < ApplicationController
       :year,
       highlights: [],
       images: [],
+      remove_image_ids: [],
     )
   end
 end

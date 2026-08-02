@@ -3,18 +3,22 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Project } from "@/interfaces/project"
 import { AuthUser } from "@/interfaces/user"
-import { Head, Link } from "@inertiajs/react"
-import { EyeIcon, EyeOffIcon, GlobeIcon, MailIcon } from "lucide-react"
+import { Head, Link, router } from "@inertiajs/react"
+import { EyeIcon, EyeOffIcon, FolderPlusIcon, GlobeIcon, MailIcon, PlusIcon, SquarePlus } from "lucide-react"
 import { EducationProps, ResumeProps } from "../Settings/EditProfile"
 import { LinkedInIcon } from "@/assets/linkedin"
 import { useEffect, useRef, useState } from "react"
 import { LogoIcon } from "@/assets/logo"
 import ProfileMoreMenu from "./components/MoreMenu"
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import ProjectItem, { ProjectItemProps } from "@/partials/ProjectItem"
+import { DropdownMenuItem, DropdownMenuShortcut } from "@/components/ui/dropdown-menu"
+import ProjectItem from "@/partials/ProjectItem"
 import FloatingProfileTopBar from "./components/FloatingProfileTopBar"
 import ProjectSheet from "@/partials/ProjectSheet"
 import ShareDialog from "@/partials/ShareDialog"
+import { ProjectItemProps } from "@/interfaces/projectItemProps"
+import { WorkExperience } from "@/interfaces/workExperience"
+import WorkExperienceItem from "@/partials/WorkExperienceItem"
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 
 export interface ProfilePageProps {
 	auth: AuthUser['auth'],
@@ -29,6 +33,7 @@ export interface ProfilePageProps {
 	projects: Project[]
 	resume: string
 	education: EducationProps
+	work_experiences: WorkExperience[]
 }
 
 export default function ProfilePage(props: ProfilePageProps) {
@@ -42,6 +47,8 @@ export default function ProfilePage(props: ProfilePageProps) {
 	const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false)
 
 	useHotkeys('mod+shift+s', () => setIsShareDialogOpen(true))
+	useHotkeys('mod+shift+e', () => router.visit("/settings/profile"))
+	useHotkeys('mod+shift+v', () => setIsViewingAsGuest(!isViewingAsGuest))
 
 	useEffect(() => {
 		const target = targetRef.current;
@@ -49,7 +56,6 @@ export default function ProfilePage(props: ProfilePageProps) {
 
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				console.log(entry.boundingClientRect)
 				// boundingClientRect.top < 0 means the element's top has moved above the viewport view
 				// !entry.isIntersecting means the element is no longer visible in the view
 				if (entry.boundingClientRect.top < 0 && !entry.isIntersecting) {
@@ -70,10 +76,6 @@ export default function ProfilePage(props: ProfilePageProps) {
 	}, []);
 
 	useEffect(() => {
-		console.log(activeProject)
-	}, [activeProject])
-
-	useEffect(() => {
 		const userAside = document.getElementById('main-aside')
 		if (isViewingAsGuest) {
 			userAside?.classList.add('opacity-0', 'pointer-events-none')
@@ -90,8 +92,8 @@ export default function ProfilePage(props: ProfilePageProps) {
 			<div className="fixed top-0 left-0 w-full p-4 flex justify-end">
 				<div className="flex gap-1">
 					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit</Button>}
-					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Change template</Button>}
-					{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest</DropdownMenuItem>} />}
+					{/* {(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Change template</Button>} */}
+					{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu openShareDialog={() => setIsShareDialogOpen(true)} viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest <DropdownMenuShortcut>⇧⌘V</DropdownMenuShortcut></DropdownMenuItem>} />}
 					{isViewingAsGuest && <Button variant={"ghost"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
 						<EyeOffIcon></EyeOffIcon>
 						Stop viewing as guest
@@ -107,7 +109,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 						<div className="flex justify-between">
 							<Avatar size="lg" className={"mb-4"}>
 								<AvatarImage src={props.user.avatar_url} alt={`@${props.user.username}'s picture`}></AvatarImage>
-								<AvatarFallback>{props.user.username[0].toUpperCase()}</AvatarFallback>
+								<AvatarFallback>{props.user.full_name[0].toUpperCase()}</AvatarFallback>
 							</Avatar>
 						</div>
 						<div className="flex flex-col">
@@ -131,10 +133,50 @@ export default function ProfilePage(props: ProfilePageProps) {
 						</div>
 					</div>
 				</section>
-				<section>
-					<div className="text-subtle mb-4">Work experience</div>
-					as
-				</section>
+				{props.work_experiences?.length > 0 && (
+					<section>
+						<div className="text-subtle mb-4">Work experience</div>
+						<div className="flex flex-col gap-6">
+							{props.work_experiences.map(item => (
+								<WorkExperienceItem item={item} key={item.id} />
+							))}
+						</div>
+					</section>
+				)}
+				{!(props.work_experiences?.length > 0) && !isViewingAsGuest && isOwner && (
+					<section>
+						<div className="text-subtle mb-4">Work experience</div>
+						<Empty className="border">
+							<EmptyHeader>
+								<EmptyMedia variant={"icon"}>
+									<SquarePlus />
+								</EmptyMedia>
+								<EmptyTitle>No work experience yet</EmptyTitle>
+								<EmptyDescription>You haven't created any work experiences yet. Get started by adding your first work experience.</EmptyDescription>
+							</EmptyHeader>
+							<EmptyContent>
+								<Button nativeButton={false} variant={"secondary"} render={<Link href={"/work-experience/new"}></Link>}><PlusIcon data-icon="inline-start" /> Add work experience</Button>
+							</EmptyContent>
+						</Empty>
+					</section>
+				)}
+				{!(props.projects?.length > 0) && !isViewingAsGuest && isOwner && (
+					<section>
+						<div className="text-subtle mb-4">Projects</div>
+						<Empty className="border">
+							<EmptyHeader>
+								<EmptyMedia variant={"icon"}>
+									<FolderPlusIcon />
+								</EmptyMedia>
+								<EmptyTitle>No projects yet</EmptyTitle>
+								<EmptyDescription>You haven't created any projects yet. Get started by adding your first project.</EmptyDescription>
+							</EmptyHeader>
+							<EmptyContent>
+								<Button nativeButton={false} variant={"secondary"} render={<Link href={"/projects/new"}></Link>}><PlusIcon data-icon="inline-start" /> Create project</Button>
+							</EmptyContent>
+						</Empty>
+					</section>
+				)}
 				{props.projects?.length > 0 && (
 					<section>
 						<div className="text-subtle mb-4">Projects</div>
@@ -179,7 +221,7 @@ export default function ProfilePage(props: ProfilePageProps) {
 			{props.projects?.length > 0 && (
 				<ProjectSheet project={activeProject} setActiveProject={setActiveProject}></ProjectSheet>
 			)}
-			<ShareDialog url={`https://highlight.cv/@${props.user.username}`} isOpen={isShareDialogOpen} />
+			<ShareDialog url={`https://highlight.cv/@${props.user.username}`} isOpen={isShareDialogOpen} setIsOpen={setIsShareDialogOpen} />
 		</>
 	)
 }

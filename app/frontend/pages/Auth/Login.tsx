@@ -23,16 +23,16 @@ export default function LoginPage() {
 				<meta name="description" content="Log in to your highlight.cv account."></meta>
 			</Head>
 			<div className="w-full overflow-auto z-0">
-				<div className="flex h-screen overflow-hidden">
+				<div className="flex min-h-svh flex-center overflow-hidden">
 					<div className="w-full overflow-auto">
 						<div className="relative h-full">
 							<div className="relative z-10 mx-auto py-8 sm:w-max sm:py-16">
 								<div className="flex justify-center px-4">
-									<LogoIcon size={36} />
+									<LogoIcon size={36} fill="var(--primary)" />
 								</div>
 								<div className="mx-auto w-full bg-surface-white px-4 py-6 sm:w-96 sm:rounded-lg">
 									<div className="text-center">
-										<h1 className="text-xl leading-none tracking-tight text-ink-gray-9 mb-2">Log in to your account</h1>
+										<h1 className="font-medium text-xl leading-none tracking-tight text-ink-gray-9 mb-2">Log in to your account</h1>
 										<p className="text-subtle text-sm max-w-xs mx-auto">Welcome back, sign in to your account below.</p>
 									</div>
 									<div className="mt-6">

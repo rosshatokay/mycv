@@ -1,12 +1,7 @@
-import { Project } from "@/interfaces/project";
+import { ProjectItemProps } from "@/interfaces/projectItemProps";
 import { cn } from "@/lib/utils";
 import { Link } from "@inertiajs/react";
 import { ArrowUpRight } from "lucide-react";
-
-export interface ProjectItemProps {
-	project: Project
-	onSelect: (project: any) => void
-}
 
 export default function ProjectItem({ project, onSelect }: ProjectItemProps) {
 	return (
@@ -21,7 +16,7 @@ export default function ProjectItem({ project, onSelect }: ProjectItemProps) {
 						<div>
 							{project.url ?
 								(<a href={project.url} target="_blank" className="w-fit flex items-center group z-2 relative">
-									<span className="group-hover:underline font-medium">{project.title}</span>
+									<span className="group-hover:underline">{project.title}</span>
 									<ArrowUpRight size={15} className="opacity-50 group-hover:opacity-100 transition" />
 								</a>)
 								:
@@ -35,7 +30,7 @@ export default function ProjectItem({ project, onSelect }: ProjectItemProps) {
 					</ul>
 					<div className="mt-4 grid grid-cols-3">
 						{project.images?.map((image, index) => (
-							<div className="hover:bg-black/40 cursor-zoom-in dark:hover:bg-white/40 p-1 rounded-lg transition" onClick={() => onSelect(project)} key={index}>
+							<div className="hover:bg-black/40 cursor-zoom-in dark:hover:bg-white/40 p-1 rounded-lg transition" onClick={() => onSelect ? onSelect(project) : undefined} key={index}>
 								<img src={image} className="bg-card rounded-md w-full aspect-[6/4] object-cover" />
 							</div>
 						))}

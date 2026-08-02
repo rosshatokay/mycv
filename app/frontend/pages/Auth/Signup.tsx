@@ -34,11 +34,11 @@ export default function SignupPage() {
 						<div className="relative h-full">
 							<div className="relative z-10 mx-auto py-8 sm:w-max sm:py-16">
 								<div className="flex justify-center px-4">
-									<LogoIcon size={36} />
+									<LogoIcon size={36} fill="var(--primary)" />
 								</div>
 								<div className="mx-auto w-full bg-surface-white px-4 py-6 sm:w-96 sm:rounded-lg">
 									<div className="text-center">
-										<h1 className="text-xl leading-none tracking-tight text-ink-gray-9 mb-2">Create your free account</h1>
+										<h1 className="font-medium text-xl leading-none tracking-tight text-ink-gray-9 mb-2">Create your free account</h1>
 										<p className="text-subtle text-sm max-w-xs mx-auto">Create your free highligh.cv account to showcase your work.</p>
 									</div>
 									<div className="mt-6">

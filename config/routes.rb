@@ -20,6 +20,17 @@ Rails.application.routes.draw do
   resource :registration, only: [:create]
   resource :session, only: [:create, :destroy]
   resources :passwords, param: :token
+  resources :work_experiences, path: "/work-experience", only: [] do
+    collection do
+      get :index
+      get "/new", to: "work_experiences#new"
+      get "/:id/edit", to: "work_experiences#edit"
+
+      patch "/:id", to: "work_experiences#update"
+
+      post "/", to: "work_experiences#create"
+    end
+  end
 
   scope "/projects" do
     get "/", to: "projects#index", as: :projects
@@ -34,10 +45,23 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/settings", to: "settings#index"
+  resources :onboarding, only: [:index] do
+    collection do
+      patch :update
+    end
+  end
+
+  get "/settings", to: "settings#index", as: :settings
 
   namespace :settings do
+    resources :appearance, only: [:index]
+
     resources :profile, only: [:index] do
+      collection do
+        patch :update
+      end
+    end
+    resources :security, only: [:index] do
       collection do
         patch :update
       end

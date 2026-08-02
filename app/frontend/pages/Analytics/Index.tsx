@@ -4,7 +4,7 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { Item, ItemDescription, ItemMedia } from "@/components/ui/item"
 import { Select, SelectTrigger } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import BaseLayout from "@/layouts/BaseLayout"
+import { Head } from "@inertiajs/react"
 import { DownloadIcon, InfoIcon } from "lucide-react"
 import { Line, LineChart, XAxis } from "recharts"
 
@@ -27,6 +27,9 @@ const chartConfig = {
 export default function AnalyticsPage() {
 	return (
 		<>
+			<Head>
+				<title>Analytics</title>
+			</Head>
 			<div className="main-container py-16 flex flex-col gap-6">
 				<Item variant={"muted"}>
 					<ItemMedia variant={"icon"}><InfoIcon /></ItemMedia>

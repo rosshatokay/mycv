@@ -1,11 +1,14 @@
 class User < ApplicationRecord
   include Hashid::Rails
 
+  ONBOARDING_STEP = :onboarding
+
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_one :resume, dependent: :destroy
 
   has_many :projects, through: :resume, dependent: :destroy
+  has_many :work_experiences, through: :resume, dependent: :destroy
   has_one :education, through: :resume
 
   has_one_attached :avatar, service: :imagekit
@@ -38,6 +41,28 @@ class User < ApplicationRecord
             }
   validates :password, presence: true, length: { minimum: 8, message: "has to be at least 8 characters long" }, if: -> { password.present? }, allow_blank: true
   validates :avatar, content_type: ["image/png", "image/jpeg", "image/webp"], size: { less_than: 5.megabytes }
+  validates :full_name, presence: { on: ONBOARDING_STEP }, length: {
+                          minimum: 2,
+                          maximum: 20,
+                          message: "must be between 2 and 70 characters",
+                        # allow_blank: true,
+                        }
+
+  def onboarded?
+    profile_completed? && about_completed? && highlights_completed?
+  end
+
+  def profile_completed?
+    full_name.present?
+  end
+
+  def about_completed?
+    resume.role.present? && resume.location.present? && resume.bio.present?
+  end
+
+  def highlights_completed?
+    resume.highlights.present?
+  end
 
   def to_profile
     {

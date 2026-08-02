@@ -13,6 +13,7 @@ import { useState } from "react"
 interface ShareDialogProps {
 	url: string
 	isOpen: boolean
+	setIsOpen: (state: boolean) => void
 }
 
 const platforms = [
@@ -49,7 +50,7 @@ const platforms = [
 	},
 ]
 
-export default function ShareDialog({ url, isOpen }: ShareDialogProps) {
+export default function ShareDialog({ url, isOpen, setIsOpen }: ShareDialogProps) {
 	const [isCopied, setIsCopied] = useState<boolean>(false)
 	
 	const handleUrlCopy = () => {
@@ -58,7 +59,7 @@ export default function ShareDialog({ url, isOpen }: ShareDialogProps) {
 	}
 	
 	return (
-		<Dialog open={isOpen} onOpenChange={(e) => !e ? isOpen = false : undefined}>
+		<Dialog open={isOpen} onOpenChange={(e) => !e ? setIsOpen(false) : undefined}>
 			<DialogContent className={"sm:max-w-md"}>
 				<DialogHeader>
 					<DialogTitle>Share profile</DialogTitle>

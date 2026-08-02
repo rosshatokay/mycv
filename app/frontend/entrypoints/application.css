@@ -34,6 +34,7 @@
 	--color-muted: var(--muted);
 	--color-secondary-foreground: var(--secondary-foreground);
 	--color-secondary: var(--secondary);
+	--color-tertiary: var(--tertiary);
 	--color-primary-foreground: var(--primary-foreground);
 	--color-link: var(--link);
 	--color-primary: var(--primary);
@@ -61,11 +62,12 @@
 	--card-foreground: oklch(0.145 0 0);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0% 0 0);
+	--primary: oklch(0.3035 0.0938 34.78);
+	--primary-foreground: oklch(96.519% 0.01315 102.111);
 	--link: oklch(63.637% 0.19542 260.48);
-	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(0.97 0 0);
 	--secondary-foreground: oklch(0.205 0 0);
+	--tertiary: oklch(0.554 0.0206 142.74);
 	--muted: oklch(0.97 0 0);
 	--muted-foreground: oklch(0.556 0 0);
 	--accent: oklch(0.97 0 0);
@@ -73,7 +75,8 @@
 	--destructive: oklch(0.577 0.245 27.325);
 	--border: oklch(0.922 0 0);
 	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
+	/* --ring: oklch(0.708 0 0); */
+	--ring: oklch(0.7667 0.0511 79.01);
 	--chart-1: oklch(0.87 0 0);
 	--chart-2: oklch(0.556 0 0);
 	--chart-3: oklch(0.439 0 0);
@@ -94,7 +97,7 @@
 	--background: oklch(15.434% 0.00002 271.152);
 	--foreground: oklch(0.985 0 0);
 	--subtle: oklch(100% 0.00011 271.152 / 0.591);
-	--card: oklch(0.205 0 0);
+	--card: oklch(93.403% 0.00011 271.152 / 0.095);
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
@@ -161,6 +164,17 @@
 
 	.flex-center {
 		@apply flex items-center justify-center
+	}
+}
+
+.logo-full {
+	width: auto;
+	svg {
+		width: auto;
+		height: 100%;
+		path {
+			fill: inherit
+		}
 	}
 }
 
