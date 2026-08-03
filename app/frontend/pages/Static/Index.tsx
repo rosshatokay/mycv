@@ -3,14 +3,92 @@ import { Input } from "@/components/ui/input"
 import { Head, useForm } from "@inertiajs/react"
 import StaticHeader from "./StaticHeader"
 import StaticFooter from "./StaticFooter"
-import { ChartPieIcon, DownloadIcon, EditIcon, EyeIcon, ShareIcon, SpotlightIcon } from "lucide-react"
-import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu"
+import { ArrowRight, BriefcaseIcon, ChartPieIcon, ChevronDown, FolderGit2Icon, GraduationCapIcon, Link2Icon, ShareIcon, ShieldCheckIcon, SpotlightIcon, UserIcon, ZapIcon } from "lucide-react"
+import SimpleCarousel from "@/partials/SimpleCarousel"
+import { CarouselItem } from "@/components/ui/carousel"
+import { Button } from "@/components/ui/button"
 
-// interface PageProps {
-// 	images: string[]
-// }
+interface PageProps {
+	images: string[]
+}
 
-export default function LandingPage() {
+const mainFeatures = [
+	{
+		icon: <SpotlightIcon />,
+		label: "Enrich your professional profile by adding clean section components."
+	},
+	{
+		icon: <ChartPieIcon />,
+		label: "Track key metrics about your profile - page views, bounce rates, and more."
+	},
+	{
+		icon: <ShareIcon />,
+		label: "Publish a custom digital resume that updates everywhere in seconds."
+	},
+]
+
+const miscFeatures = [
+	{
+		icon: <UserIcon size={20} />,
+		title: "Unified Work Profile",
+		description: "Store your bio, location, role, and custom highlights in one centralized, modern profile.",
+	},
+	{
+		icon: <BriefcaseIcon size={20} />,
+		title: "Work experience timeline",
+		description: "Document your career milestones, and dates with clean, chronological precision.",
+	},
+	{
+		icon: <FolderGit2Icon size={20} />,
+		title: "Project Showcase",
+		description: "Highlight your best builds with live URLs, execution years, and key technical takeaways.",
+	},
+	{
+		icon: <GraduationCapIcon size={20} />,
+		title: "Academic Credentials",
+		description: "Display your degrees, majors, and GPA in an easy-to-read academic breakdown.",
+	},
+	{
+		icon: <Link2Icon size={20} />,
+		title: "Custom Social Links",
+		description: "Connect your personal website and LinkedIn so visitors can explore your work deeper.",
+	},
+	{
+		icon: <ShieldCheckIcon size={20} />,
+		title: "Secure & Reliable",
+		description: "Rest easy with encrypted sessions, instant page loads, and data synchronization.",
+	},
+]
+
+const faqs = [
+	{
+		question: "How is this different from a standard PDF resume?",
+		answer:
+			"Unlike static PDFs that get outdated quickly, your profile is a dynamic, shareable website. You can update your projects, skills, or employment history in real time without needing to re-export or re-send files.",
+	},
+	{
+		question: "Can I link my own custom projects and websites?",
+		answer:
+			"Yes! Every profile includes dedicated sections to showcase live builds with outbound links, year of completion, and key highlights so employers can see your real-world proof of work.",
+	},
+	{
+		question: "Is my profile public to everyone?",
+		answer:
+			"Yes, your published profile generates a clean, shareable link that anyone can view. You can easily share it on LinkedIn, add it to job applications, or send it directly to recruiters.",
+	},
+	{
+		question: "Can I customize what information is shown?",
+		answer:
+			"Absolutely. You have full control over your bio, job experience, education, social links, and custom highlights from your settings dashboard.",
+	},
+	{
+		question: "How much does it cost to build a profile?",
+		answer:
+			"Getting started and creating your interactive online profile is completely free. You can set up your entire profile and start sharing your link in minutes.",
+	},
+]
+
+export default function LandingPage(props: PageProps) {
 	const { setData, get } = useForm({
 		email: ""
 	})
@@ -23,32 +101,92 @@ export default function LandingPage() {
 	return (
 		<>
 			<Head>
-				<title>Your professional minimalist work profile</title>
-				<meta name="description" content="Your page description" />
+				<title>Create a minimalist online resume</title>
+				<meta name="description" content="Build an interactive online resume, showcase live projects, and share your work history with a modern digital profile." />
+				<meta name="keywords" content="online resume, digital portfolio, career profile, project showcase, work experience" />
+				<meta name="robots" content="index, follow" />
 			</Head>
 			<StaticHeader />
-			<div className="py-20">
-				<div className="large-container">
-					<div className="flex flex-col text-center items-center gap-4">
-						<div className="px-12 pt-6 flex-center mb-2">
-							<LogoIcon size={48} fill="var(--primary)" className="md:block hidden" />
-							<LogoIcon size={36} fill="var(--primary)" className="md:hidden" />
+			<div className="py-16 pb-0">
+				<div className="medium-container flex flex-col sm:gap-24 gap-16">
+					<section className="flex flex-col gap-8">
+						<div className="sm:w-10 w-9 aspect-square rounded-lg bg-white dark:hidden flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.05)" }}>
+							<LogoIcon size={24} fill="var(--primary)" />
 						</div>
-						<h1 className="sm:text-2xl text-[21px] max-w-[500px] leading-[1.35] tracking-tight">A new way to showcase your professional work profile — with a clean online resume.</h1>
-						<form onSubmit={handleSubmit} className="max-w-xs w-full">
-							<div className="relative text-[15px] w-full">
-								<Input type="email" onChange={(e) => setData("email", e.target.value.trim())} placeholder="Email address" className="bg-black/5 dark:bg-white/5 w-full focus:!bg-transparent hover:bg-black/4 dark:hover:bg-white/10 border-none h-11 rounded-full px-5 !text-[15px]" />
-								<button type="submit" className="absolute top-1/2 right-5 -translate-y-1/2 whitespace-nowrap">Sign up</button>
+						<div className="sm:w-10 w-9 aspect-square rounded-lg bg-white hidden dark:flex flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.05)" }}>
+							<LogoIcon size={24} fill="var(--background)" />
+						</div>
+						<h1 className="sm:text-4xl text-[24px] sm:max-w-[500px] max-w-[400px] leading-[1.15] ">A new way to showcase your professional work profile — with a clean online resume.</h1>
+						<div className="flex flex-col gap-4">
+							<form onSubmit={handleSubmit} className="sm:max-w-xs w-full">
+								<div className="relative text-[15px] w-full">
+									<Input type="email" onChange={(e) => setData("email", e.target.value.trim())} placeholder="Email address" className="bg-black/5 dark:bg-white/5 w-full focus:!bg-transparent hover:bg-black/4 dark:hover:bg-white/10 border-none h-11 rounded-full px-5 !text-[15px]" />
+									<button type="submit" className="absolute top-1/2 right-5 -translate-y-1/2 whitespace-nowrap">Sign up</button>
+								</div>
+							</form>
+							<p className="text-xs text-subtle">It takes only a minute.</p>
+						</div>
+					</section>
+					<section className="grid sm:grid-cols-3 gap-4">
+						{mainFeatures.map((f, i) => (
+							<div key={i} className="p-5 border rounded-xl flex flex-col gap-4">
+								<div>{f.icon}</div>
+								<p className="text-[15px]">{f.label}</p>
 							</div>
-						</form>
-						<p className="text-sm text-subtle">It takes only a minute.</p>
-					</div>
-					<div className="mt-30">
-						<div className="rounded-xl w-full flex md:p-[4%_12%] p-[4%_8%] !pb-0 overflow-hidden justify-center sm:h-165" style={{ background: `url(https://images.unsplash.com/photo-1596367407372-96cb88503db6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D) center / cover` }}>
-							<img src="/page.png" alt="" className="rounded-t-xl object-cover md:max-w-[800px] w-[700px]" />
+						))}
+					</section>
+					<section>
+						<h2 className="sm:text-2xl text-[21px] font-medium mb-6">Featured template</h2>
+						{/* <div className="bg-card w-full aspect-[6/5] rounded-xl p-12 overflow-hidden flex-center">
+							<div className="bg-card w-3/4 p-6 rounded-xl">
+								<div className="w-12 aspect-square bg-white rounded-full mb-4"></div>
+								<div className="font-medium">Ross Hatokay</div>
+								<div className="text-subtle">Software Engineer</div>
+								<div className="text-subtle">London, UK</div>
+							</div>
+						</div> */}
+						<SimpleCarousel slidesToScroll={1}>
+							{props.images.map((image, index) => (
+								<CarouselItem key={index} className="min-w-full flex-[initial]">
+									<div className="p-10 flex items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/4] aspect-square overflow-hidden rounded-lg">
+										<img src={image} alt="" className="sm:w-3/4 aspect-[4/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
+										<div className="w-full text-sm pt-4"></div>
+									</div>
+								</CarouselItem>
+							))}
+						</SimpleCarousel>
+					</section>
+					<section>
+						<h2 className="sm:text-2xl text-[21px] font-medium sm:mb-10 mb-8 sm:max-w-sm max-w-xs leading-[1.25]">Everything you need to showcase your professional journey</h2>
+						<div className="grid sm:grid-cols-3 gap-x-8 sm:gap-y-12 gap-y-8">
+							{miscFeatures.map((f, i) => (
+								<div key={i} className="flex flex-col gap-2">
+									<div className="mb-4 w-9 aspect-square bg-white dark:bg-card rounded-md flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.04)" }}>{f.icon}</div>
+									<h3 className="font-medium">{f.title}</h3>
+									<p className="text-subtle text-[15px]">{f.description}</p>
+								</div>
+							))}
 						</div>
-						{/* <div className="rounded-xl bg-card w-full flex p-[4%_12%] pb-0 overflow-hidden justify-center sm:h-165"></div> */}
-					</div>
+					</section>
+					<section>
+						<h2 className="sm:text-2xl text-[21px] font-medium mb-6 sm:max-w-sm max-w-xs leading-[1.25]">Infrequently asked <br /> questions</h2>
+						<div className="space-y-4">
+							{faqs.map((faq, index) => (
+								<details
+									key={index}
+									className="group border border-border rounded-xl px-6 py-4  transition-all duration-200"
+								>
+									<summary className="flex items-center justify-between cursor-pointer text-lg text-card-foreground">
+										<span>{faq.question}</span>
+										<span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180">
+											<ChevronDown />
+										</span>
+									</summary>
+									<p className="mt-3 text-muted-foreground border-t border-border/50 pt-3">{faq.answer}</p>
+								</details>
+							))}
+						</div>
+					</section>
 					{/* <div className="w-full mt-30">
 						<h3 className="mb-4 text-subtle">Featured templates</h3>
 						<SimpleCarousel slidesToScroll={3}>
@@ -65,113 +203,6 @@ export default function LandingPage() {
 							<Button variant={"secondary"}>Explore all <ArrowRight /></Button>
 						</div>
 					</div> */}
-					<div className="mt-30 mb-16">
-						<div className="flex items-center flex-col text-center">
-							<div className="text-subtle mb-2">Features</div>
-							<div className="font-medium text-2xl max-w-xs">Packed with simple, yet powerful features.</div>
-						</div>
-					</div>
-					<div className="grid lg:grid-cols-3 gap-6">
-						<div className="flex flex-col gap-4">
-							<div className="bg-card rounded-xl w-full lg:aspect-square p-[8%] overflow-hidden">
-								<div className="p-2 h-full bg-black/2 dark:bg-white/5 rounded-xl flex flex-col">
-									<div className="text-xs p-2 pt-1 text-subtle">Personal projects</div>
-									<div className="bg-white dark:bg-white/5 flex flex-col h-full rounded-lg p-4">
-										<div className="text-xs text-subtle">2026</div>
-										<div>QuickTask Manager</div>
-										<div className="text-sm text-subtle">App to organize academic assignments.</div>
-										<ul className="list-disc flex flex-col gap-2 px-5 text-sm mt-2 marker:text-subtle/50">
-											<li><div className="h-full flex items-center"><span className="w-full h-2 bg-black/10 dark:bg-white/10 block rounded-[1px]"></span></div></li>
-											<li><div className="h-full flex items-center"><span className="w-3/4 h-2 bg-black/10 dark:bg-white/10 block rounded-[1px]"></span></div></li>
-											<li><div className="h-full flex items-center"><span className="w-3/4 h-2 bg-black/10 dark:bg-white/10 block rounded-[1px]"></span></div></li>
-											<li><div className="h-full flex items-center"><span className="w-3/4 h-2 bg-black/10 dark:bg-white/10 block rounded-[1px]"></span></div></li>
-											{/* <li>Created a clean interface to add, edit, and delete daily tasks</li>
-											<li>Integrated browser storage.</li>
-											<li>Developed fluid mobile-first designs.</li> */}
-										</ul>
-										<div className="grid grid-cols-3 gap-2 lg:mt-auto mt-8">
-											<div className="bg-card aspect-[6/4] rounded-md" style={{ background: `url(https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fG1pbmltYWx8ZW58MHx8MHx8fDA%3D) center / cover` }}></div>
-											<div className="bg-card aspect-[6/4] rounded-md" style={{ background: `url(https://images.unsplash.com/photo-1611572789411-6240f6cea970?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bWluaW1hbGlzdHxlbnwwfHwwfHx8MA%3D%3D) center / cover` }}></div>
-											<div className="bg-card aspect-[6/4] rounded-md" style={{ background: `url(https://images.unsplash.com/photo-1483794344563-d27a8d18014e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fG1pbmltYWxpc3R8ZW58MHx8MHx8fDA%3D) center / cover` }}></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div>
-								<SpotlightIcon className="mb-2" />
-								<div className="font-medium mb-1">Showcase your projects</div>
-								<div className="text-subtle">Enrich your profile by adding your personal projects with images and video.</div>
-							</div>
-						</div>
-						<div className="flex flex-col gap-4">
-							<div className="bg-card rounded-xl w-full lg:aspect-square p-[8%] overflow-hidden">
-								<div className="p-2 h-full bg-black/2 dark:bg-white/5 rounded-xl flex flex-col">
-									<div className="text-xs p-2 pt-1 text-subtle">Stats overview</div>
-									<div className="bg-white dark:bg-white/8 h-full p-4 rounded-md w-full flex flex-col gap-6">
-										<div className="flex gap-6">
-											<div>
-												<div className="text-sm text-subtle">People</div>
-												<div className="font-medium mb-1">64</div>
-												<div className="bg-black/5 dark:bg-white/10 h-3 w-12 rounded-[2px]"></div>
-											</div>
-											<div>
-												<div className="text-sm text-subtle">Page views</div>
-												<div className="font-medium mb-1">139</div>
-												<div className="bg-black/5 dark:bg-white/10 h-3 w-12 rounded-[2px]"></div>
-											</div>
-										</div>
-										<div className="grid grid-cols-6 gap-2 h-full">
-											{
-												Array.from({ length: 6 }, (_, index) => (
-													<div className="flex flex-col gap-2 items-center justify-end" key={index}>
-														<div className="bg-tertiary dark:bg-indigo-300 w-full rounded-md" style={{ height: `${Math.random() * (80 - 25) + 25}%` }}></div>
-														<span className="text-[10px] text-subtle">{days[index]}</span>
-													</div>
-												))}
-										</div>
-									</div>
-								</div>
-							</div>
-							<div>
-								<ChartPieIcon className="mb-2" />
-								<div className="font-medium mb-1">Track key metrics</div>
-								<div className="text-subtle">Get key metrics about your profile - page views count, bounce rates, duration, and more.</div>
-							</div>
-						</div>
-						<div className="flex flex-col gap-4">
-							<div className="bg-card rounded-xl w-full lg:aspect-square p-[8%] flex items-center overflow-hidden">
-								<div className="p-2 bg-black/2 dark:bg-white/5 rounded-xl flex flex-col w-full">
-									<div className="text-xs p-2 pt-1 text-subtle">Profile options</div>
-									<div className="bg-white dark:bg-white/8 h-full rounded-md w-full flex flex-col text-sm">
-										<div className="flex items-center gap-2 p-3 opacity-70">
-											<ShareIcon size={18} className="text-subtle" />
-											Share
-											<DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
-										</div>
-										<div className="flex items-center gap-2 p-3 opacity-70">
-											<EditIcon size={18} className="text-subtle" />
-											Edit
-											<DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
-										</div>
-										<div className="flex items-center gap-2 p-3 opacity-70">
-											<EyeIcon size={18} className="text-subtle" />
-											View as guest
-											<DropdownMenuShortcut>⇧⌘V</DropdownMenuShortcut>
-										</div>
-										<div className="flex items-center gap-2 p-3">
-											<DownloadIcon size={18} className="text-subtle" />
-											Export as PDF
-										</div>
-									</div>
-								</div>
-							</div>
-							<div>
-								<DownloadIcon className="mb-2" />
-								<div className="font-medium mb-1">Download as PDF</div>
-								<div className="text-subtle">Export and save your profile as a resume PDF — in just a single click.</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 			<StaticFooter />

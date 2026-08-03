@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Project } from "@/interfaces/project"
 import { AuthUser } from "@/interfaces/user"
 import { Head, Link, router } from "@inertiajs/react"
-import { EyeIcon, EyeOffIcon, FolderPlusIcon, GlobeIcon, MailIcon, PlusIcon, SquarePlus } from "lucide-react"
+import { EditIcon, EyeIcon, EyeOffIcon, FolderPlusIcon, GlobeIcon, MailIcon, PlusIcon, SettingsIcon, ShareIcon, SquarePlus } from "lucide-react"
 import { EducationProps, ResumeProps } from "../Settings/EditProfile"
 import { LinkedInIcon } from "@/assets/linkedin"
 import { useEffect, useRef, useState } from "react"
@@ -19,6 +19,7 @@ import { ProjectItemProps } from "@/interfaces/projectItemProps"
 import { WorkExperience } from "@/interfaces/workExperience"
 import WorkExperienceItem from "@/partials/WorkExperienceItem"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 export interface ProfilePageProps {
 	auth: AuthUser['auth'],
@@ -89,21 +90,44 @@ export default function ProfilePage(props: ProfilePageProps) {
 			<Head>
 				<title>{props.user.full_name}</title>
 			</Head>
-			<div className="fixed top-0 left-0 w-full p-4 flex justify-end">
+			{/* <div className="fixed top-0 left-0 w-full p-4 flex justify-end">
 				<div className="flex gap-1">
 					{(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Edit</Button>}
-					{/* {(isOwner && !isViewingAsGuest) && <Button nativeButton={false} variant={"outline"} size={"sm"} render={<Link href={"/settings/profile"}></Link>}>Change template</Button>} */}
 					{(isOwner && !isViewingAsGuest) && <ProfileMoreMenu openShareDialog={() => setIsShareDialogOpen(true)} viewAsGuestButton={<DropdownMenuItem onClick={() => setIsViewingAsGuest(true)}><EyeIcon /> View as guest <DropdownMenuShortcut>⇧⌘V</DropdownMenuShortcut></DropdownMenuItem>} />}
 					{isViewingAsGuest && <Button variant={"ghost"} size={"sm"} onClick={() => setIsViewingAsGuest(false)}>
 						<EyeOffIcon></EyeOffIcon>
 						Stop viewing as guest
 					</Button>}
 				</div>
-			</div>
+			</div> */}
 			{isViewingAsGuest &&
 				<FloatingProfileTopBar user={props.user} resume={resume} isShown={isPast} />
 			}
-			<div className="main-container py-16 flex flex-col gap-16 text-[15px]">
+			<div className="main-container relative py-16 flex flex-col gap-16 text-[15px]">
+				<div className="absolute h-full top-16 -left-8">
+					<div className="h-full">
+						<div className="sticky top-4 flex flex-col gap-2 ">
+							{(isOwner && !isViewingAsGuest) && (
+								<div className="flex flex-col gap-2">
+									<Tooltip>
+										<TooltipTrigger delay={0} render={<Button size={"icon-sm"} nativeButton={false} variant={"outline"} className={"rounded-full"} render={<Link href={"/settings/profile"} />}><EditIcon /></Button>} />
+										<TooltipContent side="left">Edit</TooltipContent>
+									</Tooltip>
+									<Tooltip>
+										<TooltipTrigger delay={0} render={<Button size={"icon-sm"} variant={"outline"} className={"rounded-full"} onClick={() => setIsShareDialogOpen(true)}><ShareIcon /></Button>} />
+										<TooltipContent side="left">Share</TooltipContent>
+									</Tooltip>
+								</div>
+							)}
+							{isOwner && (
+								<Tooltip>
+									<TooltipTrigger delay={0} render={<Button size={"icon-sm"} variant={"outline"} className={"rounded-full"} onClick={() => setIsViewingAsGuest(!isViewingAsGuest)}>{isViewingAsGuest ? (<EyeOffIcon />) : (<EyeIcon />)}</Button>} />
+									<TooltipContent side="left">{isViewingAsGuest ? "Stop viewing as guest" : "View as guest"}</TooltipContent>
+								</Tooltip>
+							)}
+						</div>
+					</div>
+				</div>
 				<section className="flex flex-col gap-4">
 					<div>
 						<div className="flex justify-between">

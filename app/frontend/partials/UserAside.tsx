@@ -44,7 +44,7 @@ export default function UserAside({ auth }: AuthUser) {
 					</Avatar>}></DropdownMenuTrigger>
 					<DropdownMenuContent className={"w-48"}>
 						<DropdownMenuGroup>
-							<DropdownMenuItem>
+							<DropdownMenuItem nativeButton={false}>
 								<Item size={"xs"} className="p-2" render={<Link href={"/"}></Link>}>
 									<ItemContent className="gap-0">
 										<ItemTitle>{auth.user.full_name}</ItemTitle>
@@ -54,8 +54,8 @@ export default function UserAside({ auth }: AuthUser) {
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator></DropdownMenuSeparator>
-						<DropdownMenuItem render={<Link href={"/settings"} className="w-full" />}><SettingsIcon /> Settings</DropdownMenuItem>
-						<DropdownMenuItem render={<Link href={"/logout"} method="delete" as={"button"} className="w-full" />}><LogOutIcon /> Sign out</DropdownMenuItem>
+						<DropdownMenuItem nativeButton={false} render={<Link href={"/settings"} className="w-full" />}><SettingsIcon /> Settings</DropdownMenuItem>
+						<DropdownMenuItem nativeButton={true} render={<Link href={"/logout"} method="delete" as={"button"} className="w-full" />}><LogOutIcon /> Sign out</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>

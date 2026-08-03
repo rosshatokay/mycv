@@ -18,9 +18,7 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 	const { auth }: AuthUser = usePage().props as any
 	const flash = usePage().flash as FlashProps
 	const currComponent = usePage().component
-	const shouldHideAside = ["Static/", "Auth/", "Onboarding/"].some(prefix => currComponent.startsWith(prefix))
-
-	console.log(shouldHideAside)
+	const shouldHideAside = ["Static/", "Auth/", "Onboarding/", "Errors/"].some(prefix => currComponent.startsWith(prefix))
 
 	Theme.initialize()
 	window.Theme = Theme

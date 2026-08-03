@@ -4,8 +4,8 @@ import { Link } from "@inertiajs/react"
 
 export default function StaticFooter() {
 	return (
-		<footer className="py-8 mt-25 border-t">
-			<div className="large-container flex sm:items-center sm:justify-between sm:flex-row flex-col">
+		<footer className="py-8 mt-16">
+			<div className="medium-container flex sm:items-center sm:justify-between sm:flex-row flex-col">
 				<div className="flex items-center gap-1 opacity-60 sm:mb-0 mb-4">
 					<LogoIcon></LogoIcon>
 					<div className="font-medium">highlight.cv</div>

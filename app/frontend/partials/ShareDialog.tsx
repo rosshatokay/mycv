@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { CopyIcon, MailIcon, MoreVerticalIcon } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useState } from "react"
+import { Link } from "@inertiajs/react"
 
 interface ShareDialogProps {
 	url: string
@@ -21,25 +22,25 @@ const platforms = [
 		icon: <LinkedInIcon fill="#2D65BC" size={28} />,
 		bgColor: "bg-[#2D65BC]",
 		label: "LinkedIn",
-		shareLink: "https://www.linkedin.com/shareArticle?url="
+		shareLink: "https://linkedin.com/shareArticle?url="
 	},
 	{
 		icon: <XIcon fill="white" size={28} />,
 		bgColor: "bg-black",
 		label: "X",
-		shareLink: "https://www.linkedin.com/shareArticle?url="
+		shareLink: "https://twitter.com/intent/post?text=Check%20out%20my%20resume%20%40%20highlight.cv&url="
 	},
 	{
 		icon: <FacebookIcon fill="white" size={28} />,
 		bgColor: "bg-[#425894]",
 		label: "Facebook",
-		shareLink: "https://wa.me/?text="
+		shareLink: "https://www.facebook.com/sharer/sharer.php?u="
 	},
 	{
 		icon: <MailIcon />,
 		bgColor: "bg-card",
 		label: "Email",
-		shareLink: "https://wa.me/?text=",
+		shareLink: "mailto:?subject=&body=",
 	},
 	{
 		icon: <MoreVerticalIcon />,
@@ -77,14 +78,14 @@ export default function ShareDialog({ url, isOpen, setIsOpen }: ShareDialogProps
 					</Field>
 					<div>
 						<div className="font-medium">Share to</div>
-						<div className="grid grid-cols-5">
+						<div className="grid grid-cols-5 gap-2">
 							{platforms.map((item, i) => (
-								<div className="flex flex-col gap-2 items-center p-4" onClick={() => item.onClick ? item.onClick() : undefined} key={i}>
+								<a href={`${item.shareLink}${url}`} target="_blank" className="flex flex-col gap-2 items-center p-4 group" onClick={() => item.onClick ? item.onClick() : undefined} key={i}>
 									<div className={cn("w-full aspect-square rounded-full flex-center", item.bgColor)}>
 										{item.icon}
 									</div>
-									<span className="!text-xs">{item.label}</span>
-								</div>
+									<span className="!text-xs text-subtle group-hover:text-foreground transition">{item.label}</span>
+								</a>
 							))}
 						</div>
 					</div>
