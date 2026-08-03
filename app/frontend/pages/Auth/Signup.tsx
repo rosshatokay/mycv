@@ -104,7 +104,7 @@ export default function SignupPage() {
 															clearErrors("user.accept_tos")
 														}} />
 														{/* <Label htmlFor="accept-tos" className="leading-normal text-subtle cursor-pointer">Accept highlight.cv's Terms of service and Privacy Policy.</Label> */}
-														<div className="text-sm text-subtle">Accept highlight.cv's <a className="underline">Terms of service</a> and <a href="" className="underline">Privacy Policy</a>.</div>
+														<div className="text-sm text-subtle">Accept highlight.cv's <Link href={"/terms"} className="underline">Terms of service</Link> and <Link href="/privacy" className="underline">Privacy Policy</Link>.</div>
 													</Field>
 													{errors["user.accept_tos"] && <FieldError>{errors["user.accept_tos"]}</FieldError>}
 													<Field orientation="horizontal">
