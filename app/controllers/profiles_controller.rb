@@ -8,14 +8,17 @@ class ProfilesController < ApplicationController
     else
       user = User.includes(resume: :projects).find_by(username: params[:username])
       resume = user.resume
+      template_id = Template.valid_id?(resume.template_id) ? resume.template_id : "classic"
       resume_data = resume_data(resume)
       resume_data["highlights"] = Array(resume_data["highlights"]).presence || []
       resume_data["highlights"].reject!(&:empty?)
 
       render inertia: "Profiles/Show", props: {
+        template_id: template_id,
         user: user.to_profile,
         projects: user.resume.formatted_projects || [],
-        resume: resume_data.to_json,
+        resume: resume_data,
+        is_owner: current_user&.id === user.id,
         education: resume.education,
         work_experiences: resume.formatted_work_experiences,
       }

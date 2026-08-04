@@ -4,10 +4,11 @@ class StaticController < ApplicationController
   def index
     redirect_to profile_path(current_user.username) and return if user_signed_in?
 
-    # images = Array.new(24) { |i| "https://pub-199cbbb8716c47d894e05d31fd02edfe.r2.dev/images/#{i + 520}.jpg" }
+    images = Template.all.map { |t| t[:preview_image_url] }
+    # Array.new(24) { |i| "https://pub-199cbbb8716c47d894e05d31fd02edfe.r2.dev/images/#{i + 520}.jpg" }.map { |i| images << i }
 
     render inertia: "Static/Index", props: {
-      images: ["/page.png"],
+      images: images,
     }
   end
 
