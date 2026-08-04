@@ -2,7 +2,7 @@
   "all": {
     "sourceCodeDir": "app/frontend",
 		"watchAdditionalPaths": [],
-    "ssrEntrypoint": "entrypoints/ssr.tsx"
+    "ssrEntrypoint": "app/frontend/entrypoints/ssr.tsx"
   },
   "development": {
     "autoBuild": true,
