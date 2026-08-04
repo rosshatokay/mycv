@@ -14,7 +14,8 @@
     "vite-plugin-ruby": "^5.2.0"
   },
   "scripts": {
-    "check": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json"
+    "check": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
+		"build": "vite build && vite build --ssr"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
