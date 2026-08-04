@@ -9,7 +9,11 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     RubyPlugin(),
-    inertia(),
+    inertia({
+			ssr: {
+				entry: 'entrypoints/ssr.tsx'
+			}
+		}),
     react(),
   ],
 	resolve: {

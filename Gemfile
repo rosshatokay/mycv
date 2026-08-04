@@ -13,7 +13,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "imagekitio-rails"
 gem "active_storage_validations"
 gem "countries"
-
+gem "foreman"
 gem "bootsnap", require: false
 
 gem "kamal", require: false
