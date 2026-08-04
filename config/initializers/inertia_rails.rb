@@ -10,7 +10,7 @@ InertiaRails.configure do |config|
   if Rails.env.production?
     # Production: Talk to your Foreman-managed standalone Node process
     config.ssr_url = ENV.fetch("INERTIA_SSR_URL", "http://127.0.0.1:13714")
-    config.ssr_enabled = ViteRuby.config.ssr_build_enabled
+    config.ssr_enabled = File.exist?(Rails.root.join("public/vite-ssr/ssr.mjs"))
   else
     # Development: Let @inertiajs/vite automatically proxy SSR to the Vite dev server
     config.ssr_enabled = true
