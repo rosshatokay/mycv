@@ -1,5 +1,6 @@
 import BaseLayout from '@/layouts/BaseLayout'
 import { createInertiaApp } from '@inertiajs/react'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 
 createInertiaApp({
   pages: "../pages",
@@ -15,6 +16,16 @@ createInertiaApp({
       return { queryStringArrayFormat: "brackets" }
     },
   },
+	setup({el, App, props}) {
+		if (el) {
+			console.log(el.dataset)
+			if (el.dataset.serverRendered) {
+				hydrateRoot(el, <App {...props} />)
+			} else {
+				createRoot(el).render(<App {...props} />)
+			}
+		}
+	}
 }).catch((error) => {
   // This ensures this entrypoint is only loaded on Inertia pages
   // by checking for the presence of the root element (#app by default).

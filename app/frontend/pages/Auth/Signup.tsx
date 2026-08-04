@@ -34,7 +34,12 @@ export default function SignupPage() {
 						<div className="relative h-full">
 							<div className="relative z-10 mx-auto py-8 sm:w-max sm:py-16">
 								<div className="flex justify-center px-4">
-									<LogoIcon size={36} fill="var(--primary)" />
+									<div className="sm:w-10 w-9 aspect-square rounded-lg bg-white dark:hidden flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.05)" }}>
+										<LogoIcon size={24} fill="var(--primary)" />
+									</div>
+									<div className="sm:w-10 w-9 aspect-square rounded-lg bg-white hidden dark:flex flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.05)" }}>
+										<LogoIcon size={24} fill="var(--background)" />
+									</div>
 								</div>
 								<div className="mx-auto w-full bg-surface-white px-4 py-6 sm:w-96 sm:rounded-lg">
 									<div className="text-center">
@@ -99,12 +104,11 @@ export default function SignupPage() {
 														{errors["user.username"] && <FieldError>{errors["user.username"]}</FieldError>}
 													</Field>
 													<Field orientation={"horizontal"}>
-														<Checkbox className={"mt-1"} id="accept-tos" onCheckedChange={(e) => {
+														<Checkbox className={""} id="accept-tos" onCheckedChange={(e) => {
 															setData("user.accept_tos", e)
 															clearErrors("user.accept_tos")
 														}} />
-														{/* <Label htmlFor="accept-tos" className="leading-normal text-subtle cursor-pointer">Accept highlight.cv's Terms of service and Privacy Policy.</Label> */}
-														<div className="text-sm text-subtle">Accept highlight.cv's <Link href={"/terms"} className="underline">Terms of service</Link> and <Link href="/privacy" className="underline">Privacy Policy</Link>.</div>
+														<div className="text-xs text-subtle">Accept highlight.cv's <Link href={"/terms"} className="underline">Terms of service</Link> and <Link href="/privacy" className="underline">Privacy Policy</Link>.</div>
 													</Field>
 													{errors["user.accept_tos"] && <FieldError>{errors["user.accept_tos"]}</FieldError>}
 													<Field orientation="horizontal">

@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import { CopyIcon, MailIcon, MoreVerticalIcon } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useState } from "react"
-import { Link } from "@inertiajs/react"
 
 interface ShareDialogProps {
 	url: string

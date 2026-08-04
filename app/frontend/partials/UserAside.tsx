@@ -38,14 +38,16 @@ export default function UserAside({ auth }: AuthUser) {
 			</div>
 			<div className="flex items-center gap-2">
 				<DropdownMenu>
-					<DropdownMenuTrigger className={"cursor-pointer"} nativeButton={false} render={<Avatar>
-						<AvatarImage src={user.avatar_url}></AvatarImage>
-						<AvatarFallback>{user.full_name[0].toUpperCase()}</AvatarFallback>
-					</Avatar>}></DropdownMenuTrigger>
+					<DropdownMenuTrigger className={"cursor-pointer"} nativeButton={false} render={
+						<Avatar className={"ring-2 ring-transparent hover:ring-primary/20 transition"}>
+							<AvatarImage src={user.avatar_url}></AvatarImage>
+							<AvatarFallback>{user.full_name[0].toUpperCase()}</AvatarFallback>
+						</Avatar>
+					} />
 					<DropdownMenuContent className={"w-48"}>
 						<DropdownMenuGroup>
 							<DropdownMenuItem nativeButton={false}>
-								<Item size={"xs"} className="p-2" render={<Link href={"/"}></Link>}>
+								<Item size={"xs"} className="p-2 hover:!bg-transparent" render={<Link href={"/"}></Link>}>
 									<ItemContent className="gap-0">
 										<ItemTitle>{auth.user.full_name}</ItemTitle>
 										<ItemDescription>{auth.user.email}</ItemDescription>

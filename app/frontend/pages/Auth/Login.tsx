@@ -28,7 +28,12 @@ export default function LoginPage() {
 						<div className="relative h-full">
 							<div className="relative z-10 mx-auto py-8 sm:w-max sm:py-16">
 								<div className="flex justify-center px-4">
-									<LogoIcon size={36} fill="var(--primary)" />
+									<div className="sm:w-10 w-9 aspect-square rounded-lg bg-white dark:hidden flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.05)" }}>
+										<LogoIcon size={24} fill="var(--primary)" />
+									</div>
+									<div className="sm:w-10 w-9 aspect-square rounded-lg bg-white hidden dark:flex flex-center" style={{ boxShadow: "0px 8px 16px rgba(1,1,1,.05)" }}>
+										<LogoIcon size={24} fill="var(--background)" />
+									</div>
 								</div>
 								<div className="mx-auto w-full bg-surface-white px-4 py-6 sm:w-96 sm:rounded-lg">
 									<div className="text-center">

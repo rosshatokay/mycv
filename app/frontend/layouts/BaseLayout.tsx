@@ -21,7 +21,9 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 	const shouldHideAside = ["Static/", "Auth/", "Onboarding/", "Errors/"].some(prefix => currComponent.startsWith(prefix))
 
 	Theme.initialize()
-	window.Theme = Theme
+	useEffect(() => {
+		window.Theme = Theme
+	})
 	
 	useEffect(() => {
 		if (flash?.toast) {

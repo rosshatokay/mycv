@@ -3,10 +3,10 @@ import { Input } from "@/components/ui/input"
 import { Head, useForm } from "@inertiajs/react"
 import StaticHeader from "./StaticHeader"
 import StaticFooter from "./StaticFooter"
-import { ArrowRight, BriefcaseIcon, ChartPieIcon, ChevronDown, FolderGit2Icon, GraduationCapIcon, Link2Icon, ShareIcon, ShieldCheckIcon, SpotlightIcon, UserIcon, ZapIcon } from "lucide-react"
+import { BriefcaseIcon, ChartPieIcon, ChevronDown, FileTextIcon, FolderGit2Icon, GraduationCapIcon, Link2Icon, ShareIcon, ShieldCheckIcon, SpotlightIcon, UserIcon } from "lucide-react"
 import SimpleCarousel from "@/partials/SimpleCarousel"
 import { CarouselItem } from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 interface PageProps {
 	images: string[]
@@ -14,8 +14,8 @@ interface PageProps {
 
 const mainFeatures = [
 	{
-		icon: <SpotlightIcon />,
-		label: "Enrich your professional profile by adding clean section components."
+		icon: <FileTextIcon />,
+		label: "Create a professional resume from a variety of clean templates."
 	},
 	{
 		icon: <ChartPieIcon />,
@@ -30,7 +30,7 @@ const mainFeatures = [
 const miscFeatures = [
 	{
 		icon: <UserIcon size={20} />,
-		title: "Unified Work Profile",
+		title: "Unified work profile",
 		description: "Store your bio, location, role, and custom highlights in one centralized, modern profile.",
 	},
 	{
@@ -40,22 +40,22 @@ const miscFeatures = [
 	},
 	{
 		icon: <FolderGit2Icon size={20} />,
-		title: "Project Showcase",
+		title: "Project showcase",
 		description: "Highlight your best builds with live URLs, execution years, and key technical takeaways.",
 	},
 	{
 		icon: <GraduationCapIcon size={20} />,
-		title: "Academic Credentials",
+		title: "Academic credentials",
 		description: "Display your degrees, majors, and GPA in an easy-to-read academic breakdown.",
 	},
 	{
 		icon: <Link2Icon size={20} />,
-		title: "Custom Social Links",
+		title: "Custom social links",
 		description: "Connect your personal website and LinkedIn so visitors can explore your work deeper.",
 	},
 	{
 		icon: <ShieldCheckIcon size={20} />,
-		title: "Secure & Reliable",
+		title: "Secure & reliable",
 		description: "Rest easy with encrypted sessions, instant page loads, and data synchronization.",
 	},
 ]
@@ -96,7 +96,6 @@ export default function LandingPage(props: PageProps) {
 		e.preventDefault()
 		get(`/signup`)
 	}
-	const days = ['S', 'M', 'T', 'W', 'T', 'F']
 
 	return (
 		<>
@@ -105,6 +104,12 @@ export default function LandingPage(props: PageProps) {
 				<meta name="description" content="Build an interactive online resume, showcase live projects, and share your work history with a modern digital profile." />
 				<meta name="keywords" content="online resume, digital portfolio, career profile, project showcase, work experience" />
 				<meta name="robots" content="index, follow" />
+				<meta property="og:type" content="website" />
+				<meta property="og:title" content="highlight.cv" />
+				<meta property="og:description" content="Build an interactive online resume, showcase live projects, and share your work history with a modern digital profile." />
+				<meta property="og:image" content="https://highlight.cv/app-banner.png" />
+				<meta property="og:url" content="https://highlight.cv" />
+				<link rel="canonical" href="https://highlight.cv" />
 			</Head>
 			<StaticHeader />
 			<div className="py-16 pb-0">
@@ -124,7 +129,7 @@ export default function LandingPage(props: PageProps) {
 									<button type="submit" className="absolute top-1/2 right-5 -translate-y-1/2 whitespace-nowrap">Sign up</button>
 								</div>
 							</form>
-							<p className="text-xs text-subtle">It takes only a minute.</p>
+							<p className="text-xs text-subtle">It only takes a minute.</p>
 						</div>
 					</section>
 					<section className="grid sm:grid-cols-3 gap-4">
@@ -136,21 +141,13 @@ export default function LandingPage(props: PageProps) {
 						))}
 					</section>
 					<section>
-						<h2 className="sm:text-2xl text-[21px] font-medium mb-6">Featured template</h2>
-						{/* <div className="bg-card w-full aspect-[6/5] rounded-xl p-12 overflow-hidden flex-center">
-							<div className="bg-card w-3/4 p-6 rounded-xl">
-								<div className="w-12 aspect-square bg-white rounded-full mb-4"></div>
-								<div className="font-medium">Ross Hatokay</div>
-								<div className="text-subtle">Software Engineer</div>
-								<div className="text-subtle">London, UK</div>
-							</div>
-						</div> */}
+						<h2 className="sm:text-2xl text-[21px] font-medium mb-6">Featured templates</h2>
 						<SimpleCarousel slidesToScroll={1}>
 							{props.images.map((image, index) => (
 								<CarouselItem key={index} className="min-w-full flex-[initial]">
-									<div className="p-10 flex items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/4] aspect-square overflow-hidden rounded-lg">
-										<img src={image} alt="" className="sm:w-3/4 aspect-[4/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
-										<div className="w-full text-sm pt-4"></div>
+									<div className="p-6 pt-16 flex relative items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/5] aspect-square overflow-hidden rounded-lg">
+										<img src={image} alt="" className="sm:w-3/4 aspect-[3.5/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
+										<div className="bg-linear-to-t h-[200px] bottom-0 left-0 w-full from-white dark:from-[#242424] to-transparent absolute"></div>
 									</div>
 								</CarouselItem>
 							))}
@@ -171,38 +168,16 @@ export default function LandingPage(props: PageProps) {
 					<section>
 						<h2 className="sm:text-2xl text-[21px] font-medium mb-6 sm:max-w-sm max-w-xs leading-[1.25]">Infrequently asked <br /> questions</h2>
 						<div className="space-y-4">
-							{faqs.map((faq, index) => (
-								<details
-									key={index}
-									className="group border border-border rounded-xl px-6 py-4  transition-all duration-200"
-								>
-									<summary className="flex items-center justify-between cursor-pointer text-lg text-card-foreground">
-										<span>{faq.question}</span>
-										<span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180">
-											<ChevronDown />
-										</span>
-									</summary>
-									<p className="mt-3 text-muted-foreground border-t border-border/50 pt-3">{faq.answer}</p>
-								</details>
-							))}
+							<Accordion multiple={true}>
+								{faqs.map((faq, index) => (
+									<AccordionItem key={index}>
+										<AccordionTrigger className={"text-base"}>{faq.question}</AccordionTrigger>
+										<AccordionContent className={"text-[15px] text-foreground/75"}>{faq.answer}</AccordionContent>
+									</AccordionItem>
+								))}
+							</Accordion>
 						</div>
 					</section>
-					{/* <div className="w-full mt-30">
-						<h3 className="mb-4 text-subtle">Featured templates</h3>
-						<SimpleCarousel slidesToScroll={3}>
-							{props.images.map((image, index) => (
-								<CarouselItem key={index} className="min-w-[calc(100%/3)] flex-[initial]">
-									<div className="p-10 flex-center flex-col bg-card rounded-lg">
-										<img src={image} alt="" className="aspect-[4/6] object-cover rounded-md" style={{ objectPosition: "top" }} />
-										<div className="w-full text-sm pt-4"></div>
-									</div>
-								</CarouselItem>
-							))}
-						</SimpleCarousel>
-						<div className="flex justify-center pt-12">
-							<Button variant={"secondary"}>Explore all <ArrowRight /></Button>
-						</div>
-					</div> */}
 				</div>
 			</div>
 			<StaticFooter />

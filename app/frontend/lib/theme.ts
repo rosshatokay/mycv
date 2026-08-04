@@ -7,65 +7,63 @@ export interface ThemeMethods {
 }
 
 export const Theme = (() => {
-	const root = document.querySelector('html')
-  const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)')
-  let storedTheme = localStorage.getItem("theme")
-	const isInLibrary = document.querySelector('html')?.classList.contains('library')
-	
+  // Helper to check if we are running in the browser
+  const isBrowser = typeof window !== 'undefined'
+
+  // Safely evaluate globals only if we are in the browser, otherwise use fallbacks
+  const root = isBrowser ? document.querySelector('html') : null
+  const prefersDarkTheme = isBrowser ? window.matchMedia('(prefers-color-scheme: dark)') : null
+  let storedTheme = isBrowser ? localStorage.getItem("theme") : null
+  const isInLibrary = isBrowser ? document.querySelector('html')?.classList.contains('library') : false
+  
   let themeSelector
 
   function triggerThemeLoaded(theme?: string)
   {
+    if (!isBrowser) return
     const event = new CustomEvent('themeLoaded', {
-			detail: {
-				theme: theme
-			}
-		})
-		
+      detail: {
+        theme: theme
+      }
+    })
     document.dispatchEvent(event)
   }
 
-	/**
-	 * 
-	 * @param theme - Theme selector (light, dark, system)
-	 * @param isSysPref - Is is the system preferences
-	 */
   function setTheme(theme: string, isSysPref?: boolean)
   {
-		switch (theme) {
-			case "light":
-				root?.classList.remove('dark')
-				root?.classList.add('light')
-			break
-			case "dark":
-				root?.classList.add('dark')
-				root?.classList.remove('light')
-			break
-			case "system":
-				setByPreference()
-			break
-		}
+    switch (theme) {
+      case "light":
+        root?.classList.remove('dark')
+        root?.classList.add('light')
+      break
+      case "dark":
+        root?.classList.add('dark')
+        root?.classList.remove('light')
+      break
+      case "system":
+        setByPreference()
+      break
+    }
 
-		// If in library, add library theme also
-		if (isInLibrary) {
-			root?.classList.add('library')
-		}
+    if (isInLibrary) {
+      root?.classList.add('library')
+    }
 
-		// If pref is not system
-		if (!isSysPref) {
-			localStorage.setItem("theme", theme)
-		} else {
-			localStorage.setItem("theme", 'system')
-		}
+    if (isBrowser) {
+      if (!isSysPref) {
+        localStorage.setItem("theme", theme)
+      } else {
+        localStorage.setItem("theme", 'system')
+      }
+      storedTheme = localStorage.getItem("theme")
+    }
 
-		storedTheme = localStorage.getItem("theme")
-
-		triggerThemeLoaded(theme)
+    triggerThemeLoaded(theme)
   }
 
   function setByPreference()
   {
-    if (prefersDarkTheme.matches)
+    if (prefersDarkTheme?.matches)
     {
       setTheme('dark', true)
     } else {
@@ -75,54 +73,52 @@ export const Theme = (() => {
 
   function initialize()
   {
+    if (!isBrowser) return
+
     if (storedTheme) {
       root?.removeAttribute("class")
 
       setTheme(storedTheme)
-			
-			setTimeout(function(){
-				triggerThemeLoaded(storedTheme as string)
-			}, 50)
+      
+      setTimeout(function(){
+        triggerThemeLoaded(storedTheme as string)
+      }, 50)
     } else {
       setByPreference()
     }
 
-		listenToSysPref()
+    listenToSysPref()
 
-		document.addEventListener('DOMContentLoaded', () => {
-			themeSelector = document.getElementById('theme-selector')
-		})
+    document.addEventListener('DOMContentLoaded', () => {
+      themeSelector = document.getElementById('theme-selector')
+    })
   }
 
-	function listenToSysPref()
-	{
-		// needs to listen for updates
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',({ matches }) => {
-			if (storedTheme == "system" || storedTheme == undefined) {
-			}
-			if (matches) {
-				setTheme('dark', true)
-			} else {
-				setTheme('light', true)
-			}
-		})
-	}
+  function listenToSysPref()
+  {
+    if (!isBrowser) return
 
-	/**
-	 * Get current device theme preference
-	 * @returns {'system'|'dark'|'light'}
-	 */
-	function getTheme() {
-		return localStorage.getItem('theme')
-	}
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',({ matches }) => {
+      if (matches) {
+        setTheme('dark', true)
+      } else {
+        setTheme('light', true)
+      }
+    })
+  }
+
+  function getTheme() {
+    return isBrowser ? localStorage.getItem('theme') : null
+  }
 
   return {
     initialize,
-		setTheme,
-		getTheme,
-		setByPreference,
+    setTheme,
+    getTheme,
+    setByPreference,
     onThemeLoaded: (callback: any) => {
-      document.addEventListener('themeLoaded', callback);
+      if (!isBrowser) return
+      document.addEventListener('themeLoaded', callback)
     }
   }
 })()
