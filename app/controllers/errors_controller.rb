@@ -1,4 +1,5 @@
 class ErrorsController < ApplicationController
+  allow_unauthenticated_access
   skip_before_action :check_onboarding if respond_to?(:check_onboarding)
 
   def not_found

@@ -1,15 +1,20 @@
 import { LogoIcon } from "@/assets/logo"
 import { Input } from "@/components/ui/input"
-import { Head, useForm } from "@inertiajs/react"
+import { Head, Link, useForm } from "@inertiajs/react"
 import StaticHeader from "./StaticHeader"
 import StaticFooter from "./StaticFooter"
-import { BriefcaseIcon, ChartPieIcon, ChevronDown, FileTextIcon, FolderGit2Icon, GraduationCapIcon, Link2Icon, ShareIcon, ShieldCheckIcon, SpotlightIcon, UserIcon } from "lucide-react"
+import { BriefcaseIcon, ChartPieIcon, ChevronDown, FileTextIcon, FolderGit2Icon, GraduationCapIcon, Link2Icon, ShareIcon, ShieldCheckIcon, SpotlightIcon, UserIcon, XIcon } from "lucide-react"
 import SimpleCarousel from "@/partials/SimpleCarousel"
 import { CarouselItem } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { useState } from "react"
 
 interface PageProps {
-	images: string[]
+	templates: [
+		{ id: string, name: string, preview_image_url: string }
+	]
 }
 
 const mainFeatures = [
@@ -92,6 +97,9 @@ export default function LandingPage(props: PageProps) {
 	const { setData, get } = useForm({
 		email: ""
 	})
+
+	const [activePreviewTemplateId, setActivePreviewTemplateId] = useState<string | null>(null)
+	
 	const handleSubmit = (e: React.ChangeEvent) => {
 		e.preventDefault()
 		get(`/signup`)
@@ -143,10 +151,17 @@ export default function LandingPage(props: PageProps) {
 					<section>
 						<h2 className="sm:text-2xl text-[21px] font-medium mb-6">Featured templates</h2>
 						<SimpleCarousel slidesToScroll={1}>
-							{props.images.map((image, index) => (
+							{props.templates?.map((template, index) => (
 								<CarouselItem key={index} className="min-w-full flex-[initial]">
-									<div className="p-6 pt-16 flex relative items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/5] aspect-square overflow-hidden rounded-lg">
-										<img src={image} alt="" className="sm:w-3/4 aspect-[3.5/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
+									<div className="p-6 gap-6 flex relative items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/5] aspect-square overflow-hidden rounded-lg">
+										<div className="w-full flex items-start justify-between">
+											<div className="">{template.name}</div>
+											<div className="flex gap-1">
+												<Button variant={"outline"} className={"rounded-full"} onClick={() => setActivePreviewTemplateId(template.id)}>Preview</Button>
+												<Button variant={"outline"} className={"rounded-full"}>Use</Button>
+											</div>
+										</div>
+										<img src={template.preview_image_url} alt="" className="sm:w-3/4 aspect-[3.5/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
 										<div className="bg-linear-to-t h-[200px] bottom-0 left-0 w-full from-white dark:from-[#242424] to-transparent absolute"></div>
 									</div>
 								</CarouselItem>
@@ -181,6 +196,20 @@ export default function LandingPage(props: PageProps) {
 				</div>
 			</div>
 			<StaticFooter />
+			<Sheet open={activePreviewTemplateId !== null} onOpenChange={open => !open ? setActivePreviewTemplateId(null) : null}>
+				<SheetContent showCloseButton={false} side="bottom" className={"max-h-[94vh] !h-full rounded-t-xl !gap-0"}>
+					<SheetHeader className="flex-row items-center justify-between pb-2">
+						<div>Classic</div>
+						<div className="flex gap-1">
+							<Button>Use for free</Button>
+							<Button size={"icon"} variant={"ghost"} onClick={() => setActivePreviewTemplateId(null)}><XIcon /></Button>
+						</div>
+					</SheetHeader>
+					<div className="h-full w-full p-2">
+						<iframe src="/@rusty" className="w-full h-full rounded-lg"></iframe>
+					</div>
+				</SheetContent>
+			</Sheet>
 		</>
 	)
 }

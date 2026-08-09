@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { WorkExperience } from "@/interfaces/workExperience";
-import WorkExperienceItem from "@/partials/WorkExperienceItem";
+import WorkExperienceItem from "@/components/templates/items/classic/WorkExperienceItem";
 import { Head, Link } from "@inertiajs/react";
 import { MoreHorizontalIcon, PlusIcon, SquarePlusIcon } from "lucide-react";
 

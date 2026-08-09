@@ -253,3 +253,8 @@ article {
 [data-slot="carousel-content"] {
 	overflow: initial !important
 }
+
+.breadcrumb-wrapper .breadcrumb-icon svg {
+	width: inherit;
+	height: inherit;
+}

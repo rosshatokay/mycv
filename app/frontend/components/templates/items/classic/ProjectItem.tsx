@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 import { Link } from "@inertiajs/react";
 import { ArrowUpRight } from "lucide-react";
 
-export default function ProjectItem({ project, onSelect }: ProjectItemProps) {
+export default function ProjectItem({ project, onSelect, is_owner }: ProjectItemProps) {
 	return (
 		<div key={project.id}>
-			<div className={cn(`relative grid grid-cols-[148px_1fr] overflow-hidden`, project.is_owner ? "rounded-lg hover:bg-card p-3 -m-3 transition" : "")}>
-				{project.is_owner && <Link className="absolute inset-0" href={`/projects/${project.id}`}></Link>}
+			<div className={cn(`relative grid grid-cols-[148px_1fr] overflow-hidden`, is_owner ? "rounded-lg hover:bg-card p-3 -m-3 transition" : "")}>
+				{is_owner && <Link className="absolute inset-0" href={`/projects/${project.id}`}></Link>}
 				<div>
 					<div className="text-subtle">{project.year}</div>
 				</div>
@@ -29,7 +29,7 @@ export default function ProjectItem({ project, onSelect }: ProjectItemProps) {
 						{project.highlights?.map(item => (<li key={item}>{item}</li>))}
 					</ul>
 					<div className="mt-4 grid grid-cols-3">
-						{project.images?.map((image, index) => (
+						{project.images?.slice(0, 3).map((image, index) => (
 							<div className="hover:bg-black/40 cursor-zoom-in dark:hover:bg-white/40 p-1 rounded-lg transition" onClick={() => onSelect ? onSelect(project) : undefined} key={index}>
 								<img src={image} className="bg-card rounded-md w-full aspect-[6/4] object-cover" />
 							</div>

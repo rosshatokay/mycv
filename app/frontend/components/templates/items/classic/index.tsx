@@ -4,10 +4,10 @@ import { Boilerplate } from "../../utils/boilerplate";
 import { Button } from "@/components/ui/button";
 import { FolderPlusIcon, GlobeIcon, MailIcon, PlusIcon, SquarePlusIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import WorkExperienceItem from "@/partials/WorkExperienceItem";
+import WorkExperienceItem from "@/components/templates/items/classic/WorkExperienceItem";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { LinkedInIcon } from "@/assets/linkedin";
-import ProjectItem from "@/partials/ProjectItem";
+import ProjectItem from "@/components/templates/items/classic/ProjectItem";
 import { LogoIcon } from "@/assets/logo";
 import ProjectSheet from "@/partials/ProjectSheet";
 import ShareDialog from "@/partials/ShareDialog";
@@ -114,7 +114,7 @@ export default function ClassicTemplate({ data }: TemplateComponentProps) {
 					<section>
 						<div className="text-subtle mb-4">Projects</div>
 						<div className="flex flex-col gap-10">
-							{projects.map(project => <ProjectItem key={project.id} project={project} onSelect={setActiveProject} />)}
+							{projects.map(project => <ProjectItem key={project.id} is_owner={is_owner} project={project} onSelect={setActiveProject} />)}
 						</div>
 					</section>
 				)}

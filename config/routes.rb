@@ -55,6 +55,8 @@ Rails.application.routes.draw do
     end
   end
 
+  # resources :templates, only: [:index, :show]
+
   get "/settings", to: "settings#index", as: :settings
 
   namespace :settings do

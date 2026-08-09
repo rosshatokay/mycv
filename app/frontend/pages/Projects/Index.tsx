@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Project } from "@/interfaces/project";
-import ProjectItem from "@/partials/ProjectItem";
+import ProjectItem from "@/components/templates/items/classic/ProjectItem";
 import { Head, Link } from "@inertiajs/react";
 import { FolderPlusIcon, PlusIcon } from "lucide-react";
 

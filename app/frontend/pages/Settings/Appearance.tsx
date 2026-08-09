@@ -5,15 +5,15 @@ import { Head } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 
 export default function AppearanceSettingsPage() {
-	const [currentTheme, setCurrentTheme] = useState<string | null>(window.Theme.getTheme())
+	const [currentTheme, setCurrentTheme] = useState<string | null>(window.Theme?.getTheme())
 
 	const setTheme = (theme: string) => {
-		window.Theme.setTheme(theme)
-		setCurrentTheme(window.Theme.getTheme())
+		window.Theme?.setTheme(theme)
+		setCurrentTheme(window.Theme?.getTheme())
 	}
 
 	useEffect(() => {
-		setCurrentTheme(window.Theme.getTheme())
+		setCurrentTheme(window.Theme?.getTheme())
 	})
 
 	const items = [

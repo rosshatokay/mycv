@@ -5,6 +5,11 @@ class Template
       name: "Classic",
       preview_image_url: "/templates/previews/classic.png",
     },
+    {
+      id: "lean",
+      name: "Lean",
+      preview_image_url: "/templates/previews/classic.png",
+    },
   ].freeze
 
   def self.all

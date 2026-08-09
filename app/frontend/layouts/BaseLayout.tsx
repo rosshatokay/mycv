@@ -1,7 +1,6 @@
 import { toast, Toaster } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthUser } from "@/interfaces/user";
-import { Theme } from "@/lib/theme";
 import UserAside from "@/partials/UserAside";
 import { usePage } from "@inertiajs/react";
 import { PropsWithChildren, useEffect } from "react";
@@ -20,11 +19,6 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 	const currComponent = usePage().component
 	const shouldHideAside = ["Static/", "Auth/", "Onboarding/", "Errors/"].some(prefix => currComponent.startsWith(prefix))
 
-	Theme.initialize()
-	useEffect(() => {
-		window.Theme = Theme
-	})
-	
 	useEffect(() => {
 		if (flash?.toast) {
 			toast.add({

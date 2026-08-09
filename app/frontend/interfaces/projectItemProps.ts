@@ -2,5 +2,6 @@ import { Project } from "./project"
 
 export interface ProjectItemProps {
 	project: Project
-	onSelect?: (project: any) => void
+	onSelect?: (project: any) => void,
+	is_owner?: boolean
 }

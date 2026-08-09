@@ -15,9 +15,16 @@ class Project < ApplicationRecord
   end
 
   def get_images_urls
-    images.attached? ? images.map { |img|
+    result = images.attached? ? images.map { |img|
       img.service.url(img.blob.key, transformation: [{ width: 1200, height: 800, crop: "fill" }])
     } : []
+
+    [
+      "https://rosshatokay.dev/assets/img/tomes/img4.jpg",
+      "https://rosshatokay.dev/assets/img/tomes/img5.jpg",
+    ].map { |img| result << img }
+
+    result
   end
 
   private
