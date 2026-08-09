@@ -1,5 +1,4 @@
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
-import { ProfilePageProps } from "../Show";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { LinkedInIcon } from "@/assets/linkedin";
@@ -7,9 +6,10 @@ import { GlobeIcon, MailIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ResumeProps } from "@/pages/Settings/EditProfile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { TemplateComponentProps } from "@/components/templates/types";
 
 interface FloatingProfileProps {
-	user: ProfilePageProps['user'],
+	user: TemplateComponentProps['data']['user'],
 	isShown: boolean,
 	resume: ResumeProps
 }

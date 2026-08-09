@@ -91,7 +91,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 		const currImages = data.project.images || []
 
 		// limit to 5
-		const remainingSlots = 5 - (currImages.length + previewUrls.length)
+		const remainingSlots = 5 - (currImages.length + previewUrls?.length)
 		const selectedFiles = files.slice(0, remainingSlots)
 
 		if (selectedFiles.length > 0) {
@@ -208,7 +208,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 						<FieldSeparator className="my-2"></FieldSeparator>
 						<FieldSet>
 							<FieldLegend>Media</FieldLegend>
-							<FieldDescription>Add up to 5 images to enrich your profile.</FieldDescription>
+							<FieldDescription>Add up to 5 images to enrich your project.</FieldDescription>
 							<input
 								ref={fileInputRef}
 								type="file"
@@ -227,7 +227,7 @@ export default function NewProject({ project, is_edit }: PageProps) {
 								</EmptyHeader>
 							</Empty>
 						</FieldSet>
-						{previewUrls.length > 0 &&
+						{previewUrls?.length > 0 &&
 							<div className="grid grid-cols-5 gap-2">
 								{previewUrls.map((url, index) => (
 									<div

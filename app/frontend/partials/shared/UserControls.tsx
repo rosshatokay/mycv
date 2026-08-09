@@ -18,8 +18,6 @@ export default function UserControls({
 	setIsShareDialogOpen,
 	setIsChooseTempDialogOpen
 }: UserControlsProps) {
-	console.log(isViewingAsGuest)
-
 	return (
 		<div className="absolute h-full top-16 -left-8">
 			<div className="h-full">

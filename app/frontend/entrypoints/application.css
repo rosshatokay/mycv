@@ -56,7 +56,7 @@
 
 :root {
 	/* --background: oklch(1 0 0); */
-	--background: oklch(0.9761 0 0);
+	--background: oklch(0.98 0 0);
 	--foreground: oklch(0.145 0 0);
 	--subtle: oklch(14.479% 0.00002 271.152 / 0.591);
 	--card: oklch(25.197% 0.00003 271.152 / 0.03);
@@ -66,7 +66,8 @@
 	--primary: oklch(0.3035 0.0938 34.78);
 	--primary-foreground: oklch(96.519% 0.01315 102.111);
 	--link: oklch(63.637% 0.19542 260.48);
-	--secondary: oklch(0.94 0 0);
+	/* --secondary: oklch(0.94 0 0); */
+	--secondary: oklch(0.95 0 0);
 	--secondary-foreground: oklch(0.205 0 0);
 	--tertiary: oklch(0.554 0.0206 142.74);
 	--muted: oklch(0.94 0 0);
@@ -102,13 +103,18 @@
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
+	/* --primary: oklch(0.922 0 0); */
+	--primary: oklch(92.123% 0.04094 34.642);
+	/* --primary-foreground: oklch(0.205 0 0); */
+	--primary-foreground: oklch(18.004% 0.00329 17.123);
+	/* --secondary: oklch(0.269 0 0); */
+	--secondary: oklch(94.007% 0.00011 271.152 / 0.132);
 	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
+	/* --muted: oklch(0.269 0 0); */
+	--muted: oklch(94.007% 0.00011 271.152 / 0.225);
 	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
+	/* --accent: oklch(0.269 0 0); */
+	--accent: oklch(94.007% 0.00011 271.152 / 0.132);
 	--accent-foreground: oklch(0.985 0 0);
 	--destructive: oklch(0.704 0.191 22.216);
 	--border: oklch(1 0 0 / 10%);
@@ -118,12 +124,14 @@
 	--chart-2: oklch(0.556 0 0);
 	--chart-3: oklch(0.439 0 0);
 	--chart-4: oklch(0.371 0 0);
-	--chart-5: oklch(0.269 0 0);
+	/* --chart-5: oklch(0.269 0 0); */
+	--chart-5: oklch(94.007% 0.00011 271.152 / 0.132);
 	--sidebar: oklch(0.205 0 0);
 	--sidebar-foreground: oklch(0.985 0 0);
 	--sidebar-primary: oklch(0.488 0.243 264.376);
 	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
+	/* --sidebar-accent: oklch(0.269 0 0); */
+	--sidebar-accent: oklch(94.007% 0.00011 271.152 / 0.132);
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
@@ -170,13 +178,24 @@
 	.flex-center {
 		@apply flex items-center justify-center
 	}
+
+	::selection {
+		@apply bg-primary/15 text-primary
+	}
+
+	::-moz-selection {
+		background-color: #ff0055;
+		color: #ffffff;
+	}
 }
 
 .logo-full {
 	width: auto;
+
 	svg {
 		width: auto;
 		height: 100%;
+
 		path {
 			fill: inherit
 		}

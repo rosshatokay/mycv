@@ -24,3 +24,7 @@ export interface TemplateComponentProps {
 	data: TemplateDataProps,
 	isPreview?: boolean
 }
+
+export interface Template {
+	id: string, name: string, preview_image_url: string
+}

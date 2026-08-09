@@ -14,6 +14,7 @@ import ShareDialog from "@/partials/ShareDialog";
 import FloatingProfileTopBar from "@/pages/Profiles/components/FloatingProfileTopBar";
 import ChooseTemplateDialog from "@/partials/ChooseTemplateDialog";
 import UserControls from "@/partials/shared/UserControls";
+import { useEffect } from "react";
 
 export default function ClassicTemplate({ data }: TemplateComponentProps) {
 	const { auth, user, resume, work_experiences, projects, education, is_owner } = data
@@ -28,8 +29,12 @@ export default function ClassicTemplate({ data }: TemplateComponentProps) {
 		isPast,
 		isChooseTempDialogOpen,
 		setIsChooseTempDialogOpen
-	} = Boilerplate()
+	} = Boilerplate(data.auth.user === null)
 
+	// useEffect(() => {
+	// 	setIsViewingAsGuest(data.auth.user === null)
+	// })
+	
 	return (
 		<>
 			{isViewingAsGuest &&

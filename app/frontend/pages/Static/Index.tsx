@@ -3,103 +3,29 @@ import { Input } from "@/components/ui/input"
 import { Head, Link, useForm } from "@inertiajs/react"
 import StaticHeader from "./StaticHeader"
 import StaticFooter from "./StaticFooter"
-import { BriefcaseIcon, ChartPieIcon, ChevronDown, FileTextIcon, FolderGit2Icon, GraduationCapIcon, Link2Icon, ShareIcon, ShieldCheckIcon, SpotlightIcon, UserIcon, XIcon } from "lucide-react"
+import { ChevronRight, EyeIcon, PlusIcon, XIcon } from "lucide-react"
 import SimpleCarousel from "@/partials/SimpleCarousel"
 import { CarouselItem } from "@/components/ui/carousel"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet"
 import { useState } from "react"
+import { faqs, mainFeatures, miscFeatures } from "./support/data"
+import { Template } from "@/components/templates/types"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface PageProps {
-	templates: [
-		{ id: string, name: string, preview_image_url: string }
-	]
+	templates: Template[]
 }
 
-const mainFeatures = [
-	{
-		icon: <FileTextIcon />,
-		label: "Create a professional resume from a variety of clean templates."
-	},
-	{
-		icon: <ChartPieIcon />,
-		label: "Track key metrics about your profile - page views, bounce rates, and more."
-	},
-	{
-		icon: <ShareIcon />,
-		label: "Publish a custom digital resume that updates everywhere in seconds."
-	},
-]
-
-const miscFeatures = [
-	{
-		icon: <UserIcon size={20} />,
-		title: "Unified work profile",
-		description: "Store your bio, location, role, and custom highlights in one centralized, modern profile.",
-	},
-	{
-		icon: <BriefcaseIcon size={20} />,
-		title: "Work experience timeline",
-		description: "Document your career milestones, and dates with clean, chronological precision.",
-	},
-	{
-		icon: <FolderGit2Icon size={20} />,
-		title: "Project showcase",
-		description: "Highlight your best builds with live URLs, execution years, and key technical takeaways.",
-	},
-	{
-		icon: <GraduationCapIcon size={20} />,
-		title: "Academic credentials",
-		description: "Display your degrees, majors, and GPA in an easy-to-read academic breakdown.",
-	},
-	{
-		icon: <Link2Icon size={20} />,
-		title: "Custom social links",
-		description: "Connect your personal website and LinkedIn so visitors can explore your work deeper.",
-	},
-	{
-		icon: <ShieldCheckIcon size={20} />,
-		title: "Secure & reliable",
-		description: "Rest easy with encrypted sessions, instant page loads, and data synchronization.",
-	},
-]
-
-const faqs = [
-	{
-		question: "How is this different from a standard PDF resume?",
-		answer:
-			"Unlike static PDFs that get outdated quickly, your profile is a dynamic, shareable website. You can update your projects, skills, or employment history in real time without needing to re-export or re-send files.",
-	},
-	{
-		question: "Can I link my own custom projects and websites?",
-		answer:
-			"Yes! Every profile includes dedicated sections to showcase live builds with outbound links, year of completion, and key highlights so employers can see your real-world proof of work.",
-	},
-	{
-		question: "Is my profile public to everyone?",
-		answer:
-			"Yes, your published profile generates a clean, shareable link that anyone can view. You can easily share it on LinkedIn, add it to job applications, or send it directly to recruiters.",
-	},
-	{
-		question: "Can I customize what information is shown?",
-		answer:
-			"Absolutely. You have full control over your bio, job experience, education, social links, and custom highlights from your settings dashboard.",
-	},
-	{
-		question: "How much does it cost to build a profile?",
-		answer:
-			"Getting started and creating your interactive online profile is completely free. You can set up your entire profile and start sharing your link in minutes.",
-	},
-]
 
 export default function LandingPage(props: PageProps) {
 	const { setData, get } = useForm({
 		email: ""
 	})
 
-	const [activePreviewTemplateId, setActivePreviewTemplateId] = useState<string | null>(null)
-	
+	const [activePreviewTemplateId, setActivePreviewTemplateId] = useState<Template | null>(null)
+
 	const handleSubmit = (e: React.ChangeEvent) => {
 		e.preventDefault()
 		get(`/signup`)
@@ -153,16 +79,40 @@ export default function LandingPage(props: PageProps) {
 						<SimpleCarousel slidesToScroll={1}>
 							{props.templates?.map((template, index) => (
 								<CarouselItem key={index} className="min-w-full flex-[initial]">
-									<div className="p-6 gap-6 flex relative items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/5] aspect-square overflow-hidden rounded-lg">
-										<div className="w-full flex items-start justify-between">
-											<div className="">{template.name}</div>
+									<div className="p-4 gap-3 flex relative items-center flex-col dark:bg-card bg-white w-full sm:aspect-[6/5] aspect-square overflow-hidden rounded-lg">
+										<div className="w-full flex items-start justify-end">
+											{/* <div className="">{template.name}</div> */}
 											<div className="flex gap-1">
-												<Button variant={"outline"} className={"rounded-full"} onClick={() => setActivePreviewTemplateId(template.id)}>Preview</Button>
-												<Button variant={"outline"} className={"rounded-full"}>Use</Button>
+												<Tooltip>
+													<TooltipTrigger delay={0} render={
+														<Button variant={"secondary"} size={"icon"} className={"rounded-full"} onClick={() => setActivePreviewTemplateId(template)}>
+															<EyeIcon />
+														</Button>
+													} />
+													<TooltipContent>Preview</TooltipContent>
+												</Tooltip>
+												<Tooltip>
+													<TooltipTrigger delay={0} render={
+														<Button variant={"secondary"} size={"icon"} nativeButton={false} className={"rounded-full"} render={<Link href={"/signup"} />}>
+															<PlusIcon />
+														</Button>
+													} />
+													<TooltipContent>Use for free</TooltipContent>
+												</Tooltip>
 											</div>
 										</div>
-										<img src={template.preview_image_url} alt="" className="sm:w-3/4 aspect-[3.5/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
-										<div className="bg-linear-to-t h-[200px] bottom-0 left-0 w-full from-white dark:from-[#242424] to-transparent absolute"></div>
+										<div className="h-full overflow-hidden relative w-full">
+											<img src={template.preview_image_url} alt="" className="mx-auto sm:w-3/4 aspect-[3.5/6] object-cover rounded-md border-10 rounded-t-2xl" style={{ objectPosition: "top" }} />
+											<div className="bg-linear-to-t h-[200px] bottom-0 left-0 w-full from-white dark:from-[#242424] to-transparent absolute"></div>
+										</div>
+										<div className="w-full pb-1 px-1">
+											<div className="relative z-2">
+												<h3>
+													<span>{template.name} </span>
+													<span className="text-subtle">(Free)</span>
+												</h3>
+											</div>
+										</div>
 									</div>
 								</CarouselItem>
 							))}
@@ -199,14 +149,20 @@ export default function LandingPage(props: PageProps) {
 			<Sheet open={activePreviewTemplateId !== null} onOpenChange={open => !open ? setActivePreviewTemplateId(null) : null}>
 				<SheetContent showCloseButton={false} side="bottom" className={"max-h-[94vh] !h-full rounded-t-xl !gap-0"}>
 					<SheetHeader className="flex-row items-center justify-between pb-2">
-						<div>Classic</div>
+						<div className="flex items-center gap-1">
+							<div className="text-subtle">Templates</div>
+							<ChevronRight size={14} color="var(--subtle)" />
+							<div>{activePreviewTemplateId?.name}</div>
+						</div>
 						<div className="flex gap-1">
-							<Button>Use for free</Button>
+							<Button nativeButton={false} render={<Link href={"/signup"} />}>Use for free</Button>
 							<Button size={"icon"} variant={"ghost"} onClick={() => setActivePreviewTemplateId(null)}><XIcon /></Button>
 						</div>
 					</SheetHeader>
 					<div className="h-full w-full p-2">
-						<iframe src="/@rusty" className="w-full h-full rounded-lg"></iframe>
+						{activePreviewTemplateId &&
+							<iframe src={`/templates/${activePreviewTemplateId.id}`} className="w-full h-full rounded-lg"></iframe>
+						}
 					</div>
 				</SheetContent>
 			</Sheet>

@@ -14,7 +14,8 @@ class SessionsController < ApplicationController
   def create
     if user = User.authenticate_by(params.permit(:email, :password))
       start_new_session_for user
-      redirect_to after_authentication_url
+      # redirect_to after_authentication_url
+      redirect_to root_path
     else
       redirect_to new_session_path, inertia: {
                                       errors: { email: "Invalid email address or password." },

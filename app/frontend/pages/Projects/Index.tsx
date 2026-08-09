@@ -19,7 +19,27 @@ export default function ProjectsPage(props: PageProps) {
 				<div className="text-xl font-medium">Projects</div>
 				<div className="text-subtle">Showcase your projects on your profile.</div>
 				{props.projects && (
-					<div className="mt-6">{props.projects?.map(project => <ProjectItem key={project.id} project={project} />)}</div>
+					// <div className="mt-6">{props.projects?.map(project => <ProjectItem key={project.id} project={project} />)}</div>
+					<div className="mt-6 -m-2">
+						{props.projects?.map(project =>
+							<div key={project.id} className="flex items-center gap-4 hover:bg-card p-2 rounded-lg relative">
+								<Link href={`/projects/${project.id}`} className="absolute inset-0 z-1" />
+								{project.images.length && (
+									<div className="w-12 aspect-square bg-card rounded-lg" style={{background: `url(${project.images[0]}) center / cover`}}></div>
+								)}
+								{!project.images.length && (
+									<div className="w-12 aspect-square bg-card rounded-lg"></div>
+								)}
+								<div className="w-full">
+									<div className="flex justify-between items-start">
+										<div>{project.title}</div>
+										<div className="text-subtle text-sm pr-2">{project.year}</div>
+									</div>
+									<div className="text-subtle text-[15px]">{project.description}</div>
+								</div>
+							</div>
+						)}
+					</div>
 				)}
 				{!props.projects?.length && <Empty className="border mt-8">
 					<EmptyHeader>

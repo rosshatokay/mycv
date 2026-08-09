@@ -1,11 +1,11 @@
 import { ProjectItemProps } from "@/interfaces/projectItemProps";
 import { useEffect, useRef, useState } from "react";
 
-export const Boilerplate = () => {
+export const Boilerplate = (isGuest: boolean) => {
 	const floatingTopBarTargetRef = useRef(null)
 
 	const [activeProject, setActiveProject] = useState<ProjectItemProps['project'] | null>(null)
-	const [isViewingAsGuest, setIsViewingAsGuest] = useState<boolean>(false)
+	const [isViewingAsGuest, setIsViewingAsGuest] = useState<boolean>(isGuest)
 	const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false)
 	const [isChooseTempDialogOpen, setIsChooseTempDialogOpen] = useState<boolean>(false)
 	const [isPast, setIsPast] = useState<boolean>(false)

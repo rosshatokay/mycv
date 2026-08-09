@@ -1,11 +1,8 @@
 import { Head, Link } from "@inertiajs/react"
 import { AuthUser } from "@/interfaces/user"
 import { TemplateDataProps } from "@/components/templates/types"
-import { Breadcrumb, createBreadcrumbs } from "@/lib/utils"
-import { MoreVerticalIcon, ShareIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { LogoIconFull } from "@/assets/logoFull"
+import { useMemo } from "react"
+import { getTemplate } from "@/components/templates"
 
 interface TemplatePageProps extends TemplateDataProps {
 	template: {
@@ -16,22 +13,28 @@ interface TemplatePageProps extends TemplateDataProps {
 	auth: AuthUser['auth']
 }
 
-export default function ShowTemplate({ template }: TemplatePageProps) {
-	const breadcrumbs: Breadcrumb[] = [
-		{ label: "Templates", path: "/templates" },
-		{ label: template.name, path: "/" },
-	]
+export default function ShowTemplate({
+	template,
+	auth,
+	user,
+	work_experiences,
+	resume,
+	projects,
+	education,
+	is_owner
+}: TemplatePageProps) {
+	const TemplateComponent = useMemo(() => getTemplate(template.template_id), [template.template_id])
 
 	return (
 		<>
 			<Head>
 				<title>{template.name}</title>
 			</Head>
-			<div className="p-2 pt-0 h-screen flex flex-col">
+			<TemplateComponent data={{ auth, user, work_experiences, resume, projects, education, is_owner }} />
+			{/* <div className="p-2 pt-0 h-screen flex flex-col">
 				<div className="h-14 min-h-14 flex items-center justify-between">
 					<div className="flex items-center gap-6">
 						<Button variant={"ghost"} nativeButton={false} render={<Link href={"/"} />}>
-							{/* <LogoIcon size={20} fill="var(--primary)" /> */}
 							<LogoIconFull size={14} />
 						</Button>
 						{createBreadcrumbs(breadcrumbs)}
@@ -48,7 +51,7 @@ export default function ShowTemplate({ template }: TemplatePageProps) {
 				<div className="bg-background ring ring-foreground/10 w-full h-full overflow-y-auto relative rounded-xl">
 					<iframe src="/@rusty" className="w-full h-full"></iframe>
 				</div>
-			</div>
+			</div> */}
 		</>
 	)
 }
