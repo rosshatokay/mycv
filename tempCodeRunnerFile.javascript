@@ -1,32 +1,32 @@
 /**
- * @param {number[]} piles
- * @param {number} h
+ * @param {number[][]} grid
  * @return {number}
  */
-var minEatingSpeed = function (piles, h) {
-	const kWords = (k) => {
-		let hours = 0
-		for (const p of piles) {
-			hours += Math.ceil(p / k)
-		}
+var orangesRotting = function (grid) {
+  const EMPTY = 0
+  const FRESH = 1
+  const ROTTEN = 2
 
-		return hours <= h
-	}
+  const q = []
 
-	let low = 0
-	let high = Math.max(...piles)
+  const m = grid.length
+  const n = grid[0].length
 
-	while (low < high) {
-		const mid = Math.floor((low + high) / 2)
+  let minutes = 0
+  let numOfFresh = 0
 
-		if (kWords(mid)) {
-			high = mid
-		} else {
-			low = mid + 1
-		}
-	}
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (grid[i][j] === FRESH) numOfFresh++
+      if (grid[i][j] === ROTTEN) q.push([i, j])
+    }
+  }
 
-	return high
+  const directions = [[0, 1], [0, -1], [-1, 0], [1, 0]]
+
+  
+
+  return fresh == 0 ? time : -1
 };
 
-console.log(minEatingSpeed([3,6,7,11], 8))
+console.log(orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))

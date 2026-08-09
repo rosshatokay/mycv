@@ -20,7 +20,7 @@ const chartData = [
 const chartConfig = {
 	page_views: {
 		label: "People",
-		color: "#2563eb"
+		color: "#6c9aff"
 	}
 } satisfies ChartConfig
 
@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
 				</div>
 				<div className="flex gap-8">
 					<div>
-						<div className="text-sm text-subtle flex items-center gap-1">People <i className="block w-2 aspect-square rounded-full bg-[#2563eb]"></i></div>
+						<div className="text-sm text-subtle flex items-center gap-1">People <i className="block w-2 aspect-square rounded-full bg-[#6c9aff]"></i></div>
 						<div className="font-medium">N/A</div>
 						<Badge variant={"secondary"} className="rounded-sm px-2 text-subtle">0%</Badge>
 					</div>

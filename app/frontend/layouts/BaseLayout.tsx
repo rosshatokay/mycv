@@ -2,7 +2,7 @@ import { toast, Toaster } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthUser } from "@/interfaces/user";
 import UserAside from "@/partials/UserAside";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { PropsWithChildren, useEffect } from "react";
 
 interface FlashProps {
@@ -31,7 +31,7 @@ export default function BaseLayout({ children }: PropsWithChildren) {
 	return (
 		<div>
 			{auth?.user != null && !shouldHideAside && <UserAside auth={auth} />}
-			<main>
+			<main id="main" className="transition">
 				{children}
 			</main>
 			<Toaster></Toaster>

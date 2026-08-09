@@ -124,3 +124,13 @@ function fallbackCopyToClipboard(text: string) {
 }
 
 export default copyToClipboard
+
+export const formatYearsRange = (startYear: number, endYear: number) => {
+	let result = `${startYear}`
+
+	if (endYear !== startYear) {
+		result += (endYear !== null) ? ` — ${endYear}` : ` — Now`
+	}
+
+	return result
+}

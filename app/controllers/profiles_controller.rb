@@ -15,6 +15,7 @@ class ProfilesController < ApplicationController
 
       render inertia: "Profiles/Show", props: {
         template_id: template_id,
+        # template_id: "lean",
         user: user.to_profile,
         projects: user.resume.formatted_projects || [],
         resume: resume_data,

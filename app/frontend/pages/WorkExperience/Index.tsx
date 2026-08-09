@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { WorkExperience } from "@/interfaces/workExperience";
-import WorkExperienceItem from "@/components/templates/items/classic/WorkExperienceItem";
+import { formatYearsRange } from "@/lib/utils";
 import { Head, Link } from "@inertiajs/react";
-import { MoreHorizontalIcon, PlusIcon, SquarePlusIcon } from "lucide-react";
+import { BriefcaseIcon, Edit2Icon, PlusIcon, SquarePlusIcon } from "lucide-react";
 
 interface PageProps {
 	work_experiences: WorkExperience[]
@@ -25,38 +23,28 @@ export default function WorkExperiencesPage(props: PageProps) {
 					</div>
 					<Button nativeButton={false} variant={"secondary"} size={"sm"} render={<Link href={"/work-experience/new"}></Link>}><PlusIcon data-icon="inline-start" /> Add</Button>
 				</div>
-				<Table className="mt-6">
-					<TableHeader>
-						<TableRow>
-							<TableHead className="text-subtle">Start year</TableHead>
-							<TableHead className="text-subtle">End year</TableHead>
-							<TableHead className="text-subtle">Company</TableHead>
-							<TableHead className="text-subtle">Role</TableHead>
-							<TableHead className="text-subtle"></TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{props.work_experiences?.length > 0 && (
-							props.work_experiences.map(we => (
-								<TableRow key={we.id} onClick={(e) => console.log()}>
-									<TableCell>{we.start_year}</TableCell>
-									<TableCell>{we.end_year || "Now"}</TableCell>
-									<TableCell className="whitespace-nowrap">{we.company}</TableCell>
-									<TableCell className="whitespace-nowrap">{we.role}</TableCell>
-									<TableCell align="right">
-										<DropdownMenu>
-											<DropdownMenuTrigger render={<Button variant={"ghost"} size={"icon-sm"}><MoreHorizontalIcon /></Button>} />
-											<DropdownMenuContent align="end">
-												<DropdownMenuItem render={<Link href={`/work-experience/${we.id}/edit`} />}>Edit</DropdownMenuItem>
-												<DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-											</DropdownMenuContent>
-										</DropdownMenu>
-									</TableCell>
-								</TableRow>
-							))
-						)}
-					</TableBody>
-				</Table>
+				{props.work_experiences?.length > 0 && (
+					<div className="mt-4 -m-2">
+						{props.work_experiences.map(we => (
+							<div className="relative flex items-center gap-4 p-2 group hover:bg-card rounded-lg transition" key={we.id}>
+								<Link href={`/work-experience/${we.id}/edit`} className="absolute inset-0" />
+								<div className="w-11 flex-center text-subtle aspect-square rounded-lg bg-card">
+									<BriefcaseIcon size={20} />
+								</div>
+								<div className="w-full">
+									<div className="flex items-start justify-between">
+										<div className="flex items-center gap-1">
+											<span>{we.role}</span>
+											<Edit2Icon size={12} color="var(--subtle)" className="opacity-0 group-hover:opacity-100 transition" />
+										</div>
+										<div className="text-subtle text-sm pr-2">{formatYearsRange(we.start_year, we.end_year)}</div>
+									</div>
+									<div className="text-sm text-subtle">{we.company} • {we.location}</div>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 				{!props.work_experiences?.length && <Empty className="border mt-8">
 					<EmptyHeader>
 						<EmptyMedia variant={"icon"}>

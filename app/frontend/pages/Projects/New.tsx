@@ -7,7 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Breadcrumb, createBreadcrumbs } from "@/lib/utils";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import { PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { YearSelect } from "./SelectYear";
 import { Project } from "@/interfaces/project";
@@ -21,7 +21,7 @@ interface PageProps {
 export default function NewProject({ project, is_edit }: PageProps) {
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [previewUrls, setPreviewUrls] = useState<string[]>(project.images)
-	const { data, setData, processing, errors, post, patch, transform } = useForm({
+	const { data, setData, processing, progress, errors, post, patch, transform } = useForm({
 		project: {
 			title: project.title || "",
 			url: project.url || "",
@@ -32,6 +32,8 @@ export default function NewProject({ project, is_edit }: PageProps) {
 			remove_image_ids: [] as string[]
 		}
 	})
+
+	console.log(progress)
 
 	const breadcrumbs = [
 		{ label: "Projects", path: "/projects" },

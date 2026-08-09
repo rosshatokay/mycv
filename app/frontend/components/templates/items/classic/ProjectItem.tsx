@@ -1,13 +1,11 @@
 import { ProjectItemProps } from "@/interfaces/projectItemProps";
 import { cn } from "@/lib/utils";
-import { Link } from "@inertiajs/react";
 import { ArrowUpRight } from "lucide-react";
 
-export default function ProjectItem({ project, onSelect, is_owner }: ProjectItemProps) {
+export default function ProjectItem({ project, onSelect }: ProjectItemProps) {
 	return (
 		<div key={project.id}>
-			<div className={cn(`relative grid grid-cols-[148px_1fr] overflow-hidden`, is_owner ? "rounded-lg hover:bg-card p-3 -m-3 transition" : "")}>
-				{is_owner && <Link className="absolute inset-0" href={`/projects/${project.id}`}></Link>}
+			<div className={cn(`relative grid grid-cols-[148px_1fr] overflow-hidden`)}>
 				<div>
 					<div className="text-subtle">{project.year}</div>
 				</div>

@@ -40,7 +40,7 @@ class Resume < ApplicationRecord
   end
 
   def formatted_work_experiences
-    work_experiences&.map { |w|
+    work_experiences&.order("start_year ASC NULLS FIRST, end_year ASC NULLS FIRST")&.map { |w|
       {
         **w.slice(:company, :role, :start_year, :end_year),
         location: w.location,

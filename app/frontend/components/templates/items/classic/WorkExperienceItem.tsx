@@ -1,4 +1,5 @@
 import { WorkExperience } from "@/interfaces/workExperience"
+import { formatYearsRange } from "@/lib/utils"
 
 interface WorkExperienceItemProps {
 	item: WorkExperience
@@ -7,7 +8,7 @@ interface WorkExperienceItemProps {
 export default function WorkExperienceItem({ item }: WorkExperienceItemProps) {
 	return (
 		<div className="relative grid grid-cols-[148px_1fr] overflow-hidden">
-			<div className="text-subtle">{item.start_year} — {item.end_year ? item.end_year : "Now"}</div>
+			<div className="text-subtle">{formatYearsRange(item.start_year, item.end_year)}</div>
 			<div className="min-w-0">
 				<div>{item.role} at {item.company}</div>
 				<div className="text-subtle">{item.location}</div>

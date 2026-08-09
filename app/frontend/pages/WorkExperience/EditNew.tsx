@@ -19,7 +19,7 @@ interface PageProps {
 
 export default function WorkExperienceFormPage({ work_experience, is_edit, countries_list }: PageProps) {
 	const breadcrumbs = [
-		{ label: "Work experience", path: "/work-experience" },
+		{ label: "Work experiences", path: "/work-experience" },
 		{ label: `${is_edit ? 'Edit' : 'New'}`, path: "/work-experience/new" },
 	] satisfies Breadcrumb[]
 
