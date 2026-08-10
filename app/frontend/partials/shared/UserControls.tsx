@@ -28,10 +28,10 @@ export default function UserControls({
 								<TooltipTrigger delay={0} render={<Button size={"icon-sm"} nativeButton={false} variant={"outline"} className={"rounded-full"} render={<Link href={"/settings/profile"} />}><EditIcon /></Button>} />
 								<TooltipContent side="left">Edit</TooltipContent>
 							</Tooltip>
-							{/* <Tooltip>
+							<Tooltip>
 								<TooltipTrigger delay={0} render={<Button size={"icon-sm"} variant={"outline"} className={"rounded-full"} onClick={() => setIsChooseTempDialogOpen(true)}><LayoutTemplateIcon /></Button>} />
 								<TooltipContent side="left">Change template</TooltipContent>
-							</Tooltip> */}
+							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger delay={0} render={<Button size={"icon-sm"} variant={"outline"} className={"rounded-full"} onClick={() => setIsShareDialogOpen(true)}><ShareIcon /></Button>} />
 								<TooltipContent side="left">Share</TooltipContent>
