@@ -25,7 +25,7 @@ export default function ClassicTemplate({ data }: TemplateComponentProps) {
 		floatingTopBarTargetRef,
 		activeProject,
 		setActiveProject,
-		isPast,
+		isPastProfileHeader,
 		isChooseTempDialogOpen,
 		setIsChooseTempDialogOpen
 	} = Boilerplate(auth.user === null)
@@ -33,7 +33,7 @@ export default function ClassicTemplate({ data }: TemplateComponentProps) {
 	return (
 		<>
 			{isViewingAsGuest &&
-				<FloatingProfileTopBar user={user} resume={resume} isShown={isPast} />
+				<FloatingProfileTopBar user={user} resume={resume} isShown={isPastProfileHeader} />
 			}
 			<div className="main-container relative py-16 flex flex-col gap-16 text-[15px]">
 				<UserControls setIsChooseTempDialogOpen={setIsChooseTempDialogOpen} isOwner={is_owner} isViewingAsGuest={isViewingAsGuest} setIsViewingAsGuest={setIsViewingAsGuest} setIsShareDialogOpen={setIsShareDialogOpen} />

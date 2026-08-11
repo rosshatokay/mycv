@@ -8,7 +8,7 @@ export const Boilerplate = (isGuest: boolean) => {
 	const [isViewingAsGuest, setIsViewingAsGuest] = useState<boolean>(isGuest)
 	const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false)
 	const [isChooseTempDialogOpen, setIsChooseTempDialogOpen] = useState<boolean>(false)
-	const [isPast, setIsPast] = useState<boolean>(false)
+	const [isPastProfileHeader, setIsPastProfileHeader] = useState<boolean>(false)
 
 	useEffect(() => {
 		const target = floatingTopBarTargetRef.current;
@@ -19,9 +19,9 @@ export const Boilerplate = (isGuest: boolean) => {
 				// boundingClientRect.top < 0 means the element's top has moved above the viewport view
 				// !entry.isIntersecting means the element is no longer visible in the view
 				if (entry.boundingClientRect.top < 0 && !entry.isIntersecting) {
-					setIsPast(true);
+					setIsPastProfileHeader(true);
 				} else {
-					setIsPast(false);
+					setIsPastProfileHeader(false);
 				}
 			},
 			{
@@ -50,8 +50,8 @@ export const Boilerplate = (isGuest: boolean) => {
 		setIsViewingAsGuest,
 		isShareDialogOpen,
 		setIsShareDialogOpen,
-		isPast,
-		setIsPast,
+		isPastProfileHeader,
+		setIsPastProfileHeader,
 		activeProject,
 		setActiveProject,
 		isChooseTempDialogOpen,

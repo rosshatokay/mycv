@@ -61,7 +61,11 @@ Rails.application.routes.draw do
 
   namespace :settings do
     resources :appearance, only: [:index]
-
+    resources :templates, only: [] do
+      collection do
+        patch :update
+      end
+    end
     resources :profile, only: [:index] do
       collection do
         patch :update

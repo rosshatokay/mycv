@@ -2,14 +2,19 @@ import UserControls from "@/partials/shared/UserControls";
 import { TemplateComponentProps } from "../../types";
 import { Boilerplate } from "../../utils/boilerplate";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { formatYearsRange } from "@/lib/utils";
-import { Link } from "@inertiajs/react";
+import copyToClipboard, { formatYearsRange } from "@/lib/utils";
 import ProjectSheet from "@/partials/ProjectSheet";
 import { Button } from "@/components/ui/button";
-import { GlobeIcon, MailIcon } from "lucide-react";
+import { CopyIcon, GlobeIcon, MailIcon } from "lucide-react";
 import { LinkedInIcon } from "@/assets/linkedin";
+import ChooseTemplateDialog from "@/partials/ChooseTemplateDialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useState } from "react";
+import ShareDialog from "@/partials/ShareDialog";
+import FloatingProfileTopBar from "@/pages/Profiles/components/FloatingProfileTopBar";
 
 export default function LeanTemplate({ data }: TemplateComponentProps) {
+	const [emailCopied, setEmailCopied] = useState<boolean>(false)
 	const { auth, user, resume, work_experiences, projects, education, is_owner } = data
 	const {
 		isViewingAsGuest,
@@ -19,15 +24,22 @@ export default function LeanTemplate({ data }: TemplateComponentProps) {
 		floatingTopBarTargetRef,
 		activeProject,
 		setActiveProject,
-		isPast,
+		isPastProfileHeader,
 		isChooseTempDialogOpen,
 		setIsChooseTempDialogOpen
 	} = Boilerplate(auth.user === null)
 
+	const handleEmailCopy = () => {
+		setEmailCopied(true)
+		copyToClipboard(user.email)
+		setTimeout(() => setEmailCopied(false), 2000)
+	}
+
 	return (
 		<div className="main-container relative py-16 flex flex-col gap-11 text-[15px]">
+			<FloatingProfileTopBar isShown={isPastProfileHeader} user={user} resume={resume} />
 			<UserControls setIsChooseTempDialogOpen={setIsChooseTempDialogOpen} isOwner={is_owner} isViewingAsGuest={isViewingAsGuest} setIsViewingAsGuest={setIsViewingAsGuest} setIsShareDialogOpen={setIsShareDialogOpen} />
-			<section className="flex justify-between">
+			<section className="flex justify-between" ref={floatingTopBarTargetRef}>
 				<div className="flex flex-row gap-4">
 					<Avatar className={"w-12 h-12"}>
 						<AvatarImage src={user.avatar_url} alt={`@${user.username}'s picture`}></AvatarImage>
@@ -39,9 +51,23 @@ export default function LeanTemplate({ data }: TemplateComponentProps) {
 					</div>
 				</div>
 				<div className="w-fit flex gap-1">
-					{resume.website_url && <Button variant={"ghost"} size={"icon-sm"} nativeButton={false} render={<a href={resume.website_url} target="_blank"></a>}><GlobeIcon /></Button>}
-					{resume.linkedin_url && <Button variant={"ghost"} size={"icon-sm"} nativeButton={false} render={<a href={`https://linkedin.com${resume.linkedin_url}`} target="_blank"></a>}><LinkedInIcon /></Button>}
-					<Button variant={"ghost"} size={"icon-sm"} className={""}><MailIcon /></Button>
+					{resume.website_url &&
+						<Tooltip>
+							<TooltipContent>Website</TooltipContent>
+							<TooltipTrigger delay={0} render={<Button variant={"ghost"} size={"icon-sm"} nativeButton={false} render={<a href={resume.website_url} target="_blank"></a>}><GlobeIcon /></Button>} />
+						</Tooltip>
+					}
+					{resume.linkedin_url &&
+
+						<Tooltip>
+							<TooltipContent>LinkedIn</TooltipContent>
+							<TooltipTrigger delay={0} render={<Button variant={"ghost"} size={"icon-sm"} nativeButton={false} render={<a href={`https://linkedin.com${resume.linkedin_url}`} target="_blank"></a>}><LinkedInIcon /></Button>} />
+						</Tooltip>
+					}
+					<Tooltip>
+						<TooltipContent>{emailCopied ? "Copied email" : "Copy email"}</TooltipContent>
+						<TooltipTrigger closeOnClick={false} delay={0} onClick={handleEmailCopy} render={<Button variant={"ghost"} size={"icon-sm"}><MailIcon /></Button>} />
+					</Tooltip>
 				</div>
 			</section>
 			{!!resume.highlights.length && (
@@ -113,18 +139,29 @@ export default function LeanTemplate({ data }: TemplateComponentProps) {
 					</div>
 					<div className="grid grid-cols-[120px_1fr]">
 						<div>Email</div>
-						<div>{user.email}</div>
+						<div className="flex gap-1 items-center">
+							<span>{user.email}</span>
+							<Tooltip>
+								<TooltipContent>Copy</TooltipContent>
+								<TooltipTrigger delay={0} render={<button className="text-subtle hover:text-foreground"><CopyIcon size={14} /></button>} />
+							</Tooltip>
+						</div>
 					</div>
 					{resume.website_url && (
 						<div className="grid grid-cols-[120px_1fr]">
 							<div>Website</div>
-							<div>{resume.website_url.replace("https://", "")}</div>
+							<div className="items-center flex gap-1">
+								<span>{resume.website_url.replace("https://", "")}</span>
+
+							</div>
 						</div>
 					)}
 					{resume.linkedin_url && (
 						<div className="grid grid-cols-[120px_1fr]">
 							<div>LinkedIn</div>
-							<div>linkedin.com{resume.linkedin_url}</div>
+							<div className="items-center flex gap-1">
+								<span>linkedin.com{resume.linkedin_url}</span>
+							</div>
 						</div>
 					)}
 				</div>
@@ -133,6 +170,12 @@ export default function LeanTemplate({ data }: TemplateComponentProps) {
 
 			{projects?.length > 0 && (
 				<ProjectSheet project={activeProject} setActiveProject={setActiveProject} />
+			)}
+			{is_owner && (
+				<ShareDialog url={`https://highlight.cv/@${user.username}`} isOpen={isShareDialogOpen} setIsOpen={setIsShareDialogOpen} />
+			)}
+			{is_owner && (
+				<ChooseTemplateDialog isOpen={isChooseTempDialogOpen} setIsOpen={setIsChooseTempDialogOpen} />
 			)}
 		</div>
 	)
