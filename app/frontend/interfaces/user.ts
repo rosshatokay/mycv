@@ -6,6 +6,7 @@ export interface AuthUser {
 			username: string
 			full_name: string
 			avatar_url?: string
+			is_admin: boolean
 		}
 	}
 }

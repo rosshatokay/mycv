@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
                     )&.merge({
                       id: current_user&.hashid,
                       avatar_url: current_user&.avatar_url,
+                      is_admin: current_user&.admin?,
                     }),
                   }
                 }
@@ -55,5 +56,32 @@ class ApplicationController < ActionController::Base
     record.errors.to_hash.transform_keys do |key|
       "#{prefix}.#{key}"
     end.transform_values(&:first)
+  end
+
+  def seo_tags(title: "", description: "", image: "")
+    arr = []
+
+    if title.present?
+      arr << { title: title }
+      arr << { proprety: "og:title", content: "#{title} – Tomes" }
+    end
+
+    if description.present?
+      arr << { name: "description", content: description }
+      arr << { property: "og:description", content: description }
+
+      arr << { name: "twitter:description", content: description }
+    end
+
+    arr << { property: "og:image", content: image.presence || "/splash.jpg" }
+    arr << { name: "twitter:image", content: image.presence || "/splash.jpg" }
+
+    arr << { name: "twitter:card", content: "summary" }
+    [
+      { property: "og:site_name", content: "Tomes" },
+      { property: "og:url", content: request.url },
+    ].map { |item| arr << item }
+
+    arr
   end
 end

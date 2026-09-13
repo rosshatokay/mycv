@@ -1,32 +1,27 @@
 /**
- * @param {number[][]} grid
+ * @param {number[]} nums
+ * @param {number} target
  * @return {number}
  */
-var orangesRotting = function (grid) {
-  const EMPTY = 0
-  const FRESH = 1
-  const ROTTEN = 2
+var searchInsert = function(nums, target) {
+	let left = 0
+	let right = nums.length - 1
 
-  const q = []
+	while (left <= right) {
+		const mid = Math.floor(left + (right - left) / 2)
+		
+		if (nums[mid] === target) {
+			return mid
+		}
 
-  const m = grid.length
-  const n = grid[0].length
+		if (nums[mid] < target) {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+	
+	return left
+}
 
-  let minutes = 0
-  let numOfFresh = 0
-
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      if (grid[i][j] === FRESH) numOfFresh++
-      if (grid[i][j] === ROTTEN) q.push([i, j])
-    }
-  }
-
-  const directions = [[0, 1], [0, -1], [-1, 0], [1, 0]]
-
-  
-
-  return fresh == 0 ? time : -1
-};
-
-console.log(orangesRotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]))
+console.log(searchInsert([1,3,5,6], 2))

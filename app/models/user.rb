@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include Hashid::Rails
 
+  enum :role, { user: 0, admin: 1 }, default: :user
+
   ONBOARDING_STEP = :onboarding
 
   has_secure_password

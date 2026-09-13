@@ -5,7 +5,8 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 import { AuthUser } from "@/interfaces/user"
 import { cn } from "@/lib/utils"
 import { Link, usePage } from "@inertiajs/react"
-import { ChartNoAxesColumn, SettingsIcon, Rows3, UserCircle, LogOutIcon, BriefcaseBusinessIcon } from "lucide-react"
+import { ChartNoAxesColumn, SettingsIcon, Rows3, UserCircle, LogOutIcon, BriefcaseBusinessIcon, GridIcon } from "lucide-react"
+import { Fragment } from "react/jsx-runtime"
 
 export default function UserAside({ auth }: AuthUser) {
 	const { url } = usePage()
@@ -55,6 +56,12 @@ export default function UserAside({ auth }: AuthUser) {
 								</Item>
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
+						{user.is_admin && (
+							<Fragment>
+								<DropdownMenuSeparator></DropdownMenuSeparator>
+								<DropdownMenuItem nativeButton={false} render={<Link href={"/admins"} className="w-full" />}><GridIcon /> Dashboard</DropdownMenuItem>
+							</Fragment>
+						)}
 						<DropdownMenuSeparator></DropdownMenuSeparator>
 						<DropdownMenuItem nativeButton={false} render={<Link href={"/settings"} className="w-full" />}><SettingsIcon /> Settings</DropdownMenuItem>
 						<DropdownMenuItem nativeButton={true} render={<Link href={"/logout"} method="delete" as={"button"} className="w-full" />}><LogOutIcon /> Sign out</DropdownMenuItem>

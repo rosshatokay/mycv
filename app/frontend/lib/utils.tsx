@@ -3,6 +3,9 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Link } from "@inertiajs/react"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { format, register } from "timeago.js"
+import en_short from 'timeago.js/lib/lang/en_short'
+import strftime from "strftime"
 
 export interface Breadcrumb {
 	icon?: React.ReactNode
@@ -43,16 +46,7 @@ export function createBreadcrumbs(breadcrumbs: Breadcrumb[]) {
 	)
 }
 
-/**
- * Copies the given text to the user's clipboard.
- * It first attempts to use the modern Clipboard API,
- * and falls back to a temporary textarea element for
- * older browsers or specific environments like iframes.
- *
- * @param {string} text - The string to be copied to the clipboard.
- * @returns {Promise<void>} A promise that resolves if the text was successfully copied.
- */
-const copyToClipboard = (text: string) => {
+const copyToClipboard = async (text: string) => {
     // Attempt to use the modern Clipboard API first.
     // This is the preferred method for security and user experience.
     if (navigator.clipboard && window.isSecureContext) {
@@ -133,4 +127,48 @@ export const formatYearsRange = (startYear: number, endYear: number) => {
 	}
 
 	return result
+}
+
+/**
+ * Calculates the percentage change between an initial and a new value.
+ * 
+ * @param initial - The starting baseline number.
+ * @param current - The new number to compare against.
+ * @param decimals - Number of decimal places to round to (default: 2).
+ * @returns The percentage change as a number, or null if the change is mathematically undefined (e.g., initial is 0).
+ */
+export function getPercentChange(
+  initial: number, 
+  current: number, 
+  decimals: number = 2
+): number {
+  // Prevent division by zero if the initial value is 0
+  if (initial === 0) {
+    return current === 0 ? 0 : 100; 
+  }
+
+  const change = ((current - initial) / Math.abs(initial)) * 100;
+  
+  return Number(change.toFixed(decimals));
+}
+
+type SimpleTimeFormatOptions = {
+	timeAgoForToday?: boolean
+}
+
+register('en_short', en_short)
+
+export const simpleTimeFormat = (created_at: string, options: SimpleTimeFormatOptions = {}) => {
+	const createdAt = new Date(created_at);
+	const now = new Date();
+	const { timeAgoForToday } = options
+
+	const diffInMilliseconds = +now - +createdAt;
+	const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+	if (diffInMilliseconds < twentyFourHoursInMs && diffInMilliseconds >= 0) {
+		return timeAgoForToday ? format(createdAt, 'en_short') : strftime('%R', createdAt); // Outputs: HH:MM
+	} else {
+		return strftime('%b %d', createdAt); // Outputs: Month Name DD
+	}
 }

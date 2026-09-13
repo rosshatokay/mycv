@@ -9,10 +9,6 @@ class AuthenticatedConstraint
 end
 
 Rails.application.routes.draw do
-  get "/404", to: "errors#not_found", via: :all
-  get "/422", to: "errors#unprocessable_entity", via: :all
-  get "/500", to: "errors#internal_server_error", via: :all
-
   get "login", to: "sessions#new", as: :new_session
   get "signup", to: "registrations#new", as: :new_user_registration
   get "/@:username", to: "profiles#show", as: :profile
@@ -82,6 +78,11 @@ Rails.application.routes.draw do
     resources :templates, only: [:index]
   end
 
+  namespace :admins do
+    get "/", to: "stats#index"
+    resources :users, only: [:index]
+  end
+
   # Redirect to localhost from 127.0.0.1 to use same IP address with Vite server
   constraints(host: "127.0.0.1") do
     get "(*path)", to: redirect { |params, req| "#{req.protocol}localhost:#{req.port}/#{params[:path]}" }
@@ -95,4 +96,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "static#index"
+
+  match "/404", to: "errors#not_found", via: :all
+  match "/422", to: "errors#unprocessable_entity", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
 end
